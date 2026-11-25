@@ -157,7 +157,4 @@ node bin/render-remotion.mjs --template templates/talk-frame --out out/a.mp4 --r
 
 ## 8. 授权
 
-Remotion 对个人和 ≤3 人的团队免费；更大的团队需要 Company License。介人商业产品前先确认公司规模，不要假设它和 MIT 一样。
-
-- License 说明：<https://www.remotion.dev/docs/license/pricing>
-- NutCut 本身不内置 Editor Starter，也没有引入 Remotion Studio 的编辑器功能。
+Remotion 对个人和 ≤3 人的团队免费；更大的团队需要 Company License。接入商业产品前先确认公司规模，不要假设它和 MIT 一样。
