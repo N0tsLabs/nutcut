@@ -82,13 +82,13 @@ node bin/render-remotion.mjs --template templates/<id> --still 120 --out out/che
 
 顺序不要跳：
 
-1. 规格确认
+1. 规格确认 → **停下来等确认**
 2. 素材导入与分析（有素材时）
-3. `brief.json`：主题、受众、角度、模板、风险
-4. 用户确认 brief
-5. `script.json`：逐句文案
-6. 用户确认文案
-7. 声音 → 时间线 → 关键帧 → 全片 → 混音 → 导出
+3. `brief.json`：主题、受众、角度、模板、风险 → **停下来等确认**
+4. `script.json`：逐句文案 → **停下来等确认**
+5. 声音 → 时间线 → 关键帧 → **关键帧确认** → 全片 → 混音 → 导出
+
+不要一条龙直接渲完成片。用户没有确认 brief、文案或关键帧时，不要继续下一步。
 
 模板在 `templates/`，先读 `template.json` 的 `palette` / `motion` / `stylePrompt`，再写生图 prompt。
 
@@ -99,7 +99,7 @@ node bin/render-remotion.mjs --template templates/<id> --still 120 --out out/che
 - 横屏 1920×1080：字幕 ≥ 42px、标题 ≥ 72px、边距 ≥ 72px
 - 标题、章节、标签必须来自素材内容
 - 视频旁边始终要有章节 / 关键词 / 注释，不允许核心区域大面积空白
-- 场景切换用 0.4–0.7 秒交叉淡化，不要硬切
+- 解释界面时，先运行 `node bin/capture-console.mjs --out projects/<id>/assets/imported/ui --preview data-console` 拿真实截图，再放进画面- 场景切换用 0.4–0.7 秒交叉淡化，不要硬切
 - 位移 / 缩放用 `cubic-bezier(.16, 1, .3, 1)`
 - 固定元素只在内容需要时移动，不要每句都动
 - 禁止 `Date.now()`、`performance.now()`、`Math.random()` 参与画面

@@ -64,7 +64,10 @@ Agent 必须先读 `template.json`，把风格写进 `brief.json` 和画面 prom
 ```bash
 node bin/import.mjs --project projects/<id> --file "D:/素材/照片.jpg"
 node bin/import.mjs --project projects/<id> --file a.png --file b.mp4 --analysis "室内、暖光、人物"
+node bin/capture-console.mjs --out projects/<id>/assets/imported/ui --preview data-console
 ```
+
+`capture-console` 会抓中控台、模板页和 Remotion 预览的真实截图，适合做产品介绍或教程视频；需要中控台正在运行。
 
 文件会进入：
 

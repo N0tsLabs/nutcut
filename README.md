@@ -1,16 +1,40 @@
 # NutCut
 
-**本地优先的 AI 视频工作台**：MiniMax 声音克隆 / TTS / 生图 + HTML 模板 + Remotion 预览 + FFmpeg 合成 + 本地中控台。
+> **给任意 Agent 装上 NutCut，它就能从规格、选题、文案一直做到成片；每一步先和你确认，改到你满意再渲染。**
+>
+> 本地优先的 AI 视频工作台：MiniMax 声音克隆 / TTS / 生图 + HTML 模板 + Remotion 预览 + FFmpeg 合成 + 本地中控台。
 
 ![Node](https://img.shields.io/badge/node-%3E%3D20-3c873a)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![Status](https://img.shields.io/badge/status-early-orange)
+![Agent](https://img.shields.io/badge/agent-native-7c3aed)
 
 ![NutCut 模板库](docs/assets/templates.png)
 
-NutCut 把「素材 → 规格 → 文案 → 声音 → 画面 → 混音 → 成片」做成一条 Agent 可执行、可复现、可检查的本地流程。模板负责风格，Agent 负责内容，所有产物都是本地文件。
+NutCut 不是让 Agent 直接“生成一段视频”。它把视频制作拆成一条可以停下来确认的流程：先确认画幅和规格，再确认风格和选题，再确认文案，最后才渲染。模板负责风格，Agent 负责内容，所有产物都是本地文件。
 
 不依赖云渲染，不需要数据库，也不上传你的素材。
+
+## 它是怎么工作的
+
+安装一次技能，之后只需要说：
+
+```text
+用 NutCut 做一条 60 秒的产品介绍视频。
+```
+
+Agent 会按仓库里的流程执行：
+
+1. **确认规格**：横屏 / 竖屏 / 方形、分辨率、帧率、时长、平台、声音来源。
+2. **确认风格和选题**：从 33 套模板里选方向，写清主题、受众、角度和风险。
+3. **确认文案**：逐句给你过，不满意就改；确认后才生成声音。
+4. **确认画面**：先渲关键帧或片段，确认没有溢出、遮挡、空屏。
+5. **渲染成片**：声音、时间线、混音、字幕、FFmpeg 合成。
+6. **交付与修改**：你在项目详情页右侧「问题记录」里写意见，Agent 读 `issues.json` 继续改。
+
+任何一步缺失信息，Agent 会先问你，而不是自己默认 16:9、默认 30 秒、默认用某个模板。
+
+![Remotion 实时预览](docs/assets/remotion-preview.png)
 
 ## 特性
 
@@ -21,6 +45,7 @@ NutCut 把「素材 → 规格 → 文案 → 声音 → 画面 → 混音 → �
 - **本地声音链路**：MiniMax 声音克隆、逐句 TTS、ASR、BGM ducking、-16 LUFS 响度归一。
 - **Agent 友好**：`AGENTS.md` + `skills/nutcut/SKILL.md`，安装后一句话接手项目。
 - **中控台**：模板预览、项目详情、文案/声音/素材查看、问题记录、导出成片。
+- **自动取素材**：`bin/capture-console.mjs` 可以截中控台和模板预览，直接当视频素材。
 
 ## 技术栈
 
@@ -95,6 +120,7 @@ node console/server.mjs
 ### 视频改片
 
 ```bash
+node bin/capture-console.mjs --out projects/<id>/assets/imported/ui --preview data-console
 node bin/analyze-video.mjs --file "D:/素材/口播.mp4" --out projects/<id>/analysis
 node bin/remix-plan.mjs --analysis projects/<id>/analysis/analysis.json --out projects/<id>/edl.json --title "标题"
 node bin/assemble.mjs --edl projects/<id>/edl.json --out out/<id>/film.mp4
