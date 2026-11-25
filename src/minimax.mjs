@@ -113,7 +113,7 @@ export async function cloneVoice({ fileId, voiceId, text = '', model = 'speech-2
 }
 
 /** Synthesize one line with a cloned voice_id. Returns a Buffer. */
-export async function synthesize({ text, voiceId, model = 'speech-2.8-hd', languageBoost = 'Chinese', format = 'wav', sampleRate = 24000, emotion = '', speed = 1, vol = 1, pitch = 0, keyType = 'auto' }) {
+export async function synthesize({ text, voiceId, model = 'speech-2.8-turbo', languageBoost = 'Chinese', format = 'wav', sampleRate = 24000, emotion = '', speed = 1, vol = 1, pitch = 0, keyType = 'plan' }) {
   if (!text) throw new Error('缺少合成文本')
   if (!voiceId) throw new Error('缺少 voice_id')
   const which = keyType === 'plan' ? 'plan' : keyType === 'api' ? 'api' : (process.env.MINIMAX_PLAN_KEY ? 'plan' : 'api')
@@ -151,7 +151,7 @@ export function minimaxConfig() {
     baseUrl: BASE_URL,
     hasKey: Boolean(process.env.MINIMAX_API_KEY),
     hasPlanKey: Boolean(process.env.MINIMAX_PLAN_KEY),
-    model: process.env.MINIMAX_TTS_MODEL || 'speech-2.8-hd',
+    model: process.env.MINIMAX_TTS_MODEL || 'speech-2.8-turbo',
     languageBoost: process.env.MINIMAX_LANGUAGE_BOOST || 'Chinese',
   }
 }

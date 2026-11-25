@@ -17,7 +17,7 @@ node bin/doctor.mjs
 - Node 20+
 - FFmpeg / FFprobe
 - Chrome 或 Edge
-- `.env` 里的 `MINIMAX_API_KEY`（克隆用）和 `MINIMAX_PLAN_KEY`（TTS / 生图）
+- `.env` 里的 `MINIMAX_API_KEY`（克隆用）和 `MINIMAX_PLAN_KEY`（TTS / 生图 / ASR）
 - `voices/me/me.m4a` 和 `voices/me/profile.json`
 
 ---

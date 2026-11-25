@@ -45,7 +45,7 @@ Agent 会按仓库里的流程执行：
 - **本地声音链路**：MiniMax 声音克隆、逐句 TTS、ASR、BGM ducking、-16 LUFS 响度归一。
 - **Agent 友好**：`AGENTS.md` + `skills/nutcut/SKILL.md`，安装后一句话接手项目。
 - **中控台**：模板预览、项目详情、文案/声音/素材查看、问题记录、导出成片。
-- **自动取素材**：`bin/capture-console.mjs` 可以截中控台和模板预览，直接当视频素材。
+- **自动取素材**：`bin/capture-console.mjs` 可以截中控台和模板预览，直接当视频素材；Agent 自己有浏览器时，也可以直接截图，它只是可选的稳定复现方案。
 
 ## 技术栈
 
@@ -67,7 +67,7 @@ Remotion 目前用于**模板预览**，成片默认仍由 HTML 模板 + FFmpeg 
 - Node.js 20+
 - FFmpeg / FFprobe
 - Chrome 或 Edge
-- MiniMax Key（只有声音克隆、TTS、生图、ASR 需要）
+- MiniMax Key：克隆用 `MINIMAX_API_KEY`；TTS / 生图 / ASR 用 `MINIMAX_PLAN_KEY`
 
 ## 快速开始
 
@@ -106,6 +106,18 @@ node bin/timeline.mjs --project projects/<id>
 node bin/audio-mix.mjs --project projects/<id>
 node bin/produce.mjs --project projects/<id>
 ```
+
+### 生图
+
+```bash
+node bin/image-plan.mjs --project projects/<id> --dry-run
+node bin/image-plan.mjs --project projects/<id>
+```
+
+生成结果写到 `projects/<id>/assets/generated/`，并自动写入 `presets/default.json` 的 `images`；模板里有 `data-image-slot` 的图片位会直接使用。
+
+- 克隆：`MINIMAX_API_KEY`（按量计费）
+- TTS / 生图 / ASR：`MINIMAX_PLAN_KEY`（Go 套餐，失败不回退余额）
 
 ### 模板与预览
 

@@ -81,7 +81,7 @@ async function main() {
   const model = arg('model') || profile.minimax?.model || config.model
   const languageBoost = arg('language-boost') || profile.minimax?.languageBoost || config.languageBoost
   const voiceId = arg('voice-id') || profile.minimax?.voiceId || process.env.MINIMAX_VOICE_ID || 'nutcut_me'
-  const ttsKey = arg('tts-key') || process.env.MINIMAX_TTS_KEY || 'auto'
+  const ttsKey = arg('tts-key') || process.env.MINIMAX_TTS_KEY || 'plan'
   const fileIdArg = arg('file-id')
   const outDir = path.resolve(arg('out', path.join('out', script.id)))
   const voDir = path.join(outDir, 'vo')

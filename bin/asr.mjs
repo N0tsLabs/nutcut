@@ -69,9 +69,9 @@ if (!fs.existsSync(file)) throw new Error(`文件不存在：${file}`)
 const out = arg('out', path.join('out', 'asr.json'))
 const language = arg('language', 'zh')
 const env = loadEnv()
-const key = env.MINIMAX_API_KEY || process.env.MINIMAX_API_KEY
+const key = env.MINIMAX_PLAN_KEY || process.env.MINIMAX_PLAN_KEY || env.MINIMAX_API_KEY || process.env.MINIMAX_API_KEY
 const base = (env.MINIMAX_BASE_URL || process.env.MINIMAX_BASE_URL || 'https://api.minimax.cn/v1').replace(/\/$/, '')
-if (!key) throw new Error('缺少 MINIMAX_API_KEY')
+if (!key) throw new Error('缺少 MINIMAX_PLAN_KEY 或 MINIMAX_API_KEY')
 
 const tmp = path.join(os.tmpdir(), `nutcut-asr-${Date.now()}.mp3`)
 extractAudio(file, tmp)

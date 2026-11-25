@@ -140,7 +140,7 @@ out/<id>/
 - 正式声音档案：`voices/me/profile.json`，源文件：`voices/me/me.m4a`，参考：`voices/me/reference.wav`。
 - 参考音频只允许裁掉首尾静音；中间停顿、气息、节奏不得剪。当前裁切点 `0.90s–14.30s`。
 - 已克隆的 `voice_id` 保存在 `profile.json` 的 `minimax.voiceId`，后续复用，不要重复克隆。
-- 克隆用 `MINIMAX_API_KEY`（按量计费）；T2A / 生图用 `MINIMAX_PLAN_KEY`（Go 套餐），失败不回退余额。
+- Clone 用 `MINIMAX_API_KEY`（按量计费）；T2A / 生图 / ASR 用 `MINIMAX_PLAN_KEY`（Go 套餐），失败不回退余额。
 
 ```bash
 node bin/voice.mjs --project projects/<id>
@@ -327,7 +327,7 @@ node bin/assemble.mjs --edl projects/<id>/edl.json --out out/<id>/film.mp4
 说明：
 
 - 原声模式不需要 `bin/voice.mjs`；克隆模式需要先有配音音轨，并写入 `edl.voice.track`。
-- ASR 使用 MiniMax `asr-1.0`，需要 `MINIMAX_API_KEY`。
+- ASR 使用 MiniMax `asr-1.0`，默认优先 `MINIMAX_PLAN_KEY`，没有套餐 Key 时才用 `MINIMAX_API_KEY`。
 - `analysis/keyframes/` 是镜头关键帧，供 Agent 或视觉模型写镜头卡。
 - `broll.json` 可以按句子关键词指定 B-roll 源时间，例如香味/吸收/质地镜头；`remix-plan` 会把视频轨和原声轨分开。
 - 视频改片项目在 `project.json` 写 `kind: "video-remix"`，中控台「导出成片」会重新跑 `bin/assemble.mjs`，不会走 `produce.mjs`。

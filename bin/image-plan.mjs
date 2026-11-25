@@ -32,6 +32,7 @@ function main() {
   if (!plan.length) throw new Error('brief.json 没有 imagePlan')
   const limit = Number(arg('limit', '0')) || plan.length
   let done = 0
+  const generatedImages = []
 
   for (let index = 0; index < plan.length && done < limit; index += 1) {
     const item = plan[index]
@@ -53,10 +54,25 @@ function main() {
     item.status = '已生成'
     item.file = path.relative(process.cwd(), file).replace(/\\/g, '/')
     item.generatedAt = new Date().toISOString()
+    generatedImages.push({
+      url: path.relative(path.join(projectDir, 'src'), file).replace(/\\/g, '/'),
+      alt: String(item.alt || item.title || name),
+    })
     writeJson(briefFile, { ...brief, imagePlan: plan, updatedAt: new Date().toISOString() })
     done += 1
   }
-  console.log(JSON.stringify({ ok: true, generated: done, total: plan.length }, null, 2))
+
+  if (generatedImages.length) {
+    const presetFile = path.join(projectDir, 'presets', 'default.json')
+    const preset = readJson(presetFile, {}) || {}
+    const current = Array.isArray(preset.images) ? preset.images : []
+    const urls = new Set(generatedImages.map((image) => image.url))
+    preset.images = [...current.filter((image) => !urls.has(typeof image === 'string' ? image : image?.url)), ...generatedImages]
+    writeJson(presetFile, preset)
+    console.log(`[image-plan] 已写入 presets/default.json：${generatedImages.length} 张图片`)
+  }
+
+  console.log(JSON.stringify({ ok: true, generated: done, total: plan.length, images: generatedImages.length }, null, 2))
 }
 
 main()
