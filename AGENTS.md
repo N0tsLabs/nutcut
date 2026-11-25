@@ -64,6 +64,7 @@ node bin/status.mjs --project projects/<id>
 - 用户没明确说横竖屏/方形时，**必须问**，不要默认 9:16 或 16:9。
 - 尺寸、帧率、时长、平台、声音来源缺哪项问哪项，可以合并成一次问。
 - 不要因为模板原生画布是竖屏就推断用户要竖屏；也不要因为要做横屏就换模板。
+- 模板的场景数和单场时长是原生参考，不是硬限制；做 60 秒或不同章节数时，复制到项目后一起改场景、时间线和 `params.schema.json`。
 - 没有 `spec` 或 `spec.confirmed !== true` 时，不进入 brief、文案和渲染。
 - 模板原生画布与目标画幅不一致时，`project.layoutAdapted` 为 `false`，Agent 必须先改编 `src/index.html` 的版式，跑 `node bin/adapt-layout.mjs --project projects/<id> --confirm` 标记后，再渲关键帧。未适配的项目，`produce` / `render` / 中控台导出会直接拒绝。
 - 中途改规格用 `node bin/set-spec.mjs --project projects/<id> --orientation ...`；尺寸或画幅变化后 `layoutAdapted` 会重置，必须重新适配。

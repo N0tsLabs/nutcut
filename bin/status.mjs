@@ -41,9 +41,13 @@ function main() {
   const usesSourceVoice = /source/i.test(String(project.voiceProfile || '')) || project.voiceMode === 'source'
   const sceneCount = timing?.scenes?.length || project.scenes?.length || 0
   const next = []
+  const waitingForUser = project.status === 'review'
+    || project.confirmation?.status === 'pending'
+    || (project.pipeline || []).some((step) => step.id === 'review' && step.status === 'doing')
 
   if (!project.spec) next.push('视频规格未确认：先问用户横屏/竖屏/方形、尺寸、帧率、时长、平台，再写进 project.json 的 spec。')
   if (project.spec?.confirmed && project.layoutAdapted === false) next.push('模板版式还没按目标规格适配：改 src/index.html 后跑 node bin/adapt-layout.mjs --project <项目> --confirm。')
+  if (waitingForUser) next.push('当前在审阅/待确认：先等用户确认 brief、文案或关键帧，不要自动进入声音或全片渲染。')
   if ((project.kind === 'video-frame' || project.kind === 'video-remix') && (!project.assets?.source || !exists(project.assets.source))) {
     next.push('缺少原始视频：交接时把 assets/imported 里的源文件一起带上，或用 node bin/import.mjs 重新导入。')
   }
@@ -53,10 +57,12 @@ function main() {
   if (!brief) next.push('写 projects/<id>/brief.json：主题、受众、角度、可行性、图片计划。')
   else if (!brief.feasibility || brief.feasibility.decision === 'pending' || brief.feasibility.decision == null) next.push('brief.json 的可行性结论还没定，先让用户确认 go / pause / drop。')
   if (!script?.lines?.length) next.push('写 script.json 的逐句文案，等用户确认。')
-  if (script?.lines?.length && !vo?.lines?.length && !usesSourceVoice) next.push('运行 node bin/voice.mjs --project <项目> 生成声音。')
-  if (!usesSourceVoice && vo?.lines?.length && !timing?.scenes?.length) next.push('运行 node bin/timeline.mjs --project <项目> 计算时间线。')
-  if (sceneCount && !exists(path.join(outDir, 'mix.wav')) && !project.assets?.audio) next.push('选 BGM / 音效，运行 node bin/audio-mix.mjs --project <项目>。')
-  if (!exists(path.join(outDir, 'film.mp4'))) next.push('运行 node bin/produce.mjs --project <项目> 导出成片。')
+  if (!waitingForUser) {
+    if (script?.lines?.length && !vo?.lines?.length && !usesSourceVoice) next.push('运行 node bin/voice.mjs --project <项目> 生成声音。')
+    if (!usesSourceVoice && vo?.lines?.length && !timing?.scenes?.length) next.push('运行 node bin/timeline.mjs --project <项目> 计算时间线。')
+    if (sceneCount && !exists(path.join(outDir, 'mix.wav')) && !project.assets?.audio) next.push('选 BGM / 音效，运行 node bin/audio-mix.mjs --project <项目>。')
+    if (!exists(path.join(outDir, 'film.mp4'))) next.push('运行 node bin/produce.mjs --project <项目> 导出成片。')
+  }
   if (issueText) next.push('先处理 projects/<id>/issues.json 里的问题记录。')
 
   const result = {

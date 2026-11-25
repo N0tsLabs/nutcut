@@ -38,7 +38,7 @@
     "style": "node bin/style.mjs",
     "capture-console": "node bin/capture-console.mjs",
     "install-skill": "node bin/install-skill.mjs",
-    "test": "node --test test/spec.test.mjs test/create-project.test.mjs test/skill.test.mjs test/doctor.test.mjs test/api.test.mjs",
+    "test": "node --test test/spec.test.mjs test/create-project.test.mjs test/status.test.mjs test/skill.test.mjs test/doctor.test.mjs test/api.test.mjs",
     "import-asset": "node bin/import.mjs"
   },
   "dependencies": {

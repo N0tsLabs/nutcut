@@ -89,11 +89,17 @@ function main() {
   let info = {}
   try { info = JSON.parse(probe.stdout) } catch {}
   const videoStream = info.streams?.find((stream) => stream.codec_name === 'h264') || {}
+  const fps = (() => {
+    const [num, den] = String(videoStream.r_frame_rate || '').split('/').map(Number)
+    if (num && den) return Math.round(num / den)
+    return Number(old.tech?.fps || 30)
+  })()
   const generatedDir = path.join(projectDir, 'assets', 'generated')
   const images = fs.existsSync(generatedDir)
     ? fs.readdirSync(generatedDir).filter((file) => /\.(png|jpe?g|webp)$/i.test(file)).map((file) => rel(path.join(generatedDir, file)))
     : []
   const project = {
+    ...old,
     id: script.id,
     title: script.title || old.title || script.id,
     subtitle: script.subtitle || old.subtitle || 'NutCut 短片',
@@ -104,10 +110,16 @@ function main() {
     tags: script.tags || old.tags || [],
     voiceProfile: script.voice || old.voiceProfile || 'me',
     template: old.template || script.template || null,
+    spec: old.spec || script.spec || null,
+    templateNative: old.templateNative || null,
+    layoutAdapted: old.layoutAdapted,
+    renderEngine: old.renderEngine || 'html',
+    previewEngine: old.previewEngine || 'html',
     imports: old.imports || [],
     createdAt: old.createdAt || new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     assets: {
+      ...(old.assets || {}),
       video: rel(final),
       poster: rel(poster),
       mix: rel(mix),
@@ -117,10 +129,11 @@ function main() {
       vo: rel(path.join(outDir, 'vo', 'vo.json')),
     },
     tech: {
+      ...(old.tech || {}),
       width: videoStream.width || 1920,
       height: videoStream.height || 1080,
-      fps: 30,
-      frames: Math.round(Number(timing.duration || 0) * 30),
+      fps,
+      frames: Math.round(Number(timing.duration || 0) * fps),
       video: 'H.264',
       audio: 'AAC 48kHz stereo',
       loudness: '-16 LUFS',
@@ -133,6 +146,7 @@ function main() {
     music: old.music || null,
     sfx: old.sfx || null,
     pipeline: [
+      { id: 'spec', label: '规格', status: old.spec?.confirmed ? 'done' : 'todo' },
       { id: 'idea', label: '想法', status: 'done' },
       { id: 'script', label: '文案', status: 'done' },
       { id: 'voice', label: '声音', status: 'done' },

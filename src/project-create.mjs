@@ -176,7 +176,6 @@ export function createProject(options) {
   }
   writeJson(path.join(projectDir, 'project.json'), project)
 
-  writeJson(path.join(projectDir, 'comments.json'), [])
   writeJson(path.join(projectDir, 'issues.json'), { text: '', updatedAt: null })
   writeJson(path.join(projectDir, 'imports.json'), [])
   writeJson(path.join(projectDir, 'edit.json'), {

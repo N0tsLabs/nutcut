@@ -159,7 +159,7 @@ node bin/render.mjs --template templates/<id> --frames 0,120,300 --out out/check
 
 6. 在中控台模板页检查 10 秒预览。
 
-模板不要绑定横竖屏。`motion.json` 里的宽高只是原生设计画布；实际项目按 `project.spec` 的横屏/竖屏、尺寸和帧率渲染，必要时由 Agent 改编版式。
+模板不要绑定横竖屏。`motion.json` 里的宽高只是原生设计画布；实际项目按 `project.spec` 的横屏/竖屏、尺寸和帧率渲染，必要时由 Agent 改编版式。场景数、单场时长和 `params.schema.json` 也是原生合同的参考；做 60 秒或不同章节数时，把模板复制到项目后一起改场景、时长和合同。
 
 ## Remotion 模板
 

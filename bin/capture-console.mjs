@@ -75,9 +75,16 @@ async function main() {
 
     if (previewId) {
       await page.click(`[data-preview-template="${previewId}"]`)
-      await page.waitForFunction(() => document.querySelector('#preview-remotion')?.children.length > 0, { timeout: 15000 })
+      await page.waitForFunction(() => {
+        const remotion = document.querySelector('#preview-remotion')
+        const frame = document.querySelector('#preview-frame')
+        return (remotion && !remotion.hidden && remotion.children.length > 0)
+          || (frame && !frame.hidden && String(frame.src || '').includes('/media/templates/'))
+      }, { timeout: 15000 })
       await new Promise((resolve) => setTimeout(resolve, 900))
       await shot('remotion-preview')
+      await page.click('.preview-close').catch(() => {})
+      await page.waitForFunction(() => document.querySelector('#template-preview')?.hidden === true, { timeout: 5000 }).catch(() => {})
     }
 
     if (projectId) {

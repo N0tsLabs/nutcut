@@ -659,7 +659,7 @@ function overviewHtml(project) {
       </div>
       ${video
         ? `<div class="film-player"><video id="project-video" controls playsinline preload="metadata"${poster ? ` poster="${escapeHtml(poster)}"` : ''} src="${escapeHtml(video)}"></video></div>`
-        : `<div class="film-player film-empty"><div><b>还没有成片</b><p>把声音、画面和混音做完，再导出一版。</p><button class="btn" data-export="1">导出成片</button></div></div>`}
+        : `<div class="film-player film-empty" style="aspect-ratio:${Number(spec?.width || tech.width || 16)} / ${Number(spec?.height || tech.height || 9)}"><div><b>还没有成片</b><p>把声音、画面和混音做完，再导出一版。</p><button class="btn" data-export="1">导出成片</button></div></div>`}
     </section>
 
     <aside class="project-rail">
