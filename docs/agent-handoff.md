@@ -84,7 +84,7 @@ node bin/install-skill.mjs --dest <agent-skills-dir>/nutcut --force
 - 声音：`voices/me/reference.wav`、`voices/me/me.m4a` 被忽略；只交仓库的话，Agent 无法复刻同一音色，需要单独给参考音频或明确的 `voice_id`
 - `voice-clone` 项目：确认 `voices/me/profile.json` 的 `voiceId` 是否可复用，不要重复克隆
 
-注意：当前目录不是 git 仓库。要给别人时，建议先 `git init` 提交一版，或者打包时排除 `node_modules/`、`out/`、`.cache/`、`.env`。
+仓库已初始化并托管在 GitHub：<https://github.com/N0tsLabs/nutcut>。给别人时可以直接给仓库地址；如果是本地目录，打包时排除 `node_modules/`、`out/`、`.cache/`、`.env` 和 `library/` 音频。
 
 `library/` 的音频文件默认已被 `.gitignore` 排除，仓库只提交 catalog 和说明。如果你想让交接包自带 BGM / 音效：
 - 用 Git LFS 管理音频，或

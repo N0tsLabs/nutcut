@@ -28,7 +28,7 @@ NutCut 把「素材 → 规格 → 文案 → 声音 → 画面 → 混音 → �
 |---|---|
 | 运行时 | Node.js 20+，ES Modules |
 | 中控台 | Node `http` + 原生 HTML/CSS/JS，无前端框架 |
-| 模板 | HTML / CSS / Canvas，OpenMotion 模板合同，Three.js（示例项目） |
+| 模板 | HTML / CSS / Canvas，OpenMotion 模板合同 |
 | 渲染 | Puppeteer-core + Chrome/Edge 逐帧截图，FFmpeg / FFprobe 合成 |
 | Remotion | Remotion 4、React 19、`@remotion/player`、`@remotion/bundler`、`@remotion/renderer`、esbuild |
 | AI | MiniMax Voice Clone、T2A `speech-2.8-turbo`、H3-Image、ASR `asr-1.0` |
