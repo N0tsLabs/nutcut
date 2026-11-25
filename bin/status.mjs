@@ -47,7 +47,13 @@ function main() {
 
   if (!project.spec) next.push('视频规格未确认：先问用户横屏/竖屏/方形、尺寸、帧率、时长、平台，再写进 project.json 的 spec。')
   if (project.spec?.confirmed && project.layoutAdapted === false) next.push('模板版式还没按目标规格适配：改 src/index.html 后跑 node bin/adapt-layout.mjs --project <项目> --confirm。')
-  if (waitingForUser) next.push('当前在审阅/待确认：先等用户确认 brief、文案或关键帧，不要自动进入声音或全片渲染。')
+  if (waitingForUser) {
+    next.push(
+      exists(path.join(outDir, 'film.mp4'))
+        ? '成片已生成，等待用户审片；把修改意见写进 issues.json，不要自动重渲。'
+        : '当前在制作前确认：先等用户确认 brief、文案或关键帧，不要自动进入声音或全片渲染。',
+    )
+  }
   if ((project.kind === 'video-frame' || project.kind === 'video-remix') && (!project.assets?.source || !exists(project.assets.source))) {
     next.push('缺少原始视频：交接时把 assets/imported 里的源文件一起带上，或用 node bin/import.mjs 重新导入。')
   }

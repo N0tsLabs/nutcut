@@ -118,7 +118,7 @@ node bin/voice.mjs --project projects/<id>
 node bin/timeline.mjs --project projects/<id>
 node bin/image-plan.mjs --project projects/<id>
 node bin/render.mjs --template projects/<id> --frames 60,360,630 --out out/check.png
-node bin/music.mjs --project projects/<id> --random --tag ambient
+node bin/music.mjs --project projects/<id> --random --category ambient-lofi
 node bin/sfx.mjs --project projects/<id> --set default
 node bin/audio-mix.mjs --project projects/<id>
 node bin/produce.mjs --project projects/<id>

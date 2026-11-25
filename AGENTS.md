@@ -150,7 +150,8 @@ node bin/voice.mjs --project projects/<id> --test
 BGM：
 
 - `library/music/`：166 首 Open Lo-Fi（CC0）+ 12 首 DURU 远程（CC0）。
-- 选曲：`node bin/music.mjs --project projects/<id> --remote --random --style cinematic`
+- 选曲：`node bin/music.mjs --project projects/<id> --random --category ambient-lofi`
+- 需要电影感：`node bin/music.mjs --project projects/<id> --remote --random --style cinematic`（远程曲目，首次会下载）
 - 写入 `out/<id>/bgm.mp3`。
 
 SFX：

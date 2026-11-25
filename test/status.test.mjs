@@ -29,7 +29,7 @@ test('status waits for confirmation instead of pushing render', () => {
     assert.equal(result.status, 0, result.stderr)
     const data = JSON.parse(result.stdout)
     const next = data.next.join('\n')
-    assert.match(next, /待确认|审阅/)
+    assert.match(next, /确认|审阅/)
     assert.doesNotMatch(next, /produce\.mjs/)
     assert.doesNotMatch(next, /voice\.mjs/)
   } finally {

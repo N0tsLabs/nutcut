@@ -39,7 +39,7 @@ function rel(file) {
 
 function main() {
   const projectArg = arg('project')
-  if (!projectArg) throw new Error('用法：node bin/produce.mjs --project projects/<id> [--skip-voice] [--skip-render] [--force-voice]')
+  if (!projectArg) throw new Error('用法：node bin/produce.mjs --project projects/<id> [--skip-voice] [--skip-mix] [--skip-render] [--force-voice]')
   const projectDir = path.resolve(projectArg)
   const scriptPath = path.join(projectDir, 'script.json')
   if (!fs.existsSync(scriptPath)) throw new Error(`缺少 script.json：${scriptPath}`)
@@ -54,7 +54,11 @@ function main() {
     run('node', ['bin/voice.mjs', '--project', projectArg, ...(has('force-voice') ? ['--force'] : [])], '1/6 生成声音')
   }
   run('node', ['bin/timeline.mjs', '--project', projectArg], '2/6 计算时间线')
-  run('node', ['bin/audio-mix.mjs', '--project', projectArg], '3/6 混音')
+  if (!has('skip-mix')) {
+    run('node', ['bin/audio-mix.mjs', '--project', projectArg], '3/6 混音')
+  } else if (!fs.existsSync(path.join(outDir, 'mix.wav'))) {
+    throw new Error('--skip-mix 需要已有的 out/<id>/mix.wav')
+  }
 
   const silent = path.join(outDir, 'film-silent.mp4')
   if (!has('skip-render')) {
