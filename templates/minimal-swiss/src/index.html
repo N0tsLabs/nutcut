@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>极简瑞士 · Minimal Swiss</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #fff; }
+  body { font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", "PingFang SC", sans-serif; color: #111; }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #fff; }
+  .grid { position: absolute; left: 96px; right: 96px; top: 0; bottom: 0; pointer-events: none; z-index: 1;
+    background-image: repeating-linear-gradient(to right, rgba(17,17,17,.055) 0 1px, transparent 1px calc(100% / 12));
+    border-left: 1px solid rgba(17,17,17,.055); border-right: 1px solid rgba(17,17,17,.055); }
+  .baseline { position: absolute; left: 0; right: 0; top: 96px; bottom: 96px; pointer-events: none; z-index: 1;
+    background-image: repeating-linear-gradient(to bottom, rgba(17,17,17,.035) 0 1px, transparent 1px 90px); }
+  .scene { position: absolute; inset: 0; visibility: hidden; opacity: 0; z-index: 5; }
+  .inner { position: absolute; left: 112px; right: 112px; top: 0; bottom: 0; }
+  .meta { display: flex; justify-content: space-between; align-items: baseline; font: 700 12px/1 "Helvetica Neue", Arial, sans-serif;
+    letter-spacing: .2em; text-transform: uppercase; color: #111; }
+  .meta .r { color: #6b7280; font-weight: 400; }
+  .mask { overflow: hidden; display: block; }
+  .roll { display: block; transform: translateY(110%); }
+  h1, h2 { font-weight: 900; letter-spacing: -.055em; }
+  em { font-style: normal; color: #e30613; }
+  .red { background: #e30613; }
+
+  .s1 .meta { position: absolute; left: 0; right: 0; top: 72px; }
+  .s1 .idx { position: absolute; right: 0; top: 190px; font: 900 190px/.8 "Helvetica Neue", Arial, sans-serif; letter-spacing: -.07em; color: #f0f0f0; }
+  .s1 h1 { position: absolute; left: -8px; top: 296px; width: 1400px; font-size: 152px; line-height: .96; }
+  .s1 .redbar { position: absolute; right: 0; top: 296px; width: 250px; height: 250px; background: #e30613; transform-origin: left top; }
+  .s1 .redbar::after { content: ""; position: absolute; inset: 0; background:
+    linear-gradient(90deg, transparent calc(50% - .5px), rgba(255,255,255,.65) calc(50% - .5px) calc(50% + .5px), transparent calc(50% + .5px)),
+    linear-gradient(180deg, transparent calc(50% - .5px), rgba(255,255,255,.65) calc(50% - .5px) calc(50% + .5px), transparent calc(50% + .5px)); }
+  .s1 .bottom { position: absolute; left: 0; right: 0; bottom: 92px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .s1 .sub { font-size: 22px; font-weight: 400; letter-spacing: .04em; color: #444; }
+  .s1 .no { font: 900 42px/1 "Helvetica Neue", Arial, sans-serif; letter-spacing: -.02em; }
+
+  .s2 .meta { position: absolute; left: 0; right: 0; top: 72px; }
+  .s2 .col { position: absolute; left: 0; top: 236px; width: 920px; }
+  .s2 h2 { font-size: 78px; line-height: 1.1; letter-spacing: -.045em; }
+  .s2 .body { margin-top: 40px; width: 600px; font-size: 22px; line-height: 1.85; font-weight: 400; color: #444; }
+  .s2 .body b { font-weight: 700; color: #111; }
+  .s2 .circle { position: absolute; right: 60px; top: 250px; width: 380px; height: 380px; border-radius: 50%; background: #e30613; }
+  .s2 .cross { position: absolute; right: 40px; top: 640px; width: 420px; height: 1px; background: #111; }
+  .s2 .cross::after { content: ""; position: absolute; left: 50%; top: -10px; width: 1px; height: 21px; background: #111; }
+  .s2 .num2 { position: absolute; left: 0; bottom: 96px; font: 400 14px/1.7 "Helvetica Neue", Arial, sans-serif; letter-spacing: .18em; color: #6b7280; }
+
+  .s3 .meta { position: absolute; left: 0; right: 0; top: 72px; }
+  .s3 h2 { position: absolute; left: 0; top: 196px; width: 1420px; font-size: 82px; line-height: 1.06; }
+  .s3 .cols { position: absolute; left: 0; right: 0; top: 430px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 60px; }
+  .s3 .col { border-top: 3px solid #111; padding-top: 18px; }
+  .s3 .col:nth-child(2) { border-color: #e30613; }
+  .s3 .col .n { font: 400 13px/1 "Helvetica Neue", Arial, sans-serif; letter-spacing: .22em; color: #6b7280; }
+  .s3 .col h3 { margin-top: 26px; font-size: 58px; font-weight: 900; letter-spacing: -.04em; }
+  .s3 .col p { margin-top: 16px; font-size: 20px; line-height: 1.75; color: #555; }
+  .s3 .col .sq { margin-top: 30px; width: 44px; height: 44px; border: 2px solid #111; }
+  .s3 .col:nth-child(2) .sq { background: #e30613; border-color: #e30613; }
+  .s3 .foot { position: absolute; left: 0; bottom: 92px; font: 400 13px/1 "Helvetica Neue", Arial, sans-serif; letter-spacing: .2em; color: #6b7280; }
+
+  .s4 .band { position: absolute; left: 0; right: 0; top: 210px; height: 500px; background: #111; transform-origin: top center; }
+  .s4 .meta { position: absolute; left: 112px; right: 112px; top: 72px; z-index: 3; }
+  .s4 h2 { position: absolute; left: 112px; right: 112px; top: 330px; z-index: 4; color: #fff; font-size: 104px; line-height: 1.12; letter-spacing: -.05em; }
+  .s4 h2 em { color: #e30613; }
+  .s4 .slash { position: absolute; right: 112px; bottom: 210px; width: 460px; height: 4px; background: #e30613; transform: rotate(-32deg); z-index: 4; }
+  .s4 .note { position: absolute; left: 112px; bottom: 100px; font: 400 20px/1.7 "Helvetica Neue", Arial, sans-serif; color: #555; max-width: 680px; }
+  .s4 .note b { font-weight: 700; color: #111; }
+
+  .s5 .meta { position: absolute; left: 0; right: 0; top: 72px; }
+  .s5 .num { position: absolute; left: -10px; top: 250px; font: 900 520px/.72 "Helvetica Neue", Arial, sans-serif; letter-spacing: -.08em; color: #111; }
+  .s5 .cap { position: absolute; left: 560px; top: 330px; width: 900px; }
+  .s5 .cap .k { font: 700 12px/1 "Helvetica Neue", Arial, sans-serif; letter-spacing: .24em; color: #e30613; }
+  .s5 .cap h2 { margin-top: 22px; font-size: 62px; line-height: 1.14; letter-spacing: -.04em; }
+  .s5 .cap p { margin-top: 26px; width: 620px; font-size: 20px; line-height: 1.8; color: #555; }
+  .s5 .rule { position: absolute; left: 0; right: 0; bottom: 150px; height: 1px; background: #111; }
+  .s5 .rule i { display: block; height: 100%; width: 0; background: #e30613; }
+  .s5 .ticks { position: absolute; left: 0; right: 0; bottom: 128px; display: flex; justify-content: space-between; font: 400 10px/1 "Helvetica Neue", Arial, sans-serif; letter-spacing: .1em; color: #999; }
+
+  .s6 .black { position: absolute; inset: 0; background: #111; z-index: 0; }
+  .s6 .inner { z-index: 2; }
+  .s6 .meta { position: absolute; left: 0; right: 0; top: 72px; color: #fff; }
+  .s6 .meta .r { color: #888; }
+  .s6 .maskwrap { position: absolute; left: 0; right: 0; top: 300px; }
+  .s6 h2 { font-size: 132px; line-height: 1.04; color: #fff; width: 1500px; }
+  .s6 .dot { display: inline-block; width: 26px; height: 26px; margin-left: 18px; border-radius: 50%; background: #e30613; vertical-align: 16px; }
+  .s6 .sub { position: absolute; left: 0; top: 720px; font-size: 22px; letter-spacing: .22em; color: #aaa; }
+  .s6 .foot { position: absolute; left: 0; right: 0; bottom: 92px; display: flex; justify-content: space-between;
+    font: 400 12px/1 "Helvetica Neue", Arial, sans-serif; letter-spacing: .2em; color: #777; }
+  .s6 .foot b { color: #e30613; font-weight: 700; }
+
+  .hud { position: absolute; left: 112px; right: 112px; bottom: 38px; z-index: 20; display: flex; align-items: center; gap: 22px;
+    font: 700 10px/1 "Helvetica Neue", Arial, sans-serif; letter-spacing: .2em; color: #111; }
+  .hud .track { flex: 1; height: 2px; background: rgba(17,17,17,.12); }
+  .hud .track i { display: block; height: 100%; width: 0; background: #e30613; }
+  .hud .idx { color: #e30613; }
+  @media (max-width: 900px) { body { zoom: .5; } }
+
+  .nutcut-image-slot { position: absolute; right: 112px; bottom: 112px; width: 280px; height: 158px; border: 1px dashed #8a93a1; opacity: .62; display: grid; place-items: center; font: 700 11px/1 "Consolas", monospace; letter-spacing: .2em; z-index: 9; pointer-events: none; color: #8a93a1; }
+  .nutcut-image-slot::before { content: ""; position: absolute; inset: 12px; border: 1px solid currentColor; opacity: .22; }
+  .nutcut-image-slot span { position: relative; }
+  .nutcut-image-slot.has-image { opacity: .9; border-style: solid; background-size: cover; background-position: center; }
+  .nutcut-image-slot.has-image span { display: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="grid"></div>
+  <div class="baseline"></div>
+
+  <section class="scene s1" id="sc1">
+    <div class="inner">
+      <div class="meta"><span id="s1-kicker"></span><span class="r">NUTCUT / GRID — 01</span></div>
+      <div class="idx">01</div>
+      <h1 id="s1-title" data-title></h1>
+      <div class="redbar" id="s1-red"></div>
+      <div class="bottom">
+        <div>
+          <div class="sub" id="s1-sub" data-sub></div>
+          <div class="no" style="margin-top:18px">30 SEC / 1920 × 1080</div>
+        </div>
+        <div class="no">FORM<br>FOLLOWS<br>CLARITY</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene s2" id="sc2">
+    <div class="inner">
+      <div class="meta"><span>02 / REDUCE</span><span class="r">GRID 12 COL</span></div>
+      <div class="col">
+        <h2 id="s2-title"></h2>
+        <div class="body">装饰被拿掉之后，剩下的就是<b>关系</b>：谁先被看见，谁应该安静，谁只需要一个标点。<br><br>网格不是限制，是把选择变得清楚。</div>
+      </div>
+      <div class="circle" id="s2-circle"></div>
+      <div class="cross"></div>
+      <div class="num2">FIG. 02 — 一个圆，一个十字，足够了。</div>
+    </div>
+  </section>
+
+  <section class="scene s3" id="sc3">
+    <div class="inner">
+      <div class="meta"><span>03 / THREE RULES</span><span class="r">ORDER BEFORE STYLE</span></div>
+      <h2 id="s3-title"></h2>
+      <div class="cols">
+        <div class="col"><div class="n">RULE 01</div><h3>删减</h3><p>每一页只保留一个主张。其余的，放到下一页。</p><div class="sq"></div></div>
+        <div class="col"><div class="n">RULE 02</div><h3>对齐</h3><p>让边缘说话。人对齐的感知，比对手法更敏感。</p><div class="sq"></div></div>
+        <div class="col"><div class="n">RULE 03</div><h3>强调</h3><p>红色只用一次。因为它稀有，所以才重要。</p><div class="sq"></div></div>
+      </div>
+      <div class="foot">SWISS STYLE / JOSEF MÜLLER-BROCKMANN, 1961 → 2026</div>
+    </div>
+  </section>
+
+  <section class="scene s4" id="sc4">
+    <div class="band" id="s4-band"></div>
+    <div class="meta"><span>04 / EMPHASIS</span><span class="r">ONE RED, ONE MESSAGE</span></div>
+    <h2 id="s4-title"></h2>
+    <div class="slash" id="s4-slash"></div>
+    <div class="note"><b>当所有东西都在喊，就没有人在说话。</b><br>把音量留给最重要的一句。</div>
+  </section>
+
+  <section class="scene s5" id="sc5">
+    <div class="inner">
+      <div class="meta"><span>05 / MEASURE</span><span class="r">12 COLUMNS / 8 PX BASELINE</span></div>
+      <div class="num"><span id="s5-num">0</span></div>
+      <div class="cap">
+        <div class="k">SYSTEM / 系统</div>
+        <h2 id="s5-text"></h2>
+        <p>十二栏、八像素基线、三种字重。规则越少，执行越稳。</p>
+      </div>
+      <div class="rule"><i id="s5-rule"></i></div>
+      <div class="ticks"><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span><span>06</span><span>07</span><span>08</span><span>09</span><span>10</span><span>11</span><span>12</span></div>
+    </div>
+  </section>
+
+  <section class="scene s6" id="sc6">
+    <div class="black"></div>
+    <div class="inner">
+      <div class="meta"><span>06 / END</span><span class="r">THANK YOU</span></div>
+      <div class="maskwrap">
+        <h2 id="s6-title" data-title></h2>
+      </div>
+      <div class="sub" id="s6-sub" data-sub></div>
+      <div class="foot"><span id="s6-note"></span><span><b>●</b> NUTCUT / GRID 2026</span></div>
+    </div>
+    <div class="nutcut-image-slot" data-image-slot><span>图片位 01</span></div>
+  </section>
+
+  <div class="hud" id="hud">
+    <span data-brand>NUTCUT / GRID</span>
+    <span class="track"><i id="hud-bar"></i></span>
+    <span class="idx" id="hud-idx">01 / 06</span>
+    <span id="hud-time">00:00</span>
+  </div>
+</div>
+<script>
+(function () {
+  const FPS = 30, DUR = 30;
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+  const C = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
+  const S = (v) => { v = C(v); return v * v * (3 - 2 * v); };
+  const E = (v) => 1 - Math.pow(1 - C(v), 4);
+  const EI = (v) => { v = C(v); return v < .5 ? 2 * v * v : 1 - Math.pow(-2 * v + 2, 2) / 2; };
+  const EB = (v) => { v = C(v); const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(v - 1, 3) + c1 * Math.pow(v - 1, 2); };
+  const R = (i, s) => { const x = Math.sin(i * 127.1 + (s || 0) * 311.7) * 43758.5453; return x - Math.floor(x); };
+  const DEFAULT_TITLE = '少一点，说清楚';
+  const DEFAULT_SUB = 'FORM FOLLOWS CLARITY';
+  const DEMO = [
+    { id: '01', text: '信息越多，越需要秩序。', start: 0, end: 4.7 },
+    { id: '02', text: '先删掉不必要的装饰。', start: 5, end: 9.7 },
+    { id: '03', text: '再用网格，把关系摆清楚。', start: 10, end: 14.7 },
+    { id: '04', text: '红色只出现一次，所以它重要。', start: 15, end: 19.7 },
+    { id: '05', text: '留白不是空，是呼吸。', start: 20, end: 24.7 },
+    { id: '06', text: '少一点，反而说清楚。', start: 25, end: 30.6 }
+  ];
+  const scenes = $$('.scene');
+  let plan = [];
+
+  function buildPlan(inputs) {
+    const src = Array.isArray(inputs.lines) && inputs.lines.length ? inputs.lines.slice(0, 6) : DEMO;
+    const timed = src.length === 6 && src.every((l) => Number.isFinite(l.start) && Number.isFinite(l.end) && l.end > l.start);
+    plan = scenes.map((el, i) => {
+      const line = src[i] || DEMO[i];
+      return {
+        start: timed ? src[i].start : i * 5,
+        end: timed ? src[i].end : (i + 1) * 5 + .35,
+        text: String(line.text == null ? DEMO[i].text : line.text),
+        id: String(line.id == null ? DEMO[i].id : line.id)
+      };
+    });
+  }
+
+  function setText(el, value) { if (el && el.textContent !== value) el.textContent = value; }
+
+  function setChars(el, value) {
+    if (!el) return [];
+    if (el.dataset.text !== value) {
+      el.dataset.text = value; el.textContent = '';
+      for (const ch of Array.from(value)) {
+        const s = document.createElement('span'); s.className = 'ch'; s.textContent = ch; el.appendChild(s);
+      }
+    }
+    return Array.from(el.children);
+  }
+
+  function applyInputs(inputs) {
+    if (inputs.accent) document.documentElement.style.setProperty('--accent', inputs.accent);
+    const brand = inputs.brand || 'NUTCUT / GRID';
+    $$('[data-brand]').forEach((el) => setText(el, brand));
+    const title = inputs.title || DEFAULT_TITLE;
+    const sub = inputs.subtitle || DEFAULT_SUB;
+    $$('[data-title]').forEach((el) => setText(el, title));
+    $$('[data-sub]').forEach((el) => setText(el, sub));
+  }
+
+  function roll(el, p) { el.style.transform = 'translateY(' + ((1 - E(p)) * 112) + '%)'; }
+
+  function updateScene1(local, t, p) {
+    setText($('#s1-kicker'), p.text);
+    setText($('#s1-title'), $('#s1-title').dataset.text || DEFAULT_TITLE);
+    const e = E((local - .05) / .55);
+    $('#s1-title').style.clipPath = 'inset(0 0 ' + ((1 - e) * 100) + '% 0)';
+    $('#s1-title').style.transform = 'translateY(' + ((1 - e) * 30) + 'px)';
+    $('#s1-red').style.transform = 'scaleY(' + EB((local - .35) / .5) + ')';
+    $('#s1-sub').style.opacity = S((local - .7) / .6);
+    $('.s1 .idx').style.transform = 'translateY(' + ((1 - E(local / 2)) * 40) + 'px)';
+  }
+
+  function updateScene2(local, t, p) {
+    setText($('#s2-title'), p.text);
+    const e = E((local - .05) / .6);
+    $('.s2 h2').style.clipPath = 'inset(' + ((1 - e) * 100) + '% 0 0 0)';
+    $('.s2 h2').style.transform = 'translateY(' + ((1 - e) * 20) + 'px)';
+    $('.s2 .body').style.opacity = S((local - .5) / .7);
+    $('.s2 .body').style.transform = 'translateY(' + ((1 - E((local - .5) / .7)) * 18) + 'px)';
+    const ce = EB((local - .3) / .7);
+    $('#s2-circle').style.transform = 'scale(' + ce + ')';
+    $('.s2 .cross').style.width = (420 * E((local - .9) / .9)) + 'px';
+    $('.s2 .num2').style.opacity = S((local - 1.2) / .6);
+  }
+
+  function updateScene3(local, t, p) {
+    setText($('#s3-title'), p.text);
+    $$('.s3 .col').forEach((el, i) => {
+      const e = E((local - .1 - i * .12) / .55);
+      el.style.clipPath = 'inset(0 0 ' + ((1 - e) * 100) + '% 0)';
+      el.style.transform = 'translateY(' + ((1 - e) * 24) + 'px)';
+    });
+    $('.s3 .foot').style.opacity = S((local - 1.0) / .6);
+  }
+
+  function updateScene4(local, t, p) {
+    setText($('#s4-title'), p.text);
+    const be = E((local - .05) / .5);
+    $('#s4-band').style.transform = 'scaleY(' + be + ')';
+    $('#s4-title').style.opacity = S((local - .3) / .4);
+    $('#s4-title').style.transform = 'translateY(' + ((1 - E((local - .3) / .5)) * 26) + 'px)';
+    $('#s4-slash').style.width = (460 * E((local - .8) / .5)) + 'px';
+    $('.s4 .note').style.opacity = S((local - 1.1) / .6);
+  }
+
+  function updateScene5(local, t, p) {
+    setText($('#s5-num'), String(Math.round(12 * E((local - .2) / 1.5))));
+    setText($('#s5-text'), p.text);
+    const e = E((local - .1) / .6);
+    $('.s5 .cap').style.opacity = S((local - .2) / .6);
+    $('.s5 .cap').style.transform = 'translateY(' + ((1 - E((local - .2) / .6)) * 22) + 'px)';
+    $('#s5-rule').style.width = (100 * E((local - .6) / 1.3)) + '%';
+    $('.s5 .ticks').style.opacity = S((local - .9) / .5);
+  }
+
+  function updateScene6(local, t, p) {
+    setText($('#s6-title'), $('#s6-title').dataset.text || DEFAULT_TITLE);
+    setText($('#s6-note'), p.text);
+    const e = E((local - .1) / .6);
+    $('.s6 h2').style.clipPath = 'inset(' + ((1 - e) * 100) + '% 0 0 0)';
+    $('.s6 h2').style.transform = 'translateY(' + ((1 - e) * 24) + 'px)';
+    $('.s6 .sub').style.opacity = S((local - .7) / .6);
+    $('.s6 .sub').style.transform = 'translateX(' + ((1 - E((local - .7) / .6)) * 20) + 'px)';
+    $('.s6 .foot').style.opacity = S((local - 1.1) / .6);
+  }
+
+  const updates = [updateScene1, updateScene2, updateScene3, updateScene4, updateScene5, updateScene6];
+
+  window.renderFrame = function (frame, inputs) {
+    inputs = inputs || {};
+    buildPlan(inputs);
+    applyInputs(inputs);
+    const t = frame / FPS;
+    let active = 0;
+    for (let i = 0; i < plan.length; i += 1) if (t >= plan[i].start - .001) active = i;
+    scenes.forEach((el, i) => {
+      const p = plan[i];
+      const op = Math.min(S((t - p.start + .7) / .7), S((p.end - t) / .6));
+      el.style.visibility = op > .001 ? 'visible' : 'hidden';
+      el.style.opacity = op.toFixed(3);
+    });
+    updates[active](Math.max(0, t - plan[active].start) + (active === 0 ? 1.4 : 0), t, plan[active]);
+    const dark = active === 5;
+    $('#hud').style.color = dark ? '#fff' : '#111';
+    $('#hud-bar').style.width = (C(t / DUR) * 100) + '%';
+    setText($('#hud-idx'), String(active + 1).padStart(2, '0') + ' / 06');
+    setText($('#hud-time'), '00:' + String(Math.floor(t)).padStart(2, '0'));
+  };
+
+  applyInputs({});
+  window.renderFrame(0, {});
+  window.__ready = true;
+})();
+</script>
+<script>
+  (function () {
+    var slot = document.querySelector('[data-image-slot]');
+    if (!slot) return;
+    var original = window.renderFrame;
+    window.renderFrame = function (frame, inputs) {
+      var image = inputs && inputs.images && inputs.images[0];
+      var url = image && (typeof image === 'string' ? image : image.url);
+      if (url) { slot.style.backgroundImage = 'url("' + url + '")'; slot.classList.add('has-image'); }
+      else { slot.style.backgroundImage = ''; slot.classList.remove('has-image'); }
+      return original(frame, inputs);
+    };
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+{
+  "id": "pixel-arcade",
+  "name": "像素街机",
+  "category": "复古",
+  "description": "8-bit 像素街机风格：像素星空、街机标题、分数排行榜与方块柱状图，双 CRT 图片位；适合游戏、怀旧、年轻向内容。",
+  "tags": [
+    "像素",
+    "街机",
+    "8-bit",
+    "游戏",
+    "复古"
+  ],
+  "palette": {
+    "background": "#0d0b1f",
+    "surface": "#161233",
+    "primary": "#ffd93d",
+    "accent": "#ff5d8f",
+    "text": "#f6f4ff",
+    "muted": "#8b86b8"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 400,
+    "titleSize": 168
+  },
+  "motion": {
+    "transition": "pixel-crossfade",
+    "speed": "medium"
+  },
+  "duration": 30,
+  "sceneCount": 6,
+  "stylePrompt": "有限 8-bit 色板，深靛蓝夜空与像素星星，亮黄与荧光粉高饱和点缀，方块化 UI、硬边描边、街机 HUD、CRT 扫描线、像素字体感，复古游戏画面",
+  "preview": "preview.svg",
+  "styleRefs": [
+    "K28",
+    "G2",
+    "K32"
+  ],
+  "features": [
+    "table",
+    "chart",
+    "image-slot"
+  ],
+  "group": "主题创意"
+}

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "口播画中画 · 参数合同",
+  "description": "保留原视频的小窗口播布局。",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "brand": { "type": "string", "default": "NUTCUT" },
+    "title": { "type": "string", "default": "冬天护手计划" },
+    "subtitle": { "type": "string", "default": "一支护手霜的 6 个细节" },
+    "accent": { "type": "string", "default": "#e86a5a" },
+    "video": {
+      "type": "object",
+      "properties": {
+        "x": { "type": "number", "default": 40 },
+        "y": { "type": "number", "default": 220 },
+        "width": { "type": "number", "default": 400 },
+        "height": { "type": "number", "default": 710 }
+      }
+    },
+    "layouts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "x": { "type": "number" },
+          "y": { "type": "number" },
+          "width": { "type": "number" },
+          "height": { "type": "number" }
+        }
+      }
+    },
+    "cards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "start", "end"],
+        "properties": {
+          "title": { "type": "string" },
+          "start": { "type": "number" },
+          "end": { "type": "number" },
+          "color": { "type": "string" }
+        }
+      }
+    },
+    "captions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["text", "start", "end"],
+        "properties": {
+          "text": { "type": "string" },
+          "start": { "type": "number" },
+          "end": { "type": "number" },
+          "highlight": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="等距 3D 模板预览">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f5f7fb"/><stop offset=".6" stop-color="#e9edf5"/><stop offset="1" stop-color="#e2e7f1"/>
+    </linearGradient>
+    <pattern id="iso" width="92" height="80" patternUnits="userSpaceOnUse">
+      <path d="M0 80L46 40L92 80M0 40L46 0L92 40" fill="none" stroke="#101420" stroke-opacity=".07"/>
+    </pattern>
+    <linearGradient id="p1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dfe6f4"/>
+    </linearGradient>
+    <linearGradient id="p2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#dfe8ff"/><stop offset="1" stop-color="#c3d3ff"/>
+    </linearGradient>
+    <linearGradient id="p3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2b59ff"/><stop offset="1" stop-color="#1b41cc"/>
+    </linearGradient>
+    <linearGradient id="p4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffb27a"/><stop offset="1" stop-color="#ff7a1a"/>
+    </linearGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="20"/>
+    </filter>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#iso)" opacity=".8"/>
+
+  <g font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, sans-serif">
+    <g transform="translate(136 210)">
+      <rect y="-14" width="30" height="2" fill="#2b59ff"/>
+      <text x="44" y="-6" font-family="Consolas, monospace" font-size="13" font-weight="700" letter-spacing="5" fill="#2b59ff">01 / 等距视图 · ISOMETRIC VIEW</text>
+    </g>
+    <text x="132" y="420" font-size="124" font-weight="900" letter-spacing="-6" fill="#0d1119">结构，站得住</text>
+    <text x="136" y="486" font-size="26" letter-spacing="1" fill="#5c6577">ISOMETRIC 3D · 30S / 等距 3D 演示</text>
+    <g font-family="Consolas, monospace">
+      <g><rect x="136" y="556" width="240" height="96" fill="#ffffff" fill-opacity=".88" stroke="#101420" stroke-opacity=".1"/>
+        <text x="160" y="602" font-size="30" font-weight="900" fill="#2b59ff">38.4%</text>
+        <text x="160" y="628" font-size="11" font-weight="600" letter-spacing="2" fill="#7b8496">VOLUME / 结构体积</text></g>
+      <g><rect x="392" y="556" width="240" height="96" fill="#ffffff" fill-opacity=".88" stroke="#101420" stroke-opacity=".1"/>
+        <text x="416" y="602" font-size="30" font-weight="900" fill="#2b59ff">6</text>
+        <text x="416" y="628" font-size="11" font-weight="600" letter-spacing="2" fill="#7b8496">LAYERS / 层级</text></g>
+      <g><rect x="648" y="556" width="240" height="96" fill="#ffffff" fill-opacity=".88" stroke="#101420" stroke-opacity=".1"/>
+        <text x="672" y="602" font-size="30" font-weight="900" fill="#2b59ff">1:1</text>
+        <text x="672" y="628" font-size="11" font-weight="600" letter-spacing="2" fill="#7b8496">SCALE / 比例</text></g>
+    </g>
+  </g>
+
+  <!-- isometric plate stack -->
+  <g transform="translate(1380 470)">
+    <g transform="rotate(-30) skewX(20) translate(0 40)" opacity=".2" filter="url(#soft)">
+      <rect x="-180" y="-130" width="420" height="300" fill="#1c2850"/>
+    </g>
+    <g transform="rotate(-30) skewX(20)">
+      <g transform="translate(0 96)">
+        <rect x="-220" y="-120" width="440" height="240" fill="url(#p1)" stroke="#101420" stroke-opacity=".14"/>
+        <text x="150" y="98" font-family="Consolas, monospace" font-size="42" font-weight="900" fill="#101420" fill-opacity=".1">01</text>
+      </g>
+      <g transform="translate(0 34)">
+        <rect x="-186" y="-100" width="372" height="200" fill="url(#p2)" stroke="#2b59ff" stroke-opacity=".4"/>
+        <text x="128" y="80" font-family="Consolas, monospace" font-size="38" font-weight="900" fill="#2b59ff" fill-opacity=".3">02</text>
+      </g>
+      <g transform="translate(0 -26)">
+        <rect x="-152" y="-82" width="304" height="164" fill="url(#p3)" stroke="#2b59ff" stroke-opacity=".8"/>
+        <text x="104" y="64" font-family="Consolas, monospace" font-size="34" font-weight="900" fill="#ffffff" fill-opacity=".45">03</text>
+        <rect x="-152" y="-82" width="304" height="4" fill="#ffffff" fill-opacity=".3"/>
+      </g>
+      <g transform="translate(0 -80)">
+        <rect x="-120" y="-64" width="240" height="128" fill="url(#p4)" stroke="#ff7a1a" stroke-opacity=".7"/>
+        <text x="82" y="50" font-family="Consolas, monospace" font-size="30" font-weight="900" fill="#ffffff" fill-opacity=".5">04</text>
+      </g>
+      <g transform="translate(-190 -128)">
+        <rect x="-36" y="-36" width="72" height="72" fill="#2b59ff"/>
+      </g>
+      <g transform="translate(214 84)">
+        <rect x="-36" y="-36" width="72" height="72" fill="#ff7a1a" transform="rotate(45)"/>
+      </g>
+    </g>
+  </g>
+
+  <g font-family="Consolas, monospace">
+    <text x="136" y="1032" font-size="11" font-weight="700" letter-spacing="3" fill="#7b8496">NUTCUT / ISO</text>
+    <path d="M320 1028H1700" stroke="#101420" stroke-opacity=".16"/>
+    <path d="M320 1028H700" stroke="#2b59ff"/>
+    <text x="1780" y="1032" text-anchor="end" font-size="11" font-weight="700" letter-spacing="3" fill="#2b59ff">01 / 06</text>
+  </g>
+</svg>

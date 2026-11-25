@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "玻璃拟态 3D · 参数合同",
+  "description": "glass-3d 的可替换文案与图片参数。所有字段均可省略，省略时使用内置演示内容。",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "brand": {
+      "type": "string",
+      "title": "品牌名",
+      "default": "NUTCUT / GLASS",
+      "maxLength": 24
+    },
+    "title": {
+      "type": "string",
+      "title": "主标题",
+      "default": "玻璃之后的光",
+      "maxLength": 20,
+      "x-capacity": {
+        "maxChars": 20,
+        "maxLines": 2
+      }
+    },
+    "subtitle": {
+      "type": "string",
+      "title": "副标题",
+      "default": "GLASS 3D · 30S / 折射与层叠",
+      "maxLength": 60
+    },
+    "accent": {
+      "type": "string",
+      "title": "强调色",
+      "default": "#4de2c5",
+      "pattern": "^#[0-9a-fA-F]{6}$"
+    },
+    "images": {
+      "type": "array",
+      "title": "图片位",
+      "description": "按顺序填充模板内的图片位；没有给定时显示占位图形。",
+      "maxItems": 2,
+      "items": {
+        "type": "string"
+      }
+    },
+    "lines": {
+      "type": "array",
+      "title": "分句文案",
+      "description": "最多 6 句；start/end 单位为秒。全部给出时按真实时间排场景，否则平均分配 30 秒。",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 12
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 42
+          },
+          "start": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 30
+          },
+          "end": {
+            "type": "number",
+            "minimum": 0.5,
+            "maximum": 30
+          }
+        }
+      }
+    }
+  },
+  "required": []
+}

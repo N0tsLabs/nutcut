@@ -1,0 +1,43 @@
+{
+  "id": "type-rain",
+  "name": "字雨",
+  "category": "文字动效",
+  "description": "文字像雨一样下落、堆叠、冲刷画面，大字标题强冲击；内置字符密度柱状图、高频词表格与双联图片位，适合金句、片头与关键词短片。",
+  "tags": [
+    "字雨",
+    "文字",
+    "金句",
+    "深色",
+    "片头"
+  ],
+  "palette": {
+    "background": "#0b0b0d",
+    "surface": "#14131a",
+    "primary": "#ff5a2b",
+    "accent": "#ffd166",
+    "text": "#f4f1ea",
+    "muted": "rgba(244,241,234,.54)"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 400,
+    "titleSize": 150
+  },
+  "motion": {
+    "transition": "rain-crossfade",
+    "speed": "medium"
+  },
+  "duration": 30,
+  "sceneCount": 6,
+  "stylePrompt": "深黑背景上冷白文字如雨下落，单一朱橙荧光强调，巨大粗黑中文标题，颗粒与暗角，排版克制留白充足，电影级字效，高对比，极简构图",
+  "preview": "preview.svg",
+  "styleRefs": [
+    "A1"
+  ],
+  "features": [
+    "table",
+    "chart",
+    "image-slot"
+  ],
+  "group": "风格片头"
+}

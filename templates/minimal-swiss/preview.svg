@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="极简瑞士模板预览">
+  <defs>
+    <pattern id="cols" x="96" width="144" height="1080" patternUnits="userSpaceOnUse">
+      <path d="M0 0V1080" stroke="#111" stroke-opacity=".06"/>
+    </pattern>
+    <pattern id="rows" width="1920" height="90" patternUnits="userSpaceOnUse">
+      <path d="M0 0H1920" stroke="#111" stroke-opacity=".035"/>
+    </pattern>
+  </defs>
+
+  <rect width="1920" height="1080" fill="#ffffff"/>
+  <rect x="96" width="1728" height="1080" fill="url(#cols)"/>
+  <rect x="0" y="96" width="1920" height="888" fill="url(#rows)"/>
+  <path d="M96 0V1080M1824 0V1080" stroke="#111" stroke-opacity=".08"/>
+
+  <g font-family="Helvetica Neue, Helvetica, Arial, Microsoft YaHei, sans-serif">
+    <text x="112" y="86" font-size="12" font-weight="700" letter-spacing="4" fill="#111">信息越多，越需要秩序。</text>
+    <text x="1808" y="86" text-anchor="end" font-size="12" letter-spacing="4" fill="#6b7280">NUTCUT / GRID — 01</text>
+
+    <text x="1720" y="390" text-anchor="end" font-size="190" font-weight="900" letter-spacing="-18" fill="#f0f0f0">01</text>
+
+    <text x="100" y="470" font-size="152" font-weight="900" letter-spacing="-9" fill="#111">少一点，</text>
+    <text x="100" y="612" font-size="152" font-weight="900" letter-spacing="-9" fill="#111">说清楚</text>
+
+    <rect x="1574" y="300" width="250" height="250" fill="#e30613"/>
+    <path d="M1699 300V550M1574 425H1824" stroke="#fff" stroke-opacity=".7"/>
+
+    <text x="112" y="916" font-size="22" fill="#444">FORM FOLLOWS CLARITY</text>
+    <text x="112" y="960" font-size="13" letter-spacing="3" fill="#6b7280">30 SEC / 1920 × 1080 / 12 COL</text>
+    <text x="1808" y="916" text-anchor="end" font-size="38" font-weight="900" letter-spacing="-1" fill="#111">FORM</text>
+    <text x="1808" y="962" text-anchor="end" font-size="38" font-weight="900" letter-spacing="-1" fill="#111">FOLLOWS</text>
+  </g>
+
+  <g font-family="Helvetica Neue, Arial, Microsoft YaHei, sans-serif" font-size="10" font-weight="700" letter-spacing="2" fill="#111">
+    <text x="112" y="1046">NUTCUT / GRID</text>
+    <path d="M330 1042H1760" stroke="#111" stroke-opacity=".12"/>
+    <rect x="330" y="1041" width="480" height="2" fill="#e30613"/>
+    <text x="1808" y="1046" text-anchor="end" fill="#e30613">01 / 06</text>
+  </g>
+</svg>

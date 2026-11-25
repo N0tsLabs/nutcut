@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="科普白板模板预览">
+  <defs>
+    <pattern id="ruled" width="10" height="48" patternUnits="userSpaceOnUse">
+      <rect width="10" height="48" fill="#f7f3e8"/>
+      <path d="M0 47.5H10" stroke="#1f2d2a" stroke-opacity=".07"/>
+    </pattern>
+    <pattern id="speck" width="4" height="4" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="2" r=".5" fill="#1f2d2a" fill-opacity=".06"/>
+    </pattern>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#ruled)"/>
+  <rect width="1920" height="1080" fill="url(#speck)"/>
+  <rect x="0" y="0" width="1920" height="1080" fill="#f7f3e8" opacity=".25"/>
+  <path d="M156 0V1080" stroke="#dc5a50" stroke-opacity=".35" stroke-width="1.5"/>
+  <g fill="#e7e0cf" stroke="#1f2d2a" stroke-opacity=".1">
+    <circle cx="68" cy="240" r="10"/><circle cx="68" cy="540" r="10"/><circle cx="68" cy="840" r="10"/>
+  </g>
+
+  <g font-family="Microsoft YaHei, PingFang SC, sans-serif">
+    <g transform="translate(218 214)">
+      <rect y="-16" width="32" height="2" fill="#0d9488"/>
+      <text x="46" y="-9" font-size="14" font-weight="700" letter-spacing="5" fill="#6b7f78">NOTE 01 / <tspan fill="#2563eb">WHY IT WORKS</tspan></text>
+    </g>
+    <text x="214" y="396" font-size="112" font-weight="900" letter-spacing="-4" fill="#1f2d2a">三分钟，讲明白</text>
+    <text x="214" y="520" font-size="112" font-weight="900" letter-spacing="-4" fill="#1f2d2a">一件事</text>
+    <path d="M222 566C330 550 470 552 570 562S760 580 848 558" fill="none" stroke="#0d9488" stroke-width="7" stroke-linecap="round"/>
+    <text x="220" y="630" font-size="28" font-weight="400" letter-spacing="3" fill="#52655f">A WHITEBOARD EXPLAINER / 3 MIN</text>
+  </g>
+
+  <g transform="translate(250 720)" font-family="Consolas, monospace">
+    <circle cx="0" cy="0" r="3" fill="#2563eb"/>
+    <path d="M6 0H120" stroke="#2563eb" stroke-width="2"/>
+    <text x="0" y="34" font-size="14" letter-spacing="3" fill="#2563eb">STEP 01</text>
+    <text x="0" y="66" font-size="18" font-family="Microsoft YaHei, sans-serif" fill="#3c4f49">先描述，再解释</text>
+  </g>
+  <g transform="translate(250 880)" font-family="Consolas, monospace" opacity=".55">
+    <path d="M0 0H700" stroke="#1f2d2a" stroke-opacity=".25" stroke-dasharray="4 6"/>
+  </g>
+
+  <g transform="translate(1040 250)">
+    <path d="M10 30C10 12 26 0 48 0H330C352 0 368 12 368 30V300C368 316 354 328 338 328H40C22 328 10 316 10 300Z" fill="#fff6c9" stroke="#1f2d2a" stroke-opacity=".15"/>
+    <rect x="130" y="-14" width="120" height="26" fill="#e9e2cd" opacity=".9"/>
+    <text x="34" y="70" font-family="Consolas, monospace" font-size="46" font-weight="700" fill="#1f2d2a" opacity=".25">01</text>
+    <text x="34" y="136" font-family="Microsoft YaHei, sans-serif" font-size="46" font-weight="900" fill="#1f2d2a">拆开问题</text>
+    <text x="34" y="176" font-family="Microsoft YaHei, sans-serif" font-size="20" fill="#4b5d57">把它拆成能被观察的小块，</text>
+    <text x="34" y="206" font-family="Microsoft YaHei, sans-serif" font-size="20" fill="#4b5d57">再逐个击破。</text>
+    <g transform="translate(34 248)" fill="none" stroke="#2563eb" stroke-width="2">
+      <rect x="0" y="0" width="52" height="40"/><rect x="64" y="0" width="52" height="40"/>
+      <rect x="0" y="54" width="116" height="40" stroke="#0d9488" stroke-dasharray="5 4"/>
+    </g>
+  </g>
+
+  <g transform="translate(1500 700) rotate(-2)">
+    <path d="M0 20C40 6 90 10 130 18S230 26 270 12" fill="none" stroke="#2563eb" stroke-width="3"/>
+    <path d="M256 4L272 12 252 22" fill="none" stroke="#2563eb" stroke-width="3"/>
+    <text x="0" y="66" font-family="Microsoft YaHei, sans-serif" font-size="24" fill="#0d9488">先看结论，再拆过程。</text>
+  </g>
+
+  <g transform="translate(1690 930) rotate(-4)" stroke="#2563eb" stroke-opacity=".65" fill="none">
+    <rect width="150" height="64"/>
+    <text x="16" y="26" font-family="Consolas, monospace" font-size="11" letter-spacing="2" fill="#2563eb" stroke="none">FIG. 01</text>
+    <text x="16" y="48" font-family="Consolas, monospace" font-size="11" letter-spacing="2" fill="#2563eb" stroke="none">START HERE</text>
+  </g>
+
+  <g font-family="Consolas, monospace" font-size="11" letter-spacing="3" fill="#8a9a94">
+    <text x="218" y="1040">NUTCUT / NOTES</text>
+    <path d="M400 1036H1730" stroke="#1f2d2a" stroke-opacity=".12"/>
+    <text x="1800" y="1040" text-anchor="end" fill="#2563eb">01 / 06</text>
+  </g>
+</svg>

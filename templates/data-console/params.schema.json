@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "数据驾驶舱 · 参数合同",
+  "description": "data-console 的可替换文案与图片参数。所有字段均可省略，省略时使用内置演示内容。",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "brand": {
+      "type": "string",
+      "title": "品牌名",
+      "default": "NUTCUT · OPS",
+      "maxLength": 24
+    },
+    "title": {
+      "type": "string",
+      "title": "主标题",
+      "default": "数据，正在呼吸",
+      "maxLength": 24,
+      "x-capacity": {
+        "maxChars": 24,
+        "maxLines": 2
+      }
+    },
+    "subtitle": {
+      "type": "string",
+      "title": "副标题",
+      "default": "DATA CONSOLE · 30S OVERVIEW",
+      "maxLength": 60
+    },
+    "accent": {
+      "type": "string",
+      "title": "强调色",
+      "default": "#5eead4",
+      "pattern": "^#[0-9a-fA-F]{6}$"
+    },
+    "images": {
+      "type": "array",
+      "title": "图片位",
+      "description": "按顺序填充模板内的图片位；没有给定时显示占位图形。",
+      "maxItems": 2,
+      "items": {
+        "type": "string"
+      }
+    },
+    "lines": {
+      "type": "array",
+      "title": "分句文案",
+      "description": "最多 6 句；start/end 单位为秒。全部给出时按真实时间排场景，否则平均分配 30 秒。",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 12
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 42
+          },
+          "start": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 30
+          },
+          "end": {
+            "type": "number",
+            "minimum": 0.5,
+            "maximum": 30
+          }
+        }
+      }
+    }
+  },
+  "required": []
+}

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <rect width="1920" height="1080" fill="#030705"/>
+  <rect x="54" y="54" width="1812" height="972" fill="none" stroke="#7cffb2" stroke-opacity=".12"/>
+  <g font-family="Consolas, monospace">
+    <text x="112" y="150" fill="#7cffb2" font-size="22" letter-spacing="6">A2 / CURSOR TERMINAL</text>
+    <rect x="112" y="210" width="1400" height="560" fill="#07100c" stroke="#7cffb2" stroke-opacity=".4"/>
+    <rect x="112" y="210" width="1400" height="54" fill="#0a1710" stroke="#7cffb2" stroke-opacity=".25"/>
+    <circle cx="142" cy="237" r="6" fill="#7cffb2" fill-opacity=".5"/>
+    <circle cx="164" cy="237" r="6" fill="#ffd166" fill-opacity=".6"/>
+    <circle cx="186" cy="237" r="6" fill="#ff6b6b" fill-opacity=".6"/>
+    <text x="210" y="244" fill="#4f7a62" font-size="15">nutcut://terminal</text>
+    <text x="144" y="320" fill="#4f7a62" font-size="20">$ nutcut --project my-video --mode explainer</text>
+    <text x="144" y="410" fill="#e8fff2" font-size="58" font-weight="700">剪辑，从一条命令开始</text>
+    <rect x="900" y="392" width="10" height="52" fill="#7cffb2"/>
+    <text x="144" y="480" fill="#4f7a62" font-size="20">→ loading timeline ... OK</text>
+    <text x="144" y="520" fill="#4f7a62" font-size="20">→ voice profile: me ... READY</text>
+    <text x="144" y="560" fill="#ffd166" font-size="20">→ produce film.mp4 · 8.1MB</text>
+  </g>
+  <g font-family="Consolas, monospace" font-size="18">
+    <text x="112" y="900" fill="#4f7a62">voice 3.2s</text>
+    <text x="300" y="900" fill="#4f7a62">timeline 0.8s</text>
+    <text x="540" y="900" fill="#4f7a62">mix 4.1s</text>
+    <text x="760" y="900" fill="#7cffb2">render 18.6s</text>
+    <text x="112" y="1000" fill="#4f7a62">NUTCUT / TERMINAL · 1920 × 1080</text>
+  </g>
+</svg>

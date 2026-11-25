@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="赛博网格模板预览">
+  <defs>
+    <radialGradient id="cglow" cx=".5" cy=".42" r=".62">
+      <stop offset="0" stop-color="#063a28"/>
+      <stop offset="1" stop-color="#020806"/>
+    </radialGradient>
+    <linearGradient id="ctitle" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#d7ffe8"/>
+      <stop offset=".58" stop-color="#39ff88"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+    <filter id="cglow2" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="10" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
+      <path d="M0 0H4" stroke="#d7ffe8" stroke-opacity=".05"/>
+    </pattern>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#cglow)"/>
+
+  <g font-family="Consolas, monospace" font-size="15" fill="#39ff88">
+    <g opacity=".2">
+      <text x="40" y="240">0 1 A # 1 0 F</text><text x="120" y="520">A F 7 0 # 1 B</text>
+      <text x="240" y="180"># 1 0 1 E F 7</text><text x="400" y="940">F A 0 # C 1 0</text>
+      <text x="700" y="140">1 0 B # 0 A 7</text><text x="880" y="980">C 1 F 0 1 # A</text>
+      <text x="1180" y="160">0 # A 1 F 0 1</text><text x="1480" y="900">B 1 0 # F C 0</text>
+      <text x="1740" y="300">1 F 0 A # 1 0</text><text x="1600" y="660">A 0 1 # B F 1</text>
+    </g>
+  </g>
+
+  <g stroke="#39ff88" stroke-opacity=".14" fill="none">
+    <path d="M960 640L420 1080M960 640L640 1080M960 640L820 1080M960 640L960 1080M960 640L1100 1080M960 640L1280 1080M960 640L1500 1080"/>
+    <path d="M0 700H1920M0 760H1920M0 840H1920M0 950H1920M0 1080H1920"/>
+  </g>
+
+  <g transform="translate(112 152)">
+    <rect width="1696" height="690" fill="#04120f" fill-opacity=".45" stroke="#39ff88" stroke-opacity=".24"/>
+    <g stroke="#39ff88" stroke-opacity=".6" fill="none" stroke-width="1.5">
+      <path d="M0 26V0H26M1670 0H1696V26M0 664V690H26M1696 664V690H1670"/>
+    </g>
+    <circle cx="30" cy="40" r="4" fill="#39ff88"/>
+    <text x="46" y="45" font-family="Consolas, monospace" font-size="12" letter-spacing="4" fill="#4ade80">SIGNAL IN / LINK 06</text>
+    <text x="1666" y="45" text-anchor="end" font-family="Consolas, monospace" font-size="11" letter-spacing="3" fill="#4ade80" opacity=".55">SYS.BOOT / 1920×1080</text>
+
+    <text x="40" y="256" font-family="Microsoft YaHei, sans-serif" font-size="122" font-weight="900" letter-spacing="-6" fill="url(#ctitle)" filter="url(#cglow2)">数据正在成形</text>
+    <text x="44" y="330" font-family="Consolas, monospace" font-size="18" letter-spacing="5" fill="#4ade80">GRID LINK ESTABLISHED</text>
+    <rect x="44" y="596" width="480" height="2" fill="#39ff88"/>
+
+    <g font-family="Consolas, monospace" font-size="12" letter-spacing="2" fill="#4ade80" opacity=".6">
+      <text x="1680" y="250" text-anchor="end">LAT 31.2304</text>
+      <text x="1680" y="276" text-anchor="end">LON 121.4737</text>
+      <text x="1680" y="302" text-anchor="end">GRID 12×12</text>
+      <text x="1680" y="328" text-anchor="end">UPLINK 100%</text>
+    </g>
+  </g>
+
+  <g transform="translate(1450 470)">
+    <rect width="300" height="132" fill="#04120f" stroke="#22d3ee" stroke-opacity=".35"/>
+    <text x="20" y="30" font-family="Consolas, monospace" font-size="10" letter-spacing="3" fill="#22d3ee">SIGNAL INTEGRITY</text>
+    <text x="20" y="98" font-family="Consolas, monospace" font-size="56" font-weight="700" fill="#39ff88">99.2%</text>
+    <rect x="20" y="114" width="260" height="4" fill="#39ff88" fill-opacity=".15"/>
+    <rect x="20" y="114" width="240" height="4" fill="#39ff88"/>
+  </g>
+
+  <g font-family="Consolas, monospace" font-size="11" letter-spacing="3" fill="#4ade80" opacity=".55">
+    <text x="112" y="1036">NUTCUT / SYS</text>
+    <path d="M300 1032H1700" stroke="#39ff88" stroke-opacity=".16"/>
+    <path d="M300 1031H850" stroke="#39ff88" stroke-width="2"/>
+    <text x="1808" y="1036" text-anchor="end" fill="#39ff88" opacity="1">01 / 06</text>
+  </g>
+  <rect width="1920" height="1080" fill="url(#scan)"/>
+</svg>

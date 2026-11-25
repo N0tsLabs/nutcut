@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>漫画分镜 · Comic Pop</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #ffe14d; }
+  body { font-family: "Arial Black", "Microsoft YaHei", "PingFang SC", system-ui, sans-serif; color: #111; }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #ffe14d; }
+  .halftone { position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    background-image: radial-gradient(#111 1.6px, transparent 1.7px); background-size: 18px 18px; opacity: .13; }
+  .halftone.red { background-image: radial-gradient(#ff3b30 2px, transparent 2.1px); background-size: 26px 26px; opacity: .18; }
+  #fx { position: absolute; inset: 0; width: 1920px; height: 1080px; z-index: 0; }
+  .scene { position: absolute; inset: 0; visibility: hidden; opacity: 0; z-index: 5; }
+  .panel { position: absolute; background: #fffdf5; border: 8px solid #111; box-shadow: 16px 16px 0 #111; }
+  .caption { position: absolute; display: inline-block; padding: 12px 20px; background: #111; color: #ffe14d;
+    font: 900 20px/1.1 "Arial Black", "Microsoft YaHei", sans-serif; letter-spacing: .1em; transform: rotate(-2deg); }
+  .burst { position: absolute; display: grid; place-items: center; text-align: center; font-weight: 900; color: #fff;
+    clip-path: polygon(50% 0%,58% 18%,74% 6%,76% 26%,95% 22%,86% 39%,100% 50%,86% 61%,95% 78%,76% 74%,74% 94%,58% 82%,50% 100%,42% 82%,26% 94%,24% 74%,5% 78%,14% 61%,0% 50%,14% 39%,5% 22%,24% 26%,26% 6%,42% 18%); }
+  .ch { display: inline-block; }
+  .ink { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  em { font-style: normal; color: #ff3b30; }
+  .outline { -webkit-text-stroke: 2px #111; }
+
+  .s1 .panel { left: 108px; top: 176px; width: 1220px; height: 640px; transform: rotate(-1.6deg); }
+  .s1 .caption { left: 150px; top: 132px; }
+  .s1 h1 { position: absolute; left: 166px; top: 286px; width: 1060px; font-size: 136px; line-height: 1.04; letter-spacing: -.045em;
+    text-shadow: 8px 8px 0 #ff3b30; }
+  .s1 h1 .hl { position: relative; display: inline-block; }
+  .s1 h1 .hl::before { content: ""; position: absolute; left: -6px; right: -6px; bottom: 12px; height: 34px; background: #ffe14d; z-index: -1; }
+  .s1 .sub { position: absolute; left: 170px; top: 714px; font-size: 26px; font-weight: 900; letter-spacing: .12em; color: #111; }
+  .s1 .issue { right: 92px; top: 214px; width: 420px; height: 420px; background: #ff3b30; font-size: 34px; line-height: 1.15;
+    transform: rotate(9deg); box-shadow: 14px 14px 0 #111; }
+  .s1 .issue b { display: block; font-size: 110px; line-height: .9; color: #ffe14d; }
+  .s1 .issue span { display: block; font-size: 24px; letter-spacing: .1em; }
+  .s1 .sticker { position: absolute; left: 1130px; top: 806px; padding: 14px 22px; background: #2563eb; color: #fff;
+    border: 6px solid #111; font-size: 22px; font-weight: 900; letter-spacing: .14em; transform: rotate(4deg); box-shadow: 8px 8px 0 #111; }
+
+  .s2 .p1 { left: 108px; top: 168px; width: 1030px; height: 720px; }
+  .s2 .p2 { left: 1188px; top: 168px; width: 624px; height: 340px; background: #ff3b30; }
+  .s2 .p3 { left: 1188px; top: 548px; width: 624px; height: 340px; background: #2563eb; }
+  .s2 .caption { left: 150px; top: 122px; }
+  .s2 h2 { position: absolute; left: 58px; top: 66px; width: 900px; font-size: 70px; line-height: 1.14; letter-spacing: -.03em; text-wrap: balance; }
+  .s2 .doodle { position: absolute; left: 58px; bottom: 56px; width: 880px; height: 210px; }
+  .s2 .yell { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-6deg); font-size: 128px;
+    color: #fff; text-shadow: 6px 6px 0 #111; }
+  .s2 .p3 .yell { font-size: 74px; line-height: 1.1; text-align: center; width: 90%; }
+  .s2 .tagline { position: absolute; left: 40px; bottom: 34px; font: 900 18px/1 "Consolas", monospace; letter-spacing: .18em; color: #fff; }
+
+  .s3 .caption { left: 112px; top: 108px; }
+  .s3 h2 { position: absolute; left: 112px; top: 168px; width: 1600px; font-size: 66px; line-height: 1.1; letter-spacing: -.02em; }
+  .s3 .row { position: absolute; left: 108px; right: 108px; top: 310px; bottom: 154px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px; }
+  .comic-cell { position: relative; background: #fffdf5; border: 8px solid #111; box-shadow: 12px 12px 0 #111; overflow: hidden; }
+  .comic-cell:nth-child(2) { background: #dbeafe; }
+  .comic-cell:nth-child(3) { background: #ffe8e6; }
+  .comic-cell .num { position: absolute; left: 24px; top: 18px; font: 900 22px/1 "Arial Black", sans-serif; letter-spacing: .1em; }
+  .comic-cell .word { position: absolute; left: 0; right: 0; top: 96px; text-align: center; font-size: 92px; font-weight: 900;
+    letter-spacing: -.04em; color: #111; text-shadow: 5px 5px 0 #ff3b30; }
+  .comic-cell:nth-child(2) .word { text-shadow: 5px 5px 0 #2563eb; }
+  .comic-cell:nth-child(3) .word { text-shadow: 5px 5px 0 #ffb703; }
+  .comic-cell .txt { position: absolute; left: 28px; right: 28px; bottom: 32px; font-size: 21px; line-height: 1.5; font-weight: 400; color: #333; }
+  .comic-cell .rays { position: absolute; inset: 0; opacity: .2; background: repeating-conic-gradient(from 0deg at 50% 46%, #111 0deg 2deg, transparent 2deg 12deg); }
+
+  .s4 .panel { left: 112px; top: 190px; width: 1696px; height: 700px; background: #111; box-shadow: 16px 16px 0 #ff3b30; transform: rotate(.8deg); }
+  .s4 .caption { left: 150px; top: 140px; background: #ff3b30; color: #fff; }
+  .s4 h2 { position: absolute; left: 198px; top: 336px; width: 1380px; font-size: 100px; line-height: 1.14; letter-spacing: -.045em; color: #fff; }
+  .s4 h2 em { color: #ffe14d; }
+  .s4 .pow { right: 158px; bottom: 206px; width: 320px; height: 320px; background: #ffe14d; color: #111; font-size: 78px; transform: rotate(-12deg); }
+  .s4 .note { position: absolute; left: 202px; bottom: 210px; font: 900 18px/1 "Consolas", monospace; letter-spacing: .22em; color: #ff3b30; }
+
+  .s5 .caption { left: 112px; top: 120px; }
+  .s5 h2 { position: absolute; left: 112px; top: 188px; width: 1150px; font-size: 70px; line-height: 1.12; letter-spacing: -.02em; }
+  .s5 .big { position: absolute; left: 90px; bottom: 92px; font-size: 520px; line-height: .78; letter-spacing: -.1em; color: #fff;
+    -webkit-text-stroke: 10px #111; text-shadow: 22px 22px 0 #ff3b30; }
+  .s5 .card { position: absolute; right: 112px; bottom: 128px; width: 560px; padding: 34px 36px; background: #fffdf5; border: 8px solid #111; box-shadow: 14px 14px 0 #111; transform: rotate(-2deg); }
+  .s5 .card b { display: block; font-size: 52px; font-weight: 900; letter-spacing: -.02em; }
+  .s5 .card p { margin-top: 12px; font-size: 20px; line-height: 1.6; font-weight: 400; color: #444; }
+  .s5 .card .bar { margin-top: 20px; height: 14px; border: 3px solid #111; }
+  .s5 .card .bar i { display: block; height: 100%; width: 0; background: #ff3b30; }
+
+  .s6 .panel { left: 0; top: 0; width: 1920px; height: 1080px; border: 0; box-shadow: none; background: #111; }
+  .s6 .caption { left: 112px; top: 96px; background: #ffe14d; color: #111; }
+  .s6 h2 { position: absolute; left: 112px; top: 300px; width: 1500px; font-size: 132px; line-height: 1.04; letter-spacing: -.05em; color: #fff; }
+  .s6 h2 em { color: #ffe14d; }
+  .s6 .sub { position: absolute; left: 116px; top: 720px; font-size: 26px; font-weight: 900; letter-spacing: .3em; color: #ff3b30; }
+  .s6 .end { position: absolute; right: 112px; bottom: 96px; padding: 20px 26px; background: #2563eb; border: 8px solid #fff;
+    color: #fff; font-size: 26px; font-weight: 900; letter-spacing: .16em; transform: rotate(-3deg); }
+  .s6 .next { position: absolute; right: 130px; top: 340px; width: 420px; font-size: 24px; line-height: 1.7; font-weight: 400; color: #aaa; }
+
+  .hud { position: absolute; left: 112px; right: 112px; bottom: 34px; z-index: 20; display: flex; align-items: center; gap: 22px;
+    font: 900 12px/1 "Arial Black", "Consolas", monospace; letter-spacing: .16em; color: #111; }
+  .s6 .hud { color: #fff; }
+  .hud .track { flex: 1; height: 6px; background: rgba(17,17,17,.16); border: 2px solid #111; }
+  .s6 .hud .track { background: rgba(255,255,255,.14); border-color: #fff; }
+  .hud .track i { display: block; height: 100%; width: 0; background: #ff3b30; }
+  .hud .idx { color: #ff3b30; }
+  @media (max-width: 900px) { body { zoom: .5; } }
+
+  .nutcut-image-slot { position: absolute; right: 112px; bottom: 112px; width: 280px; height: 158px; border: 1px dashed #8a93a1; opacity: .62; display: grid; place-items: center; font: 700 11px/1 "Consolas", monospace; letter-spacing: .2em; z-index: 9; pointer-events: none; color: #8a93a1; }
+  .nutcut-image-slot::before { content: ""; position: absolute; inset: 12px; border: 1px solid currentColor; opacity: .22; }
+  .nutcut-image-slot span { position: relative; }
+  .nutcut-image-slot.has-image { opacity: .9; border-style: solid; background-size: cover; background-position: center; }
+  .nutcut-image-slot.has-image span { display: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="fx" width="1920" height="1080"></canvas>
+  <div class="halftone"></div>
+  <div class="halftone red"></div>
+
+  <section class="scene s1" id="sc1">
+    <div class="caption" id="s1-kicker"></div>
+    <div class="panel"></div>
+    <h1 id="s1-title" data-title></h1>
+    <div class="sub" id="s1-sub" data-sub></div>
+    <div class="burst issue"><b>#01</b><span>POP<br>EDITION</span></div>
+    <div class="sticker">NUTCUT ORIGINAL</div>
+  </section>
+
+  <section class="scene s2" id="sc2">
+    <div class="caption">MEANWHILE, IN PANEL TWO…</div>
+    <div class="panel p1">
+      <h2 id="s2-title"></h2>
+      <svg class="doodle" viewBox="0 0 880 210" aria-hidden="true">
+        <path class="ink" d="M18 150C120 80 230 184 340 120S540 44 650 104s140 66 208 12" fill="none" stroke="#111" stroke-width="7" stroke-linecap="round" pathLength="1"/>
+        <path class="ink" d="M824 78L866 112 818 138" fill="none" stroke="#111" stroke-width="7" stroke-linecap="round" pathLength="1"/>
+        <circle cx="350" cy="122" r="9" fill="#ff3b30"/>
+      </svg>
+    </div>
+    <div class="panel p2"><div class="burst yell">!</div><div class="tagline">SOUND EFFECT</div></div>
+    <div class="panel p3"><div class="yell">TO BE<br>CONTINUED?</div><div class="tagline">NEXT SCENE →</div></div>
+  </section>
+
+  <section class="scene s3" id="sc3">
+    <div class="caption">THREE MOVES / NO MERCY</div>
+    <h2 id="s3-title"></h2>
+    <div class="row">
+      <article class="comic-cell"><div class="rays"></div><div class="num">01 / SETUP</div><div class="word">BAM!</div><div class="txt">先出第一招：把问题摆到桌面上。</div></article>
+      <article class="comic-cell"><div class="rays"></div><div class="num">02 / TWIST</div><div class="word">WHOOSH</div><div class="txt">第二招：换个角度，线索自己会动。</div></article>
+      <article class="comic-cell"><div class="rays"></div><div class="num">03 / FINISH</div><div class="word">POW!</div><div class="txt">最后一招：给出一个能验证的答案。</div></article>
+    </div>
+  </section>
+
+  <section class="scene s4" id="sc4">
+    <div class="caption">PLOT TWIST!</div>
+    <div class="panel"></div>
+    <h2 id="s4-title"></h2>
+    <div class="burst pow">BUT!</div>
+    <div class="note">— EVERY HERO NEEDS A LIMIT</div>
+  </section>
+
+  <section class="scene s5" id="sc5">
+    <div class="caption">FINAL PANEL / COUNTDOWN</div>
+    <h2 id="s5-title"></h2>
+    <div class="big" id="s5-big">3</div>
+    <div class="card">
+      <b>三个关键动作</b>
+      <p>看现象、找结构、做验证。顺序对了，故事就不会跑偏。</p>
+      <div class="bar"><i id="s5-bar"></i></div>
+    </div>
+  </section>
+
+  <section class="scene s6" id="sc6">
+    <div class="panel"></div>
+    <div class="caption">THE END… OR IS IT?</div>
+    <h2 id="s6-title" data-title></h2>
+    <div class="sub" id="s6-sub" data-sub></div>
+    <div class="next" id="s6-note"></div>
+    <div class="end">TO BE CONTINUED</div>
+    <div class="nutcut-image-slot" data-image-slot><span>图片位 01</span></div>
+  </section>
+
+  <div class="hud" id="hud">
+    <span data-brand>NUTCUT / COMICS</span>
+    <span class="track"><i id="hud-bar"></i></span>
+    <span class="idx" id="hud-idx">01 / 06</span>
+    <span id="hud-time">00:00</span>
+  </div>
+</div>
+<script>
+(function () {
+  const FPS = 30, DUR = 30;
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+  const C = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
+  const S = (v) => { v = C(v); return v * v * (3 - 2 * v); };
+  const E = (v) => 1 - Math.pow(1 - C(v), 3);
+  const EI = (v) => { v = C(v); return v < .5 ? 2 * v * v : 1 - Math.pow(-2 * v + 2, 2) / 2; };
+  const EB = (v) => { v = C(v); const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(v - 1, 3) + c1 * Math.pow(v - 1, 2); };
+  const R = (i, s) => { const x = Math.sin(i * 127.1 + (s || 0) * 311.7) * 43758.5453; return x - Math.floor(x); };
+  const DEFAULT_TITLE = '这一格，轮到你了';
+  const DEFAULT_SUB = 'ISSUE #01 · POP EDITION';
+  const DEMO = [
+    { id: '01', text: '故事，总是从一声巨响开始。', start: 0, end: 4.7 },
+    { id: '02', text: '主角登场，自带三道速度线。', start: 5, end: 9.7 },
+    { id: '03', text: '三个招式，解决所有麻烦。', start: 10, end: 14.7 },
+    { id: '04', text: '等一下，反派也有自己的道理。', start: 15, end: 19.7 },
+    { id: '05', text: '最后一格，能量条拉满！', start: 20, end: 24.7 },
+    { id: '06', text: '下集预告：更大的世界。', start: 25, end: 30.6 }
+  ];
+  const scenes = $$('.scene');
+  let plan = [];
+
+  function buildPlan(inputs) {
+    const src = Array.isArray(inputs.lines) && inputs.lines.length ? inputs.lines.slice(0, 6) : DEMO;
+    const timed = src.length === 6 && src.every((l) => Number.isFinite(l.start) && Number.isFinite(l.end) && l.end > l.start);
+    plan = scenes.map((el, i) => {
+      const line = src[i] || DEMO[i];
+      return {
+        start: timed ? src[i].start : i * 5,
+        end: timed ? src[i].end : (i + 1) * 5 + .35,
+        text: String(line.text == null ? DEMO[i].text : line.text),
+        id: String(line.id == null ? DEMO[i].id : line.id)
+      };
+    });
+  }
+
+  function setText(el, value) { if (el && el.textContent !== value) el.textContent = value; }
+
+  function setChars(el, value) {
+    if (!el) return [];
+    if (el.dataset.text !== value) {
+      el.dataset.text = value; el.textContent = '';
+      for (const ch of Array.from(value)) {
+        const s = document.createElement('span'); s.className = 'ch'; s.textContent = ch; el.appendChild(s);
+      }
+    }
+    return Array.from(el.children);
+  }
+
+  function revealChars(list, local, delay, stagger, y) {
+    list.forEach((node, i) => {
+      const p = E((local - delay - i * stagger) / .5);
+      node.style.opacity = p;
+      node.style.transform = 'translateY(' + ((1 - p) * y) + '%)';
+    });
+  }
+
+  function applyInputs(inputs) {
+    if (inputs.accent) document.documentElement.style.setProperty('--accent', inputs.accent);
+    const brand = inputs.brand || 'NUTCUT / COMICS';
+    $$('[data-brand]').forEach((el) => setText(el, brand));
+    const title = inputs.title || DEFAULT_TITLE;
+    const sub = inputs.subtitle || DEFAULT_SUB;
+    $$('[data-title]').forEach((el) => setText(el, title));
+    $$('[data-sub]').forEach((el) => setText(el, sub));
+  }
+
+  const fx = $('#fx');
+  const g = fx.getContext('2d');
+  function drawBG(t, active) {
+    g.clearRect(0, 0, 1920, 1080);
+    if (active !== 0 && active !== 4) return;
+    const cx = active === 0 ? 900 : 700, cy = active === 0 ? 520 : 580;
+    const count = 84;
+    for (let i = 0; i < count; i++) {
+      const a = (i / count) * Math.PI * 2 + t * .04;
+      const r0 = 180 + R(i, 1) * 130;
+      const r1 = 1180 + R(i, 2) * 300;
+      g.strokeStyle = i % 4 === 0 ? 'rgba(255,59,48,.32)' : 'rgba(17,17,17,.22)';
+      g.lineWidth = i % 5 === 0 ? 5 : 2;
+      g.beginPath();
+      g.moveTo(cx + Math.cos(a) * r0, cy + Math.sin(a) * r0);
+      g.lineTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
+      g.stroke();
+    }
+    for (let i = 0; i < 26; i++) {
+      const x = R(i, 3) * 1920, y = R(i, 4) * 1080;
+      g.fillStyle = 'rgba(255,59,48,.4)';
+      g.beginPath(); g.arc(x, y, 2 + R(i, 5) * 4, 0, Math.PI * 2); g.fill();
+    }
+  }
+
+  function updateScene1(local, t, p) {
+    setText($('#s1-kicker'), p.text);
+    const chars = setChars($('#s1-title'), $('#s1-title').dataset.text || DEFAULT_TITLE);
+    revealChars(chars, local, .12, .04, 130);
+    const panel = $('.s1 .panel');
+    const e = EB((local - .05) / .55);
+    panel.style.transform = 'rotate(-1.6deg) scale(' + (.88 + .12 * e) + ')';
+    $('.issue').style.transform = 'rotate(' + (9 + (1 - EB((local - .5) / .5)) * 22) + 'deg) scale(' + (.6 + .4 * EB((local - .5) / .5)) + ')';
+    $('.issue').style.opacity = S((local - .5) / .3);
+    $('.sticker').style.transform = 'rotate(4deg) translateY(' + ((1 - EB((local - 1.1) / .5)) * 26) + 'px)';
+    $('.sticker').style.opacity = S((local - 1.1) / .4);
+    $('.s1 .sub').style.opacity = S((local - .9) / .6);
+  }
+
+  function updateScene2(local, t, p) {
+    setText($('#s2-title'), p.text);
+    const els = [$('.s2 .p1'), $('.s2 .p2'), $('.s2 .p3')];
+    els.forEach((el, i) => {
+      const e = E((local - .05 - i * .18) / .5);
+      const dir = i === 0 ? -1 : 1;
+      el.style.opacity = e;
+      el.style.transform = 'translateX(' + ((1 - e) * 110 * dir) + 'px) rotate(' + ((1 - e) * 6 * dir) + 'deg)';
+    });
+    $$('.s2 .ink').forEach((el, i) => {
+      el.style.strokeDashoffset = (1 - C((local - .8 - i * .2) / .7)).toFixed(3);
+    });
+  }
+
+  function updateScene3(local, t, p) {
+    setText($('#s3-title'), p.text);
+    const cells = $$('.comic-cell');
+    cells.forEach((el, i) => {
+      const e = EB((local - .1 - i * .18) / .6);
+      el.style.opacity = S((local - .1 - i * .18) / .35);
+      el.style.transform = 'translateY(' + ((1 - e) * 120) + 'px) rotate(' + ((1 - e) * [3, -2, 4][i]) + 'deg)';
+    });
+  }
+
+  function updateScene4(local, t, p) {
+    setText($('#s4-title'), p.text);
+    const e = E((local - .1) / .5);
+    $('.s4 h2').style.opacity = e;
+    $('.s4 h2').style.transform = 'translateY(' + ((1 - e) * 34) + 'px)';
+    const jitter = local < 1.0 ? Math.sin(local * 70) * (1 - local) : 0;
+    $('.s4 .panel').style.transform = 'rotate(.8deg) translate(' + (jitter * 6) + 'px,' + (jitter * 4) + 'px)';
+    $('.pow').style.opacity = S((local - .9) / .4);
+    const b = EB((local - .9) / .6);
+    $('.pow').style.transform = 'rotate(-12deg) scale(' + (.4 + .6 * b) + ')';
+    $('.note').style.opacity = S((local - 1.3) / .6);
+  }
+
+  function updateScene5(local, t, p) {
+    setText($('#s5-title'), p.text);
+    const e = EB((local - .1) / .6);
+    $('#s5-big').style.opacity = S((local - .1) / .4);
+    $('#s5-big').style.transform = 'scale(' + (.5 + .5 * e) + ') rotate(' + ((1 - e) * -8) + 'deg)';
+    const card = $('.s5 .card');
+    const ce = E((local - .55) / .6);
+    card.style.opacity = ce;
+    card.style.transform = 'rotate(-2deg) translateY(' + ((1 - ce) * 60) + 'px)';
+    $('#s5-bar').style.width = (100 * E((local - 1.0) / 1.4)) + '%';
+  }
+
+  function updateScene6(local, t, p) {
+    const chars = setChars($('#s6-title'), $('#s6-title').dataset.text || DEFAULT_TITLE);
+    revealChars(chars, local, .1, .05, 120);
+    setText($('#s6-note'), p.text);
+    $('.s6 .sub').style.opacity = S((local - 1.0) / .6);
+    $('.s6 .next').style.opacity = S((local - 1.2) / .7);
+    const e = EB((local - 1.1) / .5);
+    $('.end').style.opacity = S((local - 1.1) / .4);
+    $('.end').style.transform = 'rotate(-3deg) scale(' + (.6 + .4 * e) + ')';
+  }
+
+  const updates = [updateScene1, updateScene2, updateScene3, updateScene4, updateScene5, updateScene6];
+
+  window.renderFrame = function (frame, inputs) {
+    inputs = inputs || {};
+    buildPlan(inputs);
+    applyInputs(inputs);
+    const t = frame / FPS;
+    let active = 0;
+    for (let i = 0; i < plan.length; i += 1) if (t >= plan[i].start - .001) active = i;
+    scenes.forEach((el, i) => {
+      const p = plan[i];
+      const op = Math.min(S((t - p.start + .7) / .7), S((p.end - t) / .6));
+      el.style.visibility = op > .001 ? 'visible' : 'hidden';
+      el.style.opacity = op.toFixed(3);
+    });
+    updates[active](Math.max(0, t - plan[active].start) + (active === 0 ? 1.4 : 0), t, plan[active]);
+    drawBG(t, active);
+    $('#hud').style.color = active === 5 ? '#fff' : '#111';
+    $('#hud-bar').style.width = (C(t / DUR) * 100) + '%';
+    setText($('#hud-idx'), String(active + 1).padStart(2, '0') + ' / 06');
+    setText($('#hud-time'), '00:' + String(Math.floor(t)).padStart(2, '0'));
+  };
+
+  applyInputs({});
+  window.renderFrame(0, {});
+  window.__ready = true;
+})();
+</script>
+<script>
+  (function () {
+    var slot = document.querySelector('[data-image-slot]');
+    if (!slot) return;
+    var original = window.renderFrame;
+    window.renderFrame = function (frame, inputs) {
+      var image = inputs && inputs.images && inputs.images[0];
+      var url = image && (typeof image === 'string' ? image : image.url);
+      if (url) { slot.style.backgroundImage = 'url("' + url + '")'; slot.classList.add('has-image'); }
+      else { slot.style.backgroundImage = ''; slot.classList.remove('has-image'); }
+      return original(frame, inputs);
+    };
+  })();
+</script>
+</body>
+</html>

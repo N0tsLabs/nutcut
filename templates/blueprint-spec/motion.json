@@ -1,0 +1,32 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "blueprint-spec",
+  "name": "工程蓝图",
+  "version": "1.0.0",
+  "description": "蓝底白线的工程蓝图模板：网格纸、尺寸标注、系统示意图、零件表与实测柱图，适合方案说明、硬件结构与流程拆解。",
+  "tags": [
+    "蓝图",
+    "工程",
+    "图纸",
+    "标注",
+    "技术"
+  ],
+  "runtime": {
+    "profile": "html/1",
+    "entry": "src/index.html",
+    "network": false
+  },
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 30
+  },
+  "params": {
+    "schema": "params.schema.json",
+    "defaultPreset": "presets/default.json"
+  },
+  "license": "LICENSE",
+  "preview": "preview.svg"
+}

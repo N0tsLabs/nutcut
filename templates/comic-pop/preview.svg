@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="漫画分镜模板预览">
+  <defs>
+    <pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse">
+      <rect width="18" height="18" fill="#ffe14d"/>
+      <circle cx="5" cy="5" r="1.6" fill="#111" fill-opacity=".16"/>
+    </pattern>
+    <pattern id="dotsRed" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="8" cy="8" r="2" fill="#ff3b30" fill-opacity=".2"/>
+    </pattern>
+    <clipPath id="burst">
+      <path d="M960 40 1000 200 1090 90 1094 250 1200 180 1150 330 1290 300 1180 420 1290 470 1160 540 1220 640 1080 630 1100 760 980 680 960 800 900 680 800 760 810 630 690 650 740 540 620 480 730 420 630 330 760 320 700 220 810 250 800 110 890 190Z"/>
+    </clipPath>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#dots)"/>
+  <rect width="1920" height="1080" fill="url(#dotsRed)"/>
+
+  <g>
+    <rect x="124" y="192" width="1200" height="620" fill="#111" opacity=".9" transform="rotate(-1.6 724 502) translate(16 16)"/>
+    <rect x="124" y="192" width="1200" height="620" fill="#fffdf5" stroke="#111" stroke-width="8" transform="rotate(-1.6 724 502)"/>
+    <g transform="rotate(-1.6 724 502)">
+      <rect x="160" y="146" width="280" height="58" fill="#111"/>
+      <text x="180" y="186" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="900" letter-spacing="3" fill="#ffe14d">MEANWHILE…</text>
+      <text x="176" y="360" font-family="Microsoft YaHei, sans-serif" font-size="142" font-weight="900" letter-spacing="-6" fill="#111">这一格，</text>
+      <text x="176" y="510" font-family="Microsoft YaHei, sans-serif" font-size="142" font-weight="900" letter-spacing="-6" fill="#111">轮到你了</text>
+      <rect x="180" y="536" width="440" height="30" fill="#ffe14d" opacity=".9"/>
+      <text x="184" y="690" font-family="Arial Black, Microsoft YaHei, sans-serif" font-size="26" font-weight="900" letter-spacing="4" fill="#111">ISSUE #01 · POP EDITION</text>
+    </g>
+  </g>
+
+  <g transform="translate(1470 380) rotate(9)">
+    <path d="M210 0 246 116 330 40 332 168 420 110 380 226 500 200 412 300 500 340 400 388 448 470 340 450 356 560 270 494 250 590 196 494 120 560 132 450 30 470 88 388 0 340 88 300 0 200 120 226 78 110 166 168 168 40 252 116Z" fill="#ff3b30" stroke="#111" stroke-width="8"/>
+    <text x="250" y="270" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="84" font-weight="900" fill="#ffe14d">#01</text>
+    <text x="250" y="330" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="900" fill="#fff">POP EDITION</text>
+  </g>
+
+  <g transform="translate(1380 812) rotate(4)">
+    <rect width="300" height="66" fill="#2563eb" stroke="#111" stroke-width="6"/>
+    <text x="150" y="44" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="900" letter-spacing="3" fill="#fff">NUTCUT ORIGINAL</text>
+  </g>
+
+  <g transform="translate(124 872)" font-family="Microsoft YaHei, sans-serif">
+    <rect width="470" height="64" fill="#fffdf5" stroke="#111" stroke-width="6" transform="translate(10 10)"/>
+    <rect width="470" height="64" fill="#fffdf5" stroke="#111" stroke-width="6"/>
+    <text x="24" y="42" font-size="24" font-weight="900" fill="#111">三招解决所有麻烦 →</text>
+  </g>
+
+  <g font-family="Consolas, monospace" font-size="12" font-weight="700" letter-spacing="2" fill="#111">
+    <text x="112" y="1030">NUTCUT / COMICS</text>
+    <rect x="330" y="1024" width="1380" height="6" fill="#111" opacity=".16"/>
+    <rect x="330" y="1024" width="620" height="6" fill="#ff3b30"/>
+    <text x="1800" y="1032" text-anchor="end" fill="#ff3b30">01 / 06</text>
+  </g>
+</svg>

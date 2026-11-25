@@ -1,0 +1,626 @@
+{
+  "name": "NutCut 风格参考库",
+  "version": 1,
+  "source": {
+    "name": "Code Animation Prompts",
+    "url": "https://github.com/XiaoyeCodes/code-animation-prompts",
+    "note": "只做风格方向参考与索引，不复制原始提示词。原合集免费分享，禁止包装成付费课程或付费 skill 销售。"
+  },
+  "usage": "Agent 选模板前先读这里，确定视觉语言、动效语言和需要的模块（table / chart / image-slot），再决定用现成模板还是新建模板。",
+  "styles": [
+    {
+      "id": "A1",
+      "name": "字雨",
+      "category": "文字动态",
+      "visual": "大量文字像雨一样下落、堆叠、冲刷画面，适合金句、关键词、科技感片头。",
+      "motion": "下落、加速、碰撞、堆叠、突然静止。",
+      "palette": [
+        "深黑",
+        "冷白",
+        "单一荧光色"
+      ],
+      "bestFor": [
+        "片头",
+        "金句",
+        "科技",
+        "关键词"
+      ],
+      "closestTemplate": "type-rain"
+    },
+    {
+      "id": "A2",
+      "name": "光标打字",
+      "category": "文字动态",
+      "visual": "终端/编辑器界面，光标逐字敲出文案，旁边有状态、日志、参数。",
+      "motion": "逐字出现、光标闪烁、行滚动、状态切换。",
+      "palette": [
+        "深色终端",
+        "绿色或青色",
+        "等宽字体"
+      ],
+      "bestFor": [
+        "AI",
+        "编程",
+        "教程",
+        "产品能力"
+      ],
+      "closestTemplate": "cursor-terminal"
+    },
+    {
+      "id": "A3",
+      "name": "大字冲击",
+      "category": "文字动态",
+      "visual": "超大字号占满画面，粗黑体、强对比、单字或短句。",
+      "motion": "砸入、放大、抖动、切镜、留白。",
+      "palette": [
+        "黑",
+        "白",
+        "高饱和红/黄"
+      ],
+      "bestFor": [
+        "观点",
+        "口号",
+        "短视频钩子"
+      ],
+      "closestTemplate": "type-rain"
+    },
+    {
+      "id": "A4",
+      "name": "字的隧道",
+      "category": "文字动态",
+      "visual": "文字向画面深处排成隧道，镜头向前穿梭。",
+      "motion": "纵深推进、透视缩放、速度线。",
+      "palette": [
+        "深色",
+        "霓虹",
+        "高对比"
+      ],
+      "bestFor": [
+        "科技",
+        "片头",
+        "概念"
+      ],
+      "closestTemplate": "cyber-grid"
+    },
+    {
+      "id": "A5",
+      "name": "字散了再聚",
+      "category": "文字动态",
+      "visual": "文字先碎成粒子/偏旁，再重新聚成一句话。",
+      "motion": "散开、漂浮、聚合、定格。",
+      "palette": [
+        "深色",
+        "暖金",
+        "冷蓝"
+      ],
+      "bestFor": [
+        "情绪转折",
+        "主题揭示",
+        "片尾"
+      ],
+      "closestTemplate": null
+    },
+    {
+      "id": "B2",
+      "name": "萤火光尘",
+      "category": "粒子光效",
+      "visual": "大量柔光粒子缓慢漂浮，像萤火虫或灰尘。",
+      "motion": "漂浮、呼吸、聚散、轻微景深。",
+      "palette": [
+        "黑",
+        "暖金",
+        "青绿"
+      ],
+      "bestFor": [
+        "情绪",
+        "自然",
+        "治愈",
+        "片头"
+      ],
+      "closestTemplate": "nature-organic"
+    },
+    {
+      "id": "B3",
+      "name": "粒子聚形",
+      "category": "粒子光效",
+      "visual": "粒子从散乱状态聚成文字、图形或产品轮廓。",
+      "motion": "聚形、形变、爆散、重组。",
+      "palette": [
+        "深色",
+        "单色粒子",
+        "发光边缘"
+      ],
+      "bestFor": [
+        "AI",
+        "概念",
+        "发布片",
+        "片头"
+      ],
+      "closestTemplate": null
+    },
+    {
+      "id": "B4",
+      "name": "星空连线",
+      "category": "粒子光效",
+      "visual": "节点与连线组成网络，像星空、神经网络或关系图。",
+      "motion": "节点出现、连线生长、视角缓慢移动。",
+      "palette": [
+        "深蓝黑",
+        "青色",
+        "白色"
+      ],
+      "bestFor": [
+        "AI",
+        "网络",
+        "系统",
+        "关系"
+      ],
+      "closestTemplate": "cyber-grid"
+    },
+    {
+      "id": "C1",
+      "name": "水墨晕开",
+      "category": "国风",
+      "visual": "墨迹在宣纸上扩散，形成山水、文字或形状。",
+      "motion": "晕染、扩散、笔触生长、留白。",
+      "palette": [
+        "宣纸米白",
+        "墨黑",
+        "少量朱红"
+      ],
+      "bestFor": [
+        "国风",
+        "文化",
+        "品牌",
+        "节气"
+      ],
+      "closestTemplate": "nature-organic"
+    },
+    {
+      "id": "D2",
+      "name": "窗光与尘",
+      "category": "氛围",
+      "visual": "窗边光线、空气灰尘、安静室内，电影感。",
+      "motion": "缓慢推近、光斑移动、尘埃漂浮。",
+      "palette": [
+        "暖棕",
+        "奶油",
+        "低饱和"
+      ],
+      "bestFor": [
+        "纪实",
+        "生活",
+        "情绪",
+        "品牌故事"
+      ],
+      "closestTemplate": "warm-documentary"
+    },
+    {
+      "id": "E1",
+      "name": "极简几何",
+      "category": "极简",
+      "visual": "白底、黑字、几何块面、严格网格、一个强调色。",
+      "motion": "切、滑入、遮罩、网格对齐。",
+      "palette": [
+        "白",
+        "黑",
+        "红/蓝单色"
+      ],
+      "bestFor": [
+        "观点",
+        "品牌",
+        "设计",
+        "极简"
+      ],
+      "closestTemplate": "minimal-swiss"
+    },
+    {
+      "id": "E3",
+      "name": "字符画",
+      "category": "极简",
+      "visual": "用字符、符号、代码文本拼成图像。",
+      "motion": "字符刷新、逐行打印、分辨率变化。",
+      "palette": [
+        "终端绿",
+        "黑白",
+        "单色"
+      ],
+      "bestFor": [
+        "编程",
+        "AI",
+        "复古",
+        "实验"
+      ],
+      "closestTemplate": "cyber-grid"
+    },
+    {
+      "id": "F1",
+      "name": "图表生长",
+      "category": "数据信息",
+      "visual": "柱状图、折线图、环形图随讲解生长，配 KPI 与注释。",
+      "motion": "柱子上长、折线延伸、数字滚动。",
+      "palette": [
+        "数据蓝",
+        "青绿",
+        "深色底"
+      ],
+      "bestFor": [
+        "数据",
+        "财报",
+        "科普",
+        "商业"
+      ],
+      "closestTemplate": "data-console"
+    },
+    {
+      "id": "F2",
+      "name": "关系图",
+      "category": "数据信息",
+      "visual": "节点、连线、中心辐射，表达系统关系。",
+      "motion": "节点出现、连线生长、中心放大。",
+      "palette": [
+        "深色",
+        "多色节点",
+        "细线"
+      ],
+      "bestFor": [
+        "系统",
+        "AI",
+        "组织",
+        "生态"
+      ],
+      "closestTemplate": "cyber-grid"
+    },
+    {
+      "id": "F3",
+      "name": "分屏对比",
+      "category": "数据信息",
+      "visual": "左右/四宫格对比，前后、优劣、方案 A/B。",
+      "motion": "分屏进入、遮罩切换、数字对比。",
+      "palette": [
+        "双色对比",
+        "清晰分隔"
+      ],
+      "bestFor": [
+        "对比",
+        "评测",
+        "方案",
+        "前后"
+      ],
+      "closestTemplate": "minimal-swiss"
+    },
+    {
+      "id": "G1",
+      "name": "老胶片",
+      "category": "复古/故障",
+      "visual": "胶片颗粒、划痕、漏光、低饱和暖色。",
+      "motion": "颗粒抖动、帧闪、轻微晃动。",
+      "palette": [
+        "暖棕",
+        "褪色黄",
+        "黑"
+      ],
+      "bestFor": [
+        "怀旧",
+        "故事",
+        "品牌历史"
+      ],
+      "closestTemplate": "retro-vhs"
+    },
+    {
+      "id": "G2",
+      "name": "信号故障",
+      "category": "复古/故障",
+      "visual": "RGB 分离、扫描线、画面撕裂、时间码。",
+      "motion": "故障闪烁、信号切换、画面重组。",
+      "palette": [
+        "紫粉",
+        "青色",
+        "黑"
+      ],
+      "bestFor": [
+        "科技",
+        "音乐",
+        "潮流",
+        "预告"
+      ],
+      "closestTemplate": "retro-vhs"
+    },
+    {
+      "id": "H1",
+      "name": "Biennale Yellow",
+      "category": "版式",
+      "visual": "展览海报式排版，大字、色块、编号、强网格。",
+      "motion": "版式切换、色块滑入、文字遮罩。",
+      "palette": [
+        "亮黄",
+        "黑",
+        "白"
+      ],
+      "bestFor": [
+        "品牌",
+        "活动",
+        "艺术",
+        "观点"
+      ],
+      "closestTemplate": "minimal-swiss"
+    },
+    {
+      "id": "H3",
+      "name": "Blue Professional",
+      "category": "版式",
+      "visual": "深蓝商务、数据卡片、细线图表、可信稳重。",
+      "motion": "卡片进入、数字滚动、图表生长。",
+      "palette": [
+        "深蓝",
+        "白",
+        "青绿"
+      ],
+      "bestFor": [
+        "金融",
+        "企业",
+        "报告",
+        "B 端"
+      ],
+      "closestTemplate": "finance-blue"
+    },
+    {
+      "id": "K6",
+      "name": "清线漫画",
+      "category": "漫画",
+      "visual": "干净线稿、少量网点、明亮色块。",
+      "motion": "分镜切换、对话框弹出、速度线。",
+      "palette": [
+        "白",
+        "黑线",
+        "明亮纯色"
+      ],
+      "bestFor": [
+        "故事",
+        "科普",
+        "轻松",
+        "分镜"
+      ],
+      "closestTemplate": "comic-pop"
+    },
+    {
+      "id": "K10",
+      "name": "粉笔黑板",
+      "category": "科普",
+      "visual": "黑板、粉笔字、手绘箭头和圈选。",
+      "motion": "粉笔书写、擦除、圈选、箭头生长。",
+      "palette": [
+        "深绿黑板",
+        "白粉笔",
+        "黄/粉强调"
+      ],
+      "bestFor": [
+        "教学",
+        "科普",
+        "原理解释"
+      ],
+      "closestTemplate": "science-paper"
+    },
+    {
+      "id": "K21",
+      "name": "手工纸艺",
+      "category": "材质/3D",
+      "visual": "纸张层叠、撕边、阴影、手工感。",
+      "motion": "纸张翻动、层叠、拼贴。",
+      "palette": [
+        "米色",
+        "纸白",
+        "柔和自然色"
+      ],
+      "bestFor": [
+        "生活方式",
+        "儿童",
+        "品牌",
+        "治愈"
+      ],
+      "closestTemplate": "nature-organic"
+    },
+    {
+      "id": "K24",
+      "name": "粘土",
+      "category": "材质/3D",
+      "visual": "粘土质感、圆润形状、手工痕迹。",
+      "motion": "挤压、弹跳、变形、定格动画感。",
+      "palette": [
+        "明亮粉彩",
+        "暖色",
+        "柔和阴影"
+      ],
+      "bestFor": [
+        "儿童",
+        "轻松",
+        "产品",
+        "故事"
+      ],
+      "closestTemplate": "kids-crayon"
+    },
+    {
+      "id": "K25",
+      "name": "皮克斯式 3D",
+      "category": "材质/3D",
+      "visual": "圆润 3D 角色/物件、柔和全局光、温暖色彩。",
+      "motion": "镜头推进、角色动作、景深。",
+      "palette": [
+        "暖色",
+        "高光",
+        "柔和背景"
+      ],
+      "bestFor": [
+        "故事",
+        "品牌",
+        "儿童",
+        "产品"
+      ],
+      "closestTemplate": null
+    },
+    {
+      "id": "K27",
+      "name": "低多边形",
+      "category": "材质/3D",
+      "visual": "低面数 3D、几何切面、等距视角。",
+      "motion": "旋转、组装、镜头环绕。",
+      "palette": [
+        "冷色/暖色对比",
+        "几何阴影"
+      ],
+      "bestFor": [
+        "科技",
+        "产品",
+        "数据",
+        "概念"
+      ],
+      "closestTemplate": "isometric-3d"
+    },
+    {
+      "id": "K28",
+      "name": "像素",
+      "category": "复古/故障",
+      "visual": "8-bit 像素、游戏 UI、有限色板。",
+      "motion": "像素化、逐格动画、对话框。",
+      "palette": [
+        "有限 8 色",
+        "高饱和"
+      ],
+      "bestFor": [
+        "游戏",
+        "怀旧",
+        "年轻",
+        "趣味"
+      ],
+      "closestTemplate": "pixel-arcade"
+    },
+    {
+      "id": "K34",
+      "name": "赛博霓虹",
+      "category": "科技",
+      "visual": "深色底、霓虹青紫、网格、扫描线、发光边框。",
+      "motion": "扫描、发光脉冲、数据流、故障。",
+      "palette": [
+        "黑蓝",
+        "青色",
+        "紫色"
+      ],
+      "bestFor": [
+        "AI",
+        "科技",
+        "发布片",
+        "潮流"
+      ],
+      "closestTemplate": "tech-neon"
+    },
+    {
+      "id": "M1",
+      "name": "白板手绘讲解",
+      "category": "科普",
+      "visual": "白板、手绘线稿、箭头、圈选、简洁图标。",
+      "motion": "手绘生长、擦除、逐步揭示。",
+      "palette": [
+        "白",
+        "黑线",
+        "蓝绿标注"
+      ],
+      "bestFor": [
+        "知识",
+        "教程",
+        "原理解释"
+      ],
+      "closestTemplate": "science-paper"
+    },
+    {
+      "id": "M18",
+      "name": "数学/科学讲解",
+      "category": "科普",
+      "visual": "深色背景、几何图形、公式、精确动画。",
+      "motion": "图形变换、公式推导、镜头推移。",
+      "palette": [
+        "深色",
+        "蓝绿",
+        "暖色强调"
+      ],
+      "bestFor": [
+        "数学",
+        "物理",
+        "AI 原理"
+      ],
+      "closestTemplate": "data-console"
+    },
+    {
+      "id": "M20",
+      "name": "时间线/历史",
+      "category": "信息",
+      "visual": "横向/纵向时间轴、年代、事件卡片、档案图片。",
+      "motion": "时间轴推进、节点点亮、卡片切换。",
+      "palette": [
+        "档案米色",
+        "深棕",
+        "暗红"
+      ],
+      "bestFor": [
+        "历史",
+        "品牌历程",
+        "纪录片"
+      ],
+      "closestTemplate": "timeline-archive"
+    },
+    {
+      "id": "M34",
+      "name": "新闻快讯盘点",
+      "category": "信息",
+      "visual": "新闻演播室、下三分之一字幕、数据图、表格。",
+      "motion": "快切、字幕条、数字滚动。",
+      "palette": [
+        "新闻红",
+        "深蓝",
+        "白"
+      ],
+      "bestFor": [
+        "资讯",
+        "盘点",
+        "热点"
+      ],
+      "closestTemplate": "data-console"
+    },
+    {
+      "id": "Z1",
+      "name": "水墨",
+      "category": "国风",
+      "visual": "水墨山水、留白、书法、宣纸。",
+      "motion": "墨迹扩散、笔触、缓慢推移。",
+      "palette": [
+        "黑白灰",
+        "宣纸",
+        "朱红"
+      ],
+      "bestFor": [
+        "文化",
+        "节气",
+        "品牌",
+        "片头"
+      ],
+      "closestTemplate": "nature-organic"
+    },
+    {
+      "id": "Z5",
+      "name": "剪纸",
+      "category": "国风",
+      "visual": "红纸剪纸、层叠、民俗纹样。",
+      "motion": "剪纸展开、层叠、旋转。",
+      "palette": [
+        "中国红",
+        "米白",
+        "金"
+      ],
+      "bestFor": [
+        "节日",
+        "国风",
+        "祝福"
+      ],
+      "closestTemplate": "paper-cut-festival"
+    }
+  ]
+}

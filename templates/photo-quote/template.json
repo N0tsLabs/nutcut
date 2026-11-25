@@ -1,0 +1,41 @@
+{
+  "id": "photo-quote",
+  "name": "图片引言",
+  "group": "图片素材",
+  "category": "图片",
+  "description": "全屏图片做底，超大引言压在画面上，角落一张小图，适合观点和金句。",
+  "tags": [
+    "图片",
+    "引言",
+    "金句",
+    "纪实"
+  ],
+  "palette": {
+    "background": "#0c0f13",
+    "surface": "#1b2027",
+    "primary": "#ffffff",
+    "accent": "#ffd08a",
+    "text": "#ffffff",
+    "muted": "#a8adb8"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 500,
+    "titleSize": 96
+  },
+  "motion": {
+    "transition": "quote-fade",
+    "speed": "slow"
+  },
+  "duration": 10,
+  "sceneCount": 4,
+  "stylePrompt": "图片引言，全屏图片、深色遮罩、超大白色金句、角落小图，适合观点和纪实内容。",
+  "preview": "preview.png",
+  "features": [
+    "image-slot"
+  ],
+  "styleRefs": [
+    "H3",
+    "K34"
+  ]
+}

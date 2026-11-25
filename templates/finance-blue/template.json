@@ -1,0 +1,43 @@
+{
+  "id": "finance-blue",
+  "name": "金融蓝",
+  "category": "金融",
+  "description": "深蓝商务金融模板：K 线、柱状图、数据卡片与等宽数字，稳重可信，适合财报、投资与商业分析。",
+  "tags": [
+    "金融",
+    "商务",
+    "数据",
+    "深蓝",
+    "可信"
+  ],
+  "palette": {
+    "background": "#071a33",
+    "surface": "#0d2547",
+    "primary": "#2f6fed",
+    "accent": "#16a34a",
+    "text": "#eaf1ff",
+    "muted": "#8fb0d9"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 400,
+    "titleSize": 94
+  },
+  "motion": {
+    "transition": "rise",
+    "speed": "medium"
+  },
+  "duration": 30,
+  "sceneCount": 6,
+  "stylePrompt": "深蓝金融商务视觉，白色数据卡片与K线图，细网格与等宽数字，稳重可信的企业质感，冷色灯光，精确对齐",
+  "preview": "preview.svg",
+  "features": [
+    "image-slot"
+  ],
+  "styleRefs": [
+    "H3",
+    "F1",
+    "M34"
+  ],
+  "group": "信息数据"
+}

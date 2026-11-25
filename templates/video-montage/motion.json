@@ -1,0 +1,14 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "video-montage",
+  "name": "视频混剪",
+  "version": "1.0.0",
+  "description": "视频素材类：全屏 B-roll 段落 + 大字提示 + 片段进度，适合混剪、产品视频、旅行视频。",
+  "tags": ["视频", "混剪", "B-roll", "转场", "横屏"],
+  "runtime": { "profile": "html/1", "entry": "src/index.html", "network": false },
+  "output": { "width": 1920, "height": 1080, "fps": 30, "duration": 10 },
+  "params": { "schema": "params.schema.json", "defaultPreset": "presets/default.json" },
+  "license": "LICENSE",
+  "preview": "preview.png"
+}

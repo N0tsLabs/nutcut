@@ -1,0 +1,12 @@
+{
+  "title": "像素街机",
+  "subtitle": "PIXEL ARCADE · INSERT COIN TO CONTINUE",
+  "lines": [
+    { "id": "01", "text": "一枚硬币，换一段像素冒险。", "start": 0, "end": 5 },
+    { "id": "02", "text": "第一关的任务：把想法打通。", "start": 5, "end": 10 },
+    { "id": "03", "text": "每过一关，分数都会亮一次。", "start": 10, "end": 15 },
+    { "id": "04", "text": "名字上榜，才算真的通关。", "start": 15, "end": 20 },
+    { "id": "05", "text": "记忆卡里，存着两个世界。", "start": 20, "end": 25 },
+    { "id": "06", "text": "继续投币，故事还没结束。", "start": 25, "end": 30 }
+  ]
+}

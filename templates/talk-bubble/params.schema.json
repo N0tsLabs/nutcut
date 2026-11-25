@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "口播气泡 · 参数合同",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "title": { "type": "string", "default": "让头像说人话" },
+    "bubble": { "type": "string", "default": "画面可以很小，但说的话要清楚。" }
+  }
+}

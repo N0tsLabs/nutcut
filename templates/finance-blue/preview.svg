@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="金融蓝模板预览">
+  <defs>
+    <linearGradient id="fbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a2244"/><stop offset=".55" stop-color="#071a33"/><stop offset="1" stop-color="#051326"/>
+    </linearGradient>
+    <linearGradient id="farea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2f6fed" stop-opacity=".32"/><stop offset="1" stop-color="#2f6fed" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="fgrid" width="96" height="90" patternUnits="userSpaceOnUse">
+      <path d="M96 0H0V90" fill="none" stroke="#8fb0d9" stroke-opacity=".055"/>
+    </pattern>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#fbg)"/>
+  <rect width="1920" height="1080" fill="url(#fgrid)"/>
+
+  <g font-family="Consolas, monospace" font-size="12" font-weight="700" letter-spacing="3">
+    <text x="112" y="88" fill="#8fb0d9">01 / MARKET OPEN</text>
+    <g fill="#8fb0d9" text-anchor="end">
+      <text x="1808" y="88">SSE <tspan fill="#16a34a">+0.82%</tspan></text>
+      <text x="1640" y="88">NASDAQ <tspan fill="#16a34a">+1.14%</tspan></text>
+      <text x="1460" y="88">HSI <tspan fill="#ef4444">-0.36%</tspan></text>
+    </g>
+  </g>
+
+  <g transform="translate(1000 210)">
+    <g stroke="#8fb0d9" stroke-opacity=".13">
+      <path d="M0 100H780M0 200H780M0 300H780M0 400H780M0 500H780"/>
+    </g>
+    <path d="M0 430L98 398 196 420 294 338 392 360 490 256 588 280 686 182 780 122V500H0Z" fill="url(#farea)"/>
+    <path d="M0 430L98 398 196 420 294 338 392 360 490 256 588 280 686 182 780 122" fill="none" stroke="#4f8ef7" stroke-width="3"/>
+    <circle cx="780" cy="122" r="7" fill="#16a34a"/>
+  </g>
+
+  <g font-family="Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="108" y="330" font-size="104" font-weight="900" letter-spacing="-4" fill="#eaf1ff">让每一分，</text>
+    <text x="108" y="446" font-size="104" font-weight="900" letter-spacing="-4" fill="#eaf1ff">都看得见</text>
+    <text x="112" y="520" font-size="24" letter-spacing="4" fill="#8fb0d9">CLARITY IN EVERY NUMBER</text>
+    <text x="112" y="568" font-size="15" font-family="Consolas, monospace" letter-spacing="2" fill="#4f8ef7">数字不会说谎，但需要被读懂。</text>
+  </g>
+
+  <g font-family="Consolas, monospace">
+    <g transform="translate(112 700)">
+      <rect width="536" height="176" fill="#0d2547" fill-opacity=".85" stroke="#8fb0d9" stroke-opacity=".2"/>
+      <text x="28" y="36" font-size="10" letter-spacing="3" fill="#8fb0d9">TOTAL RETURN</text>
+      <text x="28" y="104" font-size="48" font-weight="700" fill="#eaf1ff">+18.4<tspan font-size="20" fill="#8fb0d9">%</tspan></text>
+      <text x="28" y="142" font-size="13" fill="#16a34a">▲ 2.1% YOY</text>
+    </g>
+    <g transform="translate(692 700)">
+      <rect width="536" height="176" fill="#0d2547" fill-opacity=".85" stroke="#8fb0d9" stroke-opacity=".2"/>
+      <text x="28" y="36" font-size="10" letter-spacing="3" fill="#8fb0d9">VOLATILITY</text>
+      <text x="28" y="104" font-size="48" font-weight="700" fill="#eaf1ff">0.38</text>
+      <text x="28" y="142" font-size="13" fill="#ef4444">▼ 0.04</text>
+    </g>
+    <g transform="translate(1272 700)">
+      <rect width="536" height="176" fill="#0d2547" fill-opacity=".85" stroke="#8fb0d9" stroke-opacity=".2"/>
+      <text x="28" y="36" font-size="10" letter-spacing="3" fill="#8fb0d9">CONFIDENCE</text>
+      <text x="28" y="104" font-size="48" font-weight="700" fill="#eaf1ff">92<tspan font-size="20" fill="#8fb0d9">%</tspan></text>
+      <text x="28" y="142" font-size="13" fill="#16a34a">▲ 6 pts</text>
+    </g>
+  </g>
+
+  <g transform="translate(1140 560)" stroke-width="2">
+    <g stroke="#16a34a" fill="#16a34a">
+      <line x1="0" y1="-40" x2="0" y2="40"/><rect x="-8" y="-16" width="16" height="34"/>
+      <line x1="58" y1="-70" x2="58" y2="10"/><rect x="50" y="-46" width="16" height="34"/>
+      <line x1="116" y1="-100" x2="116" y2="-30"/><rect x="108" y="-74" width="16" height="30"/>
+    </g>
+    <g stroke="#ef4444" fill="#ef4444">
+      <line x1="174" y1="-90" x2="174" y2="-20"/><rect x="166" y="-66" width="16" height="26"/>
+    </g>
+  </g>
+
+  <g font-family="Consolas, monospace" font-size="11" font-weight="700" letter-spacing="3" fill="#8fb0d9">
+    <text x="112" y="1042">NUTCUT / CAPITAL</text>
+    <path d="M360 1038H1780" stroke="#8fb0d9" stroke-opacity=".15"/>
+    <path d="M360 1037H840" stroke="#2f6fed" stroke-width="2"/>
+    <text x="1808" y="1042" text-anchor="end" fill="#4f8ef7">01 / 06</text>
+  </g>
+</svg>

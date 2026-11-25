@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "字雨 · 参数合同",
+  "description": "type-rain 的可替换文案参数。所有字段均可省略，省略时使用内置演示文案。",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "主标题",
+      "default": "字，落成一场雨",
+      "maxLength": 24,
+      "x-capacity": {
+        "maxChars": 24,
+        "maxLines": 1
+      }
+    },
+    "subtitle": {
+      "type": "string",
+      "title": "副标题",
+      "default": "TYPE RAIN · 让文字自己走完这段路",
+      "maxLength": 60
+    },
+    "lines": {
+      "type": "array",
+      "title": "分句文案",
+      "description": "最多 6 句；start/end 单位为秒。全部给出时按真实时间排场景，否则平均分成 30 秒。",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 12
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 42
+          },
+          "start": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 30
+          },
+          "end": {
+            "type": "number",
+            "minimum": 0.5,
+            "maximum": 30
+          }
+        }
+      }
+    },
+    "images": {
+      "type": "array",
+      "title": "图片",
+      "description": "最多 2 张，按顺序填入两个图片位。",
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "url": { "type": "string" },
+          "alt": { "type": "string" }
+        }
+      }
+    }
+  },
+  "required": []
+}

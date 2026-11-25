@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="杂志跨页模板预览">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#faf6ee"/><stop offset=".5" stop-color="#f5f0e5"/><stop offset="1" stop-color="#efe8da"/>
+    </linearGradient>
+    <pattern id="grain" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="1" fill="#17130e" fill-opacity=".025"/>
+    </pattern>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#paper)"/>
+  <rect width="1920" height="1080" fill="url(#grain)"/>
+
+  <g font-family="Consolas, monospace" font-size="11" font-weight="700" letter-spacing="3" fill="#7b7264">
+    <path d="M136 96H1784" stroke="#17130e" stroke-opacity=".35"/>
+    <text x="136" y="84" fill="#9a1b12">NUTCUT QUARTERLY</text>
+    <text x="700" y="84">PRINTED ORDER / 印刷秩序</text>
+    <text x="1784" y="84" text-anchor="end">ISSUE 06 · 2026</text>
+  </g>
+
+  <g font-family="Microsoft YaHei, Songti SC, SimSun, serif">
+    <text x="136" y="196" font-family="Consolas, monospace" font-size="12" font-weight="700" letter-spacing="5" fill="#9a1b12">封面故事 / COVER STORY</text>
+    <text x="132" y="380" font-size="152" font-weight="700" letter-spacing="-6" fill="#17130e">纸上的秩序</text>
+    <text x="136" y="452" font-size="24" fill="#574f42">PRINTED ORDER · 一份关于排版的田野笔记</text>
+    <rect x="136" y="494" width="620" height="3" fill="#17130e"/>
+    <g font-family="Consolas, monospace">
+      <text x="136" y="554" font-family="Georgia, serif" font-size="32" font-weight="700" fill="#9a1b12">30</text>
+      <text x="136" y="576" font-size="10" font-weight="700" letter-spacing="2" fill="#7b7264">SECONDS</text>
+      <text x="330" y="554" font-family="Georgia, serif" font-size="32" font-weight="700" fill="#9a1b12">06</text>
+      <text x="330" y="576" font-size="10" font-weight="700" letter-spacing="2" fill="#7b7264">CHAPTERS</text>
+      <text x="500" y="554" font-family="Georgia, serif" font-size="32" font-weight="700" fill="#9a1b12">1920</text>
+      <text x="500" y="576" font-size="10" font-weight="700" letter-spacing="2" fill="#7b7264">PX WIDE</text>
+    </g>
+    <text x="136" y="660" font-family="Georgia, serif" font-size="19" font-style="italic" fill="#574f42">本期我们只谈一件事：当信息被排成秩序，读者才愿意读完它。</text>
+  </g>
+
+  <g>
+    <rect x="1024" y="118" width="624" height="560" fill="#eae3d4" stroke="#17130e" stroke-opacity=".28"/>
+    <rect x="1033" y="127" width="606" height="542" fill="none" stroke="#17130e" stroke-opacity=".13"/>
+    <path d="M1100 210H1580M1100 560H1580" stroke="#99917f" stroke-opacity=".35"/>
+    <g font-family="Microsoft YaHei, sans-serif" text-anchor="middle">
+      <text x="1336" y="372" font-size="26" font-weight="700" fill="#6f6657">图片位 01</text>
+      <text x="1336" y="400" font-family="Georgia, serif" font-size="14" font-style="italic" letter-spacing="4" fill="#9a1b12">IMAGE SLOT 01</text>
+      <text x="1336" y="428" font-family="Consolas, monospace" font-size="11" letter-spacing="3" fill="#6f6657">封面影像 / COVER IMAGE</text>
+    </g>
+    <text x="1024" y="712" font-family="Consolas, monospace" font-size="13" fill="#7b7264"><tspan fill="#9a1b12">图 01</tspan> — 一张可以放在纸上的影像，替换为你的照片即可。</text>
+  </g>
+
+  <g font-family="Consolas, monospace" font-size="13" fill="#7b7264">
+    <path d="M136 1012H1784" stroke="#17130e" stroke-opacity=".18"/>
+    <text x="136" y="1040" font-size="11" font-weight="700" letter-spacing="3">封面 / COVER</text>
+    <text x="320" y="1040" font-size="11" font-weight="700" letter-spacing="3">SECTION 01</text>
+    <text x="1760" y="1046" text-anchor="end" font-family="Georgia, serif" font-size="42" font-weight="700" fill="#17130e" letter-spacing="0">01</text>
+    <text x="1760" y="1046" text-anchor="end" font-family="Georgia, serif" font-size="13" font-style="italic" fill="#9a1b12" dx="-46">of 06</text>
+  </g>
+</svg>

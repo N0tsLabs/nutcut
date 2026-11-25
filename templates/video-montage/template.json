@@ -1,0 +1,48 @@
+{
+  "id": "video-montage",
+  "name": "视频混剪",
+  "group": "视频素材",
+  "category": "视频",
+  "description": "全屏 B-roll 段落、大字提示和片段进度，适合混剪、产品视频、旅行视频。",
+  "tags": [
+    "视频",
+    "混剪",
+    "B-roll",
+    "转场"
+  ],
+  "palette": {
+    "background": "#0b0d10",
+    "surface": "#15191f",
+    "primary": "#ffffff",
+    "accent": "#ffb08f",
+    "text": "#ffffff",
+    "muted": "#a2a8b2"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 500,
+    "titleSize": 92
+  },
+  "motion": {
+    "transition": "wipe-montage",
+    "speed": "fast"
+  },
+  "duration": 10,
+  "sceneCount": 4,
+  "stylePrompt": "视频混剪，全屏 B-roll 画面、深色渐变、超大白色标题和橙色强调，底部四段片段进度，适合产品与旅行视频。",
+  "preview": "preview.png",
+  "features": [
+    "image-slot"
+  ],
+  "styleRefs": [
+    "H1",
+    "K34"
+  ],
+  "remotion": {
+    "composition": "VideoMontage",
+    "fps": 30,
+    "durationInFrames": 300,
+    "width": 1920,
+    "height": 1080
+  }
+}

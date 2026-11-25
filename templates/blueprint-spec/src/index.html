@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>工程蓝图 · Blueprint Spec</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #08203c; }
+  body { font-family: "Consolas", "Microsoft YaHei", monospace; color: #dcecff; }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden;
+    background:
+      radial-gradient(1100px 760px at 22% 10%, rgba(56,132,208,.22), transparent 64%),
+      radial-gradient(900px 700px at 90% 92%, rgba(0,60,110,.45), transparent 66%),
+      linear-gradient(168deg, #0b2a4a 0%, #07203c 50%, #051a30 100%); }
+  .grid { position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(159,208,255,.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(159,208,255,.09) 1px, transparent 1px),
+      linear-gradient(rgba(159,208,255,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(159,208,255,.05) 1px, transparent 1px);
+    background-size: 200px 200px, 200px 200px, 40px 40px, 40px 40px; }
+  .glow { position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 44%, transparent 44%, rgba(3,15,28,.62) 100%); }
+
+  .frame { position: absolute; left: 28px; top: 28px; right: 28px; bottom: 28px;
+    border: 1px solid rgba(159,208,255,.36); pointer-events: none; z-index: 6; }
+  .frame::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px;
+    background: repeating-linear-gradient(90deg, rgba(159,208,255,.4) 0 1px, transparent 1px 40px); }
+  .frame::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 6px;
+    background: repeating-linear-gradient(0deg, rgba(159,208,255,.4) 0 1px, transparent 1px 40px); }
+  .fc { position: absolute; width: 34px; height: 34px; border: 1px solid rgba(159,208,255,.55); z-index: 7; }
+  .fc.tl { left: 28px; top: 28px; border-right: 0; border-bottom: 0; }
+  .fc.tr { right: 28px; top: 28px; border-left: 0; border-bottom: 0; }
+  .fc.bl { left: 28px; bottom: 28px; border-right: 0; border-top: 0; }
+  .fc.br { right: 28px; bottom: 28px; border-left: 0; border-top: 0; }
+  .sheetmark { position: absolute; z-index: 8; font: 700 10px/1 "Consolas", monospace; letter-spacing: .2em; color: rgba(159,208,255,.4); }
+  .sheetmark.a { left: 40px; top: 44px; } .sheetmark.b { right: 40px; top: 44px; }
+  .sheetmark.c { left: 40px; bottom: 44px; } .sheetmark.d { right: 40px; bottom: 44px; }
+
+  .scene { position: absolute; inset: 0; visibility: hidden; opacity: 0; z-index: 5; }
+  .kicker { display: flex; align-items: center; gap: 12px; font: 700 12px/1 "Consolas", monospace;
+    letter-spacing: .26em; color: #8fd0ff; text-transform: uppercase; }
+  .kicker i { width: 26px; height: 1px; background: #8fd0ff; box-shadow: 0 0 10px rgba(143,208,255,.9); }
+  h1.title { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 120px; line-height: 1.04;
+    font-weight: 900; letter-spacing: -.04em; color: #f2f9ff; text-shadow: 0 0 44px rgba(89,170,255,.35); }
+  h2.head { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 56px; line-height: 1.12;
+    font-weight: 900; letter-spacing: -.03em; color: #f2f9ff; max-width: 1400px; }
+  .sub { font: 400 22px/1.7 "Consolas", "Microsoft YaHei", monospace; letter-spacing: .06em; color: rgba(220,236,255,.6); }
+  .hint { font: 700 11px/1 "Consolas", monospace; letter-spacing: .22em; color: rgba(143,208,255,.6); }
+
+  .slot { position: absolute; border: 1px solid rgba(159,208,255,.45); background: rgba(6,26,46,.5);
+    box-shadow: inset 0 0 50px rgba(56,132,208,.16); }
+  .slot::before { content: ""; position: absolute; inset: 12px; border: 1px dashed rgba(159,208,255,.24); pointer-events: none; z-index: 1; }
+  .slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+  .slot.has-image img { opacity: 1; }
+  .slot.has-image .ph { opacity: 0; }
+  .slot .ph { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+  .slot .ph b { font-family: "Microsoft YaHei", sans-serif; font-size: 24px; font-weight: 900; letter-spacing: .08em; color: rgba(233,246,255,.9); }
+  .slot .ph em { font: 700 11px/1 "Consolas", monospace; font-style: normal; letter-spacing: .26em; color: #8fd0ff; }
+  .slot .ph s { text-decoration: none; font: 400 11px/1 "Consolas", monospace; letter-spacing: .18em; color: rgba(220,236,255,.4); }
+  .slot .ph::after { content: ""; position: absolute; left: 50%; top: 50%; width: 72px; height: 72px; margin: -36px 0 0 -36px;
+    background:
+      linear-gradient(#8fd0ff, #8fd0ff) 50% 0/1px 100% no-repeat,
+      linear-gradient(#8fd0ff, #8fd0ff) 0 50%/100% 1px no-repeat; opacity: .35; }
+  .cross { position: absolute; width: 18px; height: 18px; z-index: 2; }
+  .cross::before, .cross::after { content: ""; position: absolute; background: #8fd0ff; }
+  .cross::before { left: 0; top: 8px; width: 18px; height: 1px; }
+  .cross::after { top: 0; left: 8px; width: 1px; height: 18px; }
+  .cross.a { left: -9px; top: -9px; } .cross.b { right: -9px; top: -9px; }
+  .cross.c { left: -9px; bottom: -9px; } .cross.d { right: -9px; bottom: -9px; }
+
+  .dim { position: absolute; font: 700 13px/1 "Consolas", monospace; letter-spacing: .1em; color: #8fd0ff; }
+  .dimline { position: absolute; background: rgba(143,208,255,.55); }
+  .dimline.h { height: 1px; } .dimline.v { width: 1px; }
+  .dimcap { position: absolute; width: 1px; height: 7px; background: rgba(143,208,255,.55); }
+
+  /* scene 1 */
+  .s1 { position: absolute; left: 136px; top: 150px; width: 780px; }
+  .s1 h1 { margin-top: 28px; font-size: 88px; line-height: 1.06; }
+  .s1 .sub { margin-top: 26px; max-width: 660px; }
+  .refblock { position: absolute; left: 136px; top: 620px; width: 700px; }
+  .refrow { display: flex; padding: 12px 0; border-bottom: 1px solid rgba(159,208,255,.18); }
+  .refrow span { width: 130px; font: 700 10px/1.6 "Consolas", monospace; letter-spacing: .2em; color: rgba(143,208,255,.6); }
+  .refrow b { font: 400 16px/1.6 "Consolas", "Microsoft YaHei", monospace; color: rgba(235,246,255,.85); }
+  .s1slot { left: 980px; top: 190px; width: 840px; height: 520px; }
+  .dimtop { position: absolute; left: 980px; top: 146px; width: 840px; height: 34px; }
+  .dimside { position: absolute; left: 930px; top: 190px; width: 34px; height: 520px; }
+  .s1cap { position: absolute; left: 980px; top: 730px; width: 840px; font: 600 12px/1.7 "Consolas", monospace;
+    letter-spacing: .1em; color: rgba(220,236,255,.45); }
+  .s1cap b { color: #8fd0ff; }
+  .ruler { position: absolute; left: 136px; top: 800px; width: 700px; height: 54px; }
+
+  /* scene 2 */
+  .s2head { position: absolute; left: 136px; top: 108px; width: 1400px; }
+  .s2head h2 { margin-top: 14px; }
+  .schematic { position: absolute; left: 136px; top: 300px; width: 1120px; height: 600px; }
+  .annot { position: absolute; left: 1320px; top: 300px; width: 504px; }
+  .arow { padding: 16px 0; border-bottom: 1px solid rgba(159,208,255,.16); }
+  .arow .n { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border: 1px solid #8fd0ff;
+    font: 700 12px/1 "Consolas", monospace; color: #8fd0ff; margin-right: 12px; }
+  .arow b { font-family: "Microsoft YaHei", sans-serif; font-size: 18px; font-weight: 700; }
+  .arow p { margin: 8px 0 0 38px; font: 400 14px/1.6 "Consolas", "Microsoft YaHei", monospace; color: rgba(220,236,255,.5); }
+
+  /* scene 3 */
+  .s3head { position: absolute; left: 136px; top: 100px; width: 1300px; }
+  .s3head h2 { margin-top: 14px; }
+  table.tbl { width: 100%; border-collapse: collapse; }
+  table.tbl th { text-align: left; padding: 12px 16px; font: 700 12px/1 "Consolas", monospace; letter-spacing: .18em;
+    color: rgba(143,208,255,.75); border-bottom: 1px solid rgba(159,208,255,.5); white-space: nowrap; }
+  table.tbl td { padding: 17px 16px; font: 400 17px/1.4 "Consolas", "Microsoft YaHei", monospace; color: rgba(233,246,255,.88);
+    border-bottom: 1px solid rgba(159,208,255,.14); }
+  table.tbl td.num { font-family: "Consolas", monospace; font-size: 17px; color: #f2f9ff; }
+  table.tbl td.acc { color: #ffd166; font-family: "Consolas", monospace; font-size: 16px; }
+  .table3 { position: absolute; left: 136px; top: 280px; width: 1648px; padding: 22px 26px;
+    border: 1px solid rgba(159,208,255,.3); background: rgba(6,26,46,.42); }
+  .tblock { position: absolute; left: 136px; top: 860px; width: 1648px; display: flex; gap: 0;
+    border: 1px solid rgba(159,208,255,.4); }
+  .tblock div { flex: 1; padding: 12px 16px; border-right: 1px solid rgba(159,208,255,.2); }
+  .tblock div:last-child { border-right: 0; }
+  .tblock span { display: block; font: 700 9px/1 "Consolas", monospace; letter-spacing: .22em; color: rgba(143,208,255,.55); }
+  .tblock b { display: block; margin-top: 8px; font: 700 15px/1 "Consolas", "Microsoft YaHei", monospace; color: #eaf5ff; }
+
+  /* scene 4 */
+  .s4head { position: absolute; left: 136px; top: 100px; width: 1200px; }
+  .s4head h2 { margin-top: 14px; }
+  .chart4 { position: absolute; left: 136px; top: 290px; width: 1060px; height: 600px; padding: 24px 26px;
+    border: 1px solid rgba(159,208,255,.3); background: rgba(6,26,46,.4); }
+  .ch-head { display: flex; font: 700 11px/1 "Consolas", monospace; letter-spacing: .2em; color: rgba(143,208,255,.7); }
+  .ch-head b { margin-left: auto; color: #ffd166; }
+  .bars { position: relative; height: 440px; margin-top: 24px; border-left: 1px solid rgba(159,208,255,.4);
+    border-bottom: 1px solid rgba(159,208,255,.4); display: flex; align-items: flex-end; gap: 18px; padding: 0 10px; }
+  .bcol { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; position: relative; }
+  .bcol i { position: relative; display: block; width: 100%; height: 0;
+    background: repeating-linear-gradient(135deg, rgba(143,208,255,.55) 0 2px, rgba(143,208,255,.16) 2px 7px);
+    border: 1px solid rgba(143,208,255,.7); border-bottom: 0; }
+  .bcol.ok i { background: repeating-linear-gradient(135deg, rgba(120,235,190,.55) 0 2px, rgba(120,235,190,.14) 2px 7px);
+    border-color: rgba(120,235,190,.8); }
+  .bcol b { position: absolute; left: 0; right: 0; bottom: 100%; margin-bottom: 6px; text-align: center;
+    font: 700 13px/1 "Consolas", monospace; color: #eaf5ff; opacity: 0; }
+  .bcol span { position: absolute; top: 100%; left: 0; right: 0; margin-top: 8px; text-align: center;
+    font: 600 11px/1 "Consolas", monospace; color: rgba(220,236,255,.45); }
+  .tolband { position: absolute; left: 0; right: 0; top: 60px; height: 40px; border-top: 1px dashed rgba(255,209,102,.5);
+    border-bottom: 1px dashed rgba(255,209,102,.5); background: rgba(255,209,102,.05); }
+  .tolband span { position: absolute; right: 8px; top: 4px; font: 700 10px/1 "Consolas", monospace; letter-spacing: .14em; color: #ffd166; }
+  .s4slot { left: 1250px; top: 290px; width: 534px; height: 400px; }
+  .s4cap { position: absolute; left: 1250px; top: 706px; width: 534px; font: 600 12px/1.7 "Consolas", "Microsoft YaHei", monospace;
+    letter-spacing: .06em; color: rgba(220,236,255,.45); }
+  .s4cap b { color: #8fd0ff; }
+  .s4note { position: absolute; left: 1250px; top: 790px; width: 534px; padding: 14px 18px; border-left: 2px solid #ffd166;
+    font: 400 14px/1.7 "Consolas", "Microsoft YaHei", monospace; color: rgba(220,236,255,.6); }
+
+  /* scene 5 */
+  .s5head { position: absolute; left: 136px; top: 100px; width: 1400px; }
+  .s5head h2 { margin-top: 14px; }
+  .detail { position: absolute; left: 136px; top: 270px; width: 900px; height: 640px; }
+  .s5table { position: absolute; left: 1090px; top: 270px; width: 694px; padding: 20px 22px;
+    border: 1px solid rgba(159,208,255,.3); background: rgba(6,26,46,.4); }
+  .s5table table.tbl th { padding: 10px 10px; }
+  .s5table table.tbl td { padding: 12px 10px; font-size: 15px; }
+  .legend5 { position: absolute; left: 1090px; top: 700px; width: 694px; }
+  .legend5 div { display: flex; align-items: center; gap: 10px; margin-top: 12px;
+    font: 400 13px/1.5 "Consolas", "Microsoft YaHei", monospace; color: rgba(220,236,255,.55); }
+  .legend5 i { width: 26px; height: 10px; display: block; }
+
+  /* scene 6 */
+  .outro { position: absolute; left: 136px; top: 250px; width: 1648px; }
+  .outro h2 { margin-top: 24px; font-family: "Microsoft YaHei", sans-serif; font-size: 128px; line-height: 1.04;
+    font-weight: 900; letter-spacing: -.045em; color: #f4faff; }
+  .outro .oline { width: 0; height: 2px; margin-top: 40px; background: #8fd0ff; box-shadow: 0 0 20px rgba(143,208,255,.7); }
+  .outgrid { margin-top: 38px; display: flex; gap: 0; border: 1px solid rgba(159,208,255,.35); width: 1200px; }
+  .outgrid div { flex: 1; padding: 14px 18px; border-right: 1px solid rgba(159,208,255,.2); }
+  .outgrid div:last-child { border-right: 0; }
+  .outgrid span { display: block; font: 700 9px/1 "Consolas", monospace; letter-spacing: .22em; color: rgba(143,208,255,.55); }
+  .outgrid b { display: block; margin-top: 8px; font: 700 15px/1 "Consolas", "Microsoft YaHei", monospace; color: #eaf5ff; }
+
+  #veil { position: absolute; inset: 0; z-index: 40; opacity: 0; pointer-events: none; }
+  #veil .tint { position: absolute; inset: 0; background: rgba(89,170,255,.16); }
+  #veil .ruler { position: absolute; top: 0; bottom: 0; width: 3px; background: #bfe4ff; box-shadow: 0 0 30px 6px rgba(143,208,255,.6); }
+  #veil .rang { position: absolute; top: 0; bottom: 0; width: 120px;
+    background: linear-gradient(90deg, rgba(143,208,255,0), rgba(143,208,255,.28), rgba(143,208,255,0)); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="grid"></div>
+  <div class="glow"></div>
+  <div class="frame"></div>
+  <div class="fc tl"></div><div class="fc tr"></div><div class="fc bl"></div><div class="fc br"></div>
+  <div class="sheetmark a" data-sheet>A-01</div>
+  <div class="sheetmark b">NUTCUT / DWG-006</div>
+  <div class="sheetmark c">SCALE 1:1</div>
+  <div class="sheetmark d" id="pageno">SHEET 01 / 06</div>
+
+  <section class="scene" id="sc1">
+    <div class="s1">
+      <div class="kicker"><i></i>01 / 总图 · GENERAL ARRANGEMENT</div>
+      <h1 class="title" id="h1" data-title></h1>
+      <p class="sub" id="s1sub" data-sub></p>
+    </div>
+    <div class="refblock">
+      <div class="refrow"><span>DWG NO.</span><b>NUTCUT-006-A1</b></div>
+      <div class="refrow"><span>PROJECT</span><b>30 SEC / 6 SCENES / 1920×1080</b></div>
+      <div class="refrow"><span>UNIT</span><b>PIXEL (PX) · TOLERANCE ± 1</b></div>
+      <div class="refrow"><span>STATUS</span><b style="color:#ffd166">FOR REVIEW · 待审</b></div>
+    </div>
+    <svg class="ruler" id="ruler1" viewBox="0 0 700 54">
+      <line x1="0" y1="26" x2="700" y2="26" stroke="rgba(143,208,255,.4)"/>
+    </svg>
+    <div class="slot s1slot" data-image-slot="01">
+      <img alt="" />
+      <div class="ph"><b>图片位 01</b><em>IMAGE SLOT 01</em><s>参考图 / REFERENCE</s></div>
+      <span class="cross a"></span><span class="cross b"></span><span class="cross c"></span><span class="cross d"></span>
+    </div>
+    <svg class="dimtop" viewBox="0 0 840 34">
+      <path d="M0 24H840" stroke="rgba(143,208,255,.55)"/>
+      <path d="M0 16V32M840 16V32" stroke="rgba(143,208,255,.55)"/>
+      <path d="M0 20L10 24L0 28M840 20L830 24L840 28" fill="none" stroke="rgba(143,208,255,.7)"/>
+      <text x="420" y="14" text-anchor="middle" font-family="Consolas" font-size="12" font-weight="700" letter-spacing="2" fill="#8fd0ff">840</text>
+    </svg>
+    <svg class="dimside" viewBox="0 0 34 520">
+      <path d="M22 0V520" stroke="rgba(143,208,255,.55)"/>
+      <path d="M14 0H30M14 520H30" stroke="rgba(143,208,255,.55)"/>
+      <text x="14" y="260" text-anchor="middle" font-family="Consolas" font-size="12" font-weight="700" letter-spacing="2" fill="#8fd0ff" transform="rotate(-90 14 260)">520</text>
+    </svg>
+    <div class="s1cap"><b>FIG. A1</b> — 主参考图，占位可替换为任意图片（建议 16:10 以内横向构图）。</div>
+  </section>
+
+  <section class="scene" id="sc2">
+    <div class="s2head">
+      <div class="kicker"><i></i>02 / 系统图 · SCHEMATIC</div>
+      <h2 class="head" id="h2"></h2>
+    </div>
+    <svg class="schematic" viewBox="0 0 1120 600">
+      <g stroke="rgba(159,208,255,.55)" fill="none">
+        <rect x="20" y="20" width="680" height="420" stroke-dasharray="10 6"/>
+        <rect x="80" y="80" width="240" height="120"/>
+        <rect x="400" y="80" width="240" height="120"/>
+        <rect x="80" y="290" width="560" height="90"/>
+      </g>
+      <g stroke="rgba(143,208,255,.7)" stroke-width="1.5" fill="none">
+        <path id="sch1" pathLength="400" d="M200 200V290M520 200V290M320 140H400" style="stroke-dasharray:400;stroke-dashoffset:400"/>
+        <path id="sch2" pathLength="400" d="M200 380V470H520V380" style="stroke-dasharray:400;stroke-dashoffset:400"/>
+      </g>
+      <g fill="#ffd166">
+        <circle cx="200" cy="200" r="4"/><circle cx="520" cy="200" r="4"/>
+        <circle cx="200" cy="380" r="4"/><circle cx="520" cy="380" r="4"/>
+      </g>
+      <g font-family="Microsoft YaHei, sans-serif" fill="#dcecff">
+        <text x="200" y="132" text-anchor="middle" font-size="18" font-weight="700">输入模块</text>
+        <text x="200" y="156" text-anchor="middle" font-family="Consolas" font-size="11" fill="rgba(220,236,255,.45)">INPUT / 01</text>
+        <text x="520" y="132" text-anchor="middle" font-size="18" font-weight="700">处理模块</text>
+        <text x="520" y="156" text-anchor="middle" font-family="Consolas" font-size="11" fill="rgba(220,236,255,.45)">PROCESS / 02</text>
+        <text x="360" y="330" text-anchor="middle" font-size="18" font-weight="700">输出与存档</text>
+        <text x="360" y="354" text-anchor="middle" font-family="Consolas" font-size="11" fill="rgba(220,236,255,.45)">OUTPUT / 03</text>
+      </g>
+      <g stroke="rgba(255,209,102,.7)" fill="none">
+        <path d="M60 60H28V28"/><path d="M660 60H700V28"/>
+        <path d="M60 400H28V432"/><path d="M660 400H700V432"/>
+      </g>
+      <g font-family="Consolas" font-size="12" fill="rgba(255,209,102,.85)">
+        <text x="18" y="520">MODULE A</text>
+        <text x="18" y="540" fill="rgba(220,236,255,.4)">SIGNAL FLOW · 3 STAGES</text>
+      </g>
+      <g stroke="rgba(143,208,255,.35)">
+        <path d="M760 40V560M760 40H800M760 560H800"/>
+      </g>
+      <g font-family="Consolas" font-size="12" fill="rgba(143,208,255,.7)" letter-spacing="3">
+        <text x="812" y="44">SECTION C-C</text>
+        <text x="812" y="564">DATUM / 0</text>
+      </g>
+    </svg>
+    <div class="annot">
+      <div class="arow"><span class="n">01</span><b>输入</b><p>素材进入系统，先编号，再排队。</p></div>
+      <div class="arow"><span class="n">02</span><b>处理</b><p>结构、声音、画面在同一条总线上。</p></div>
+      <div class="arow"><span class="n">03</span><b>输出</b><p>渲染结果回到档案，等待下一次调用。</p></div>
+      <div class="arow"><span class="n">04</span><b>校验</b><p>每个节点都有基准线，偏差可测。</p></div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc3">
+    <div class="s3head">
+      <div class="kicker"><i></i>03 / 零件表 · PARTS LIST</div>
+      <h2 class="head" id="h3"></h2>
+    </div>
+    <div class="table3">
+      <table class="tbl">
+        <thead><tr><th>编号</th><th>部件</th><th>规格</th><th>材料</th><th>公差</th><th>检验</th></tr></thead>
+        <tbody>
+          <tr><td class="num">P-01</td><td>主框架</td><td class="num">1920 × 1080</td><td>铝合金</td><td class="acc">± 0.5</td><td>全检</td></tr>
+          <tr><td class="num">P-02</td><td>横向导轨</td><td class="num">1648 × 12</td><td>不锈钢</td><td class="acc">± 0.2</td><td>抽检</td></tr>
+          <tr><td class="num">P-03</td><td>玻璃面板</td><td class="num">734 × 560</td><td>钢化玻璃</td><td class="acc">± 0.3</td><td>全检</td></tr>
+          <tr><td class="num">P-04</td><td>数据模块</td><td class="num">600 × 420</td><td>复合板</td><td class="acc">± 0.8</td><td>抽检</td></tr>
+          <tr><td class="num">P-05</td><td>光晕环</td><td class="num">Ø 620</td><td>亚克力</td><td class="acc">± 1.0</td><td>全检</td></tr>
+          <tr><td class="num">P-06</td><td>底板</td><td class="num">1648 × 300</td><td>碳钢</td><td class="acc">± 0.6</td><td>全检</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tblock">
+      <div><span>DRAWN BY</span><b>NUTCUT LAB</b></div>
+      <div><span>CHECKED</span><b>REVIEW PENDING</b></div>
+      <div><span>SCALE</span><b>1 : 1</b></div>
+      <div><span>UNIT</span><b>PX / MM</b></div>
+      <div><span>SHEET</span><b>03 OF 06</b></div>
+      <div><span>REV</span><b>3.1</b></div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc4">
+    <div class="s4head">
+      <div class="kicker"><i></i>04 / 公差实测 · TOLERANCE</div>
+      <h2 class="head" id="h4"></h2>
+    </div>
+    <div class="chart4">
+      <div class="ch-head"><span>八组实测偏差 / MEASURED DEVIATION · 0.01 MM</span><b>LIMIT ± 40</b></div>
+      <div class="bars" id="bars4">
+        <div class="tolband"><span>TOLERANCE BAND</span></div>
+        <div class="bcol ok"><i data-h="34"><b>34</b></i><span>01</span></div>
+        <div class="bcol"><i data-h="72"><b>72</b></i><span>02</span></div>
+        <div class="bcol ok"><i data-h="28"><b>28</b></i><span>03</span></div>
+        <div class="bcol"><i data-h="58"><b>58</b></i><span>04</span></div>
+        <div class="bcol"><i data-h="88"><b>88</b></i><span>05</span></div>
+        <div class="bcol ok"><i data-h="22"><b>22</b></i><span>06</span></div>
+        <div class="bcol"><i data-h="64"><b>64</b></i><span>07</span></div>
+        <div class="bcol ok"><i data-h="38"><b>38</b></i><span>08</span></div>
+      </div>
+    </div>
+    <div class="slot s4slot" data-image-slot="02">
+      <img alt="" />
+      <div class="ph"><b>图片位 02</b><em>IMAGE SLOT 02</em><s>实测照片 / INSPECTION</s></div>
+      <span class="cross a"></span><span class="cross b"></span><span class="cross c"></span><span class="cross d"></span>
+    </div>
+    <div class="s4cap"><b>FIG. A4</b> — 与实测数据并置的参考照片。</div>
+    <div class="s4note">第 05 组偏差 0.88 mm，超出公差带 0.40 mm；其余七组在 ±0.40 mm 以内。</div>
+  </section>
+
+  <section class="scene" id="sc5">
+    <div class="s5head">
+      <div class="kicker"><i></i>05 / 局部详图 · DETAIL</div>
+      <h2 class="head" id="h5"></h2>
+    </div>
+    <svg class="detail" viewBox="0 0 900 640">
+      <g stroke="rgba(159,208,255,.55)" fill="none">
+        <rect x="60" y="80" width="560" height="360"/>
+        <rect x="110" y="130" width="200" height="120"/>
+        <rect x="370" y="130" width="200" height="120"/>
+        <rect x="110" y="300" width="460" height="90"/>
+        <circle cx="740" cy="150" r="56"/>
+        <circle cx="740" cy="150" r="18"/>
+      </g>
+      <g stroke="rgba(143,208,255,.4)" stroke-dasharray="4 6">
+        <path d="M60 470H620M660 80V440"/>
+        <path d="M700 150H620"/>
+      </g>
+      <g stroke="rgba(255,209,102,.8)" fill="none">
+        <path d="M60 500H620"/><path d="M60 492V508M620 492V508"/>
+        <path d="M680 80V440"/><path d="M672 80H688M672 440H688"/>
+      </g>
+      <g font-family="Consolas" font-size="13" font-weight="700" fill="#ffd166" letter-spacing="2">
+        <text x="340" y="524" text-anchor="middle">560</text>
+        <text x="700" y="266" transform="rotate(90 700 266)" text-anchor="middle">360</text>
+        <text x="660" y="118">Ø 112</text>
+      </g>
+      <g font-family="Microsoft YaHei, sans-serif" font-size="15" fill="rgba(220,236,255,.8)">
+        <text x="210" y="196" text-anchor="middle">承载区 A</text>
+        <text x="470" y="196" text-anchor="middle">承载区 B</text>
+        <text x="340" y="352" text-anchor="middle">基准面 / DATUM</text>
+      </g>
+      <g stroke="rgba(143,208,255,.7)">
+        <path d="M110 130L60 80M310 130L370 80M110 300L60 360M570 300L620 360"/>
+      </g>
+      <g font-family="Consolas" font-size="11" fill="rgba(143,208,255,.6)" letter-spacing="2">
+        <text x="60" y="60">DETAIL A / 1:2</text>
+        <text x="60" y="604">ALL DIMENSIONS IN MM · DO NOT SCALE DRAWING</text>
+      </g>
+    </svg>
+    <div class="s5table">
+      <table class="tbl">
+        <thead><tr><th>部位</th><th>尺寸</th><th>公差</th></tr></thead>
+        <tbody>
+          <tr><td>承载区 A</td><td class="num">200 × 120</td><td class="acc">± 0.2</td></tr>
+          <tr><td>承载区 B</td><td class="num">200 × 120</td><td class="acc">± 0.2</td></tr>
+          <tr><td>基准面</td><td class="num">460 × 90</td><td class="acc">± 0.3</td></tr>
+          <tr><td>光孔</td><td class="num">Ø 112</td><td class="acc">± 0.1</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="legend5">
+      <div><i style="background:rgba(159,208,255,.5)"></i>轮廓线 / OUTLINE</div>
+      <div><i style="background:repeating-linear-gradient(90deg,#8fd0ff 0 3px,transparent 3px 7px)"></i>隐藏线 / HIDDEN</div>
+      <div><i style="background:#ffd166"></i>尺寸标注 / DIMENSION</div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc6">
+    <div class="outro">
+      <div class="kicker"><i></i>06 / 图纸结束 · END OF DRAWING</div>
+      <h2 id="h6" data-title></h2>
+      <div class="oline" id="oline"></div>
+      <div class="outgrid">
+        <div><span>DWG NO.</span><b>NUTCUT-006-A1</b></div>
+        <div><span>SCALE</span><b>1 : 1</b></div>
+        <div><span>FORMAT</span><b>1920 × 1080 / 30FPS</b></div>
+        <div><span>SHEETS</span><b>06 / 30 SEC</b></div>
+        <div><span>LICENSE</span><b>CC0 1.0</b></div>
+      </div>
+    </div>
+  </section>
+
+  <div id="veil"><div class="tint"></div><div class="rang"></div><div class="ruler"></div></div>
+</div>
+<script>
+(function () {
+  'use strict';
+  var FPS = 30, DUR = 30, N = 6;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var C = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+  var S = function (v) { v = C(v); return v * v * (3 - 2 * v); };
+  var E = function (v) { return 1 - Math.pow(1 - C(v), 3); };
+  var EB = function (v) { v = C(v); var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(v - 1, 3) + c1 * Math.pow(v - 1, 2); };
+  var DEMO = [
+    { id: '01', text: '先画线，再谈风格。', start: 0, end: 4.7 },
+    { id: '02', text: '每个模块，都要有输入与输出。', start: 5, end: 9.7 },
+    { id: '03', text: '零件表不是清单，是承诺。', start: 10, end: 14.7 },
+    { id: '04', text: '公差之内，才叫精确。', start: 15, end: 19.7 },
+    { id: '05', text: '放大局部，细节才敢被看。', start: 20, end: 24.7 },
+    { id: '06', text: '图纸合上，尺寸仍在。', start: 25, end: 29.7 }
+  ];
+  var sceneEls = $$('.scene');
+  var plan = [];
+  var title = '一张图，说清结构';
+  var sub = 'BLUEPRINT SPEC · DWG NUTCUT-006 · 1:1';
+
+  function buildPlan(inputs) {
+    var src = Array.isArray(inputs.lines) && inputs.lines.length ? inputs.lines.slice(0, 6) : DEMO;
+    var timed = src.length === 6 && src.every(function (l) {
+      return Number.isFinite(l.start) && Number.isFinite(l.end) && l.end > l.start;
+    });
+    plan = sceneEls.map(function (el, i) {
+      var line = src[i] || DEMO[i];
+      return {
+        start: timed ? src[i].start : i * 5,
+        end: timed ? src[i].end : (i + 1) * 5 + 0.35,
+        text: String(line.text == null ? DEMO[i].text : line.text)
+      };
+    });
+  }
+
+  function setText(el, v) { if (el && el.textContent !== v) el.textContent = v; }
+
+  function applyInputs(inputs) {
+    title = inputs.title || '一张图，说清结构';
+    sub = inputs.subtitle || 'BLUEPRINT SPEC · DWG NUTCUT-006 · 1:1';
+    $$('[data-title]').forEach(function (el) { setText(el, title); });
+    $$('[data-sub]').forEach(function (el) { setText(el, sub); });
+  }
+
+  function applyImages(inputs) {
+    var list = Array.isArray(inputs.images) ? inputs.images : [];
+    $$('[data-image-slot]').forEach(function (el, i) {
+      var raw = list[i];
+      var url = typeof raw === 'string' ? raw : (raw && typeof raw.url === 'string' ? raw.url : '');
+      var img = el.querySelector('img');
+      if (url) {
+        if (img.getAttribute('src') !== url) img.setAttribute('src', url);
+        el.classList.add('has-image');
+      } else {
+        el.classList.remove('has-image');
+        img.removeAttribute('src');
+      }
+    });
+  }
+
+  function revealRows(rows, local, delay, stagger) {
+    rows.forEach(function (el, i) {
+      var p = E((local - delay - i * stagger) / 0.4);
+      el.style.opacity = p;
+      el.style.transform = 'translateY(' + ((1 - p) * 10) + 'px)';
+    });
+  }
+
+  /* build ruler ticks */
+  var ruler = $('#ruler1');
+  for (var ri = 0; ri <= 10; ri += 1) {
+    var t = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    t.setAttribute('x1', String(ri * 70)); t.setAttribute('x2', String(ri * 70));
+    t.setAttribute('y1', '16'); t.setAttribute('y2', '36');
+    t.setAttribute('stroke', 'rgba(143,208,255,.5)');
+    ruler.appendChild(t);
+    var n = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    n.setAttribute('x', String(ri * 70)); n.setAttribute('y', '52');
+    n.setAttribute('text-anchor', 'middle');
+    n.setAttribute('font-family', 'Consolas'); n.setAttribute('font-size', '10');
+    n.setAttribute('fill', 'rgba(220,236,255,.4)');
+    n.textContent = String(ri * 70);
+    ruler.appendChild(n);
+  }
+
+  function upd1(local, t) {
+    var e = E((local - 0.05) / 0.7);
+    $('#h1').style.opacity = e;
+    $('#h1').style.transform = 'translateY(' + ((1 - e) * 30) + 'px)';
+    var s = E((local - 0.3) / 0.7);
+    $('#s1sub').style.opacity = s;
+    var slot = $('.s1slot');
+    var sp = EB((local - 0.15) / 0.9);
+    slot.style.opacity = S((local - 0.15) / 0.5);
+    slot.style.transform = 'scale(' + (0.94 + 0.06 * sp) + ')';
+    $('.dimtop').style.opacity = S((local - 0.5) / 0.5);
+    $('.dimside').style.opacity = S((local - 0.6) / 0.5);
+    $$('.refrow').forEach(function (el, i) {
+      var q = E((local - 0.4 - i * 0.08) / 0.6);
+      el.style.opacity = q;
+      el.style.transform = 'translateX(' + ((1 - q) * 18) + 'px)';
+    });
+    $('.ruler').style.opacity = S((local - 0.6) / 0.5);
+    $('.s1cap').style.opacity = S((local - 0.8) / 0.5);
+  }
+
+  function upd2(local, t) {
+    setText($('#h2'), plan[1].text);
+    var e = E((local - 0.05) / 0.6);
+    $('#h2').style.opacity = e;
+    $('#h2').style.transform = 'translateY(' + ((1 - e) * 20) + 'px)';
+    var sch = E((local - 0.1) / 0.6);
+    $('.schematic').style.opacity = sch;
+    $('#sch1').style.strokeDashoffset = String(400 * (1 - E((local - 0.3) / 1.2)));
+    $('#sch2').style.strokeDashoffset = String(400 * (1 - E((local - 0.6) / 1.2)));
+    $$('.annot .arow').forEach(function (el, i) {
+      var q = E((local - 0.35 - i * 0.09) / 0.55);
+      el.style.opacity = q;
+      el.style.transform = 'translateX(' + ((1 - q) * 22) + 'px)';
+    });
+  }
+
+  function upd3(local, t) {
+    setText($('#h3'), plan[2].text);
+    var e = E((local - 0.05) / 0.6);
+    $('#h3').style.opacity = e;
+    $('#h3').style.transform = 'translateY(' + ((1 - e) * 20) + 'px)';
+    var tb = $('.table3');
+    var q = E((local - 0.1) / 0.6);
+    tb.style.opacity = q;
+    tb.style.transform = 'translateY(' + ((1 - q) * 16) + 'px)';
+    revealRows($$('.table3 tbody tr'), local, 0.15, 0.06);
+    var blk = E((local - 0.4) / 0.6);
+    $('.tblock').style.opacity = blk;
+    $('.tblock').style.transform = 'translateY(' + ((1 - blk) * 14) + 'px)';
+  }
+
+  function upd4(local, t) {
+    setText($('#h4'), plan[3].text);
+    var e = E((local - 0.05) / 0.6);
+    $('#h4').style.opacity = e;
+    $('#h4').style.transform = 'translateY(' + ((1 - e) * 20) + 'px)';
+    $$('.bcol').forEach(function (el, i) {
+      var h = Number(el.querySelector('i').dataset.h);
+      var p = E((local - 0.15 - i * 0.06) / 0.85);
+      el.querySelector('i').style.height = (h * 3.6 * p) + 'px';
+      el.querySelector('b').style.opacity = S((p - 0.35) * 2);
+    });
+    var c = E((local - 0.1) / 0.6);
+    $('.chart4').style.opacity = c;
+    $('.chart4').style.transform = 'translateY(' + ((1 - c) * 20) + 'px)';
+    $('.tolband').style.opacity = S((local - 0.5) / 0.5);
+    var s = E((local - 0.2) / 0.7);
+    $('.s4slot').style.opacity = s;
+    $('.s4slot').style.transform = 'scale(' + (0.95 + 0.05 * s) + ')';
+    $('.s4cap').style.opacity = S((local - 0.55) / 0.5);
+    $('.s4note').style.opacity = S((local - 0.7) / 0.5);
+  }
+
+  function upd5(local, t) {
+    setText($('#h5'), plan[4].text);
+    var e = E((local - 0.05) / 0.6);
+    $('#h5').style.opacity = e;
+    $('#h5').style.transform = 'translateY(' + ((1 - e) * 20) + 'px)';
+    var d = E((local - 0.1) / 0.7);
+    $('.detail').style.opacity = d;
+    $('.detail').style.transform = 'translateY(' + ((1 - d) * 18) + 'px)';
+    var tb = E((local - 0.25) / 0.6);
+    $('.s5table').style.opacity = tb;
+    $('.s5table').style.transform = 'translateX(' + ((1 - tb) * 26) + 'px)';
+    revealRows($$('.s5table tbody tr'), local, 0.35, 0.06);
+    $$('.legend5 div').forEach(function (el, i) {
+      var q = E((local - 0.5 - i * 0.08) / 0.5);
+      el.style.opacity = q;
+    });
+  }
+
+  function upd6(local, t) {
+    setText($('#h6'), title);
+    var e = E((local - 0.05) / 0.8);
+    $('#h6').style.opacity = S((local - 0.05) / 0.5);
+    $('#h6').style.transform = 'translateY(' + ((1 - e) * 24) + 'px)';
+    $('#oline').style.width = (760 * E((local - 0.5) / 0.8)) + 'px';
+    var g = E((local - 0.6) / 0.6);
+    $('.outgrid').style.opacity = g;
+    $('.outgrid').style.transform = 'translateY(' + ((1 - g) * 16) + 'px)';
+  }
+
+  var updaters = [upd1, upd2, upd3, upd4, upd5, upd6];
+
+  window.renderFrame = function (frame, inputs) {
+    inputs = inputs || {};
+    buildPlan(inputs);
+    applyInputs(inputs);
+    applyImages(inputs);
+    var t = frame / FPS;
+    var active = 0;
+    for (var i = 0; i < plan.length; i += 1) if (t >= plan[i].start - 0.001) active = i;
+    sceneEls.forEach(function (el, i) {
+      var p = plan[i];
+      var op = Math.min(S((t - p.start + 0.7) / 0.7), S((p.end - t) / 0.6));
+      el.style.visibility = op > 0.001 ? 'visible' : 'hidden';
+      el.style.opacity = op.toFixed(3);
+    });
+    var local = Math.max(0, t - plan[active].start) + (active === 0 ? 1.6 : 0.6);
+    updaters[active](local, t);
+
+    $('#pageno').textContent = 'SHEET ' + String(active + 1).padStart(2, '0') + ' / 06';
+
+    var vt = -1, vp = 0;
+    for (var k = 1; k < N; k += 1) {
+      var b = k * 5;
+      var q = (t - (b - 0.75)) / 0.75;
+      if (q > 0 && q <= 1) { vt = b; vp = q; }
+    }
+    if (vt >= 0) {
+      var amp = Math.sin(Math.PI * vp);
+      $('#veil').style.opacity = '1';
+      $('.tint').style.opacity = String(0.55 * amp);
+      var x = -140 + vp * 2200;
+      $('.ruler').style.transform = 'translateX(' + x + 'px)';
+      $('.rang').style.transform = 'translateX(' + (x - 60) + 'px)';
+    } else {
+      $('#veil').style.opacity = '0';
+    }
+  };
+
+  applyInputs({});
+  applyImages({});
+  window.renderFrame(0, {});
+  window.__ready = true;
+})();
+</script>
+</body>
+</html>

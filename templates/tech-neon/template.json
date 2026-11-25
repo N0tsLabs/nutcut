@@ -1,0 +1,43 @@
+{
+  "id": "tech-neon",
+  "name": "科技霓虹",
+  "category": "科技",
+  "description": "深色赛博质感的科技短片模板：霓虹描边标题、扫描线与透视网格背景，适合产品发布、AI 与硬件主题。",
+  "tags": [
+    "科技",
+    "霓虹",
+    "深色",
+    "赛博",
+    "产品"
+  ],
+  "palette": {
+    "background": "#050b14",
+    "surface": "#0b1626",
+    "primary": "#22d3ee",
+    "accent": "#a78bfa",
+    "text": "#e6f7ff",
+    "muted": "#7dd3fc"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 400,
+    "titleSize": 96
+  },
+  "motion": {
+    "transition": "wipe",
+    "speed": "medium"
+  },
+  "duration": 30,
+  "sceneCount": 6,
+  "stylePrompt": "深空蓝黑背景上的青色与紫色霓虹光，透视网格与扫描线，高对比发光边缘，未来感科技产品视觉，冷色调，电影级体积光，极简构图",
+  "preview": "preview.svg",
+  "styleRefs": [
+    "K34",
+    "A1",
+    "B4"
+  ],
+  "features": [
+    "image-slot"
+  ],
+  "group": "风格片头"
+}

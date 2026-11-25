@@ -1,0 +1,45 @@
+{
+  "id": "blueprint-spec",
+  "name": "工程蓝图",
+  "category": "工程",
+  "description": "蓝底白线的工程蓝图模板：网格纸、尺寸标注、系统示意图、零件表与实测柱图，适合方案说明、硬件结构与流程拆解。",
+  "tags": [
+    "蓝图",
+    "工程",
+    "图纸",
+    "标注",
+    "技术"
+  ],
+  "palette": {
+    "background": "#08203c",
+    "surface": "#0b2a4a",
+    "primary": "#8fd0ff",
+    "accent": "#ffd166",
+    "text": "#dcecff",
+    "muted": "#7fa8cc"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 400,
+    "titleSize": 112
+  },
+  "motion": {
+    "transition": "ruler-sweep",
+    "speed": "medium"
+  },
+  "duration": 30,
+  "sceneCount": 6,
+  "features": [
+    "table",
+    "chart",
+    "image-slot"
+  ],
+  "stylePrompt": "深蓝工程蓝图，白色与浅蓝细线网格，尺寸标注与箭头，等宽字体与图签栏，冷调技术绘图，精确克制，无噪声",
+  "preview": "preview.svg",
+  "styleRefs": [
+    "K29",
+    "M18",
+    "K30"
+  ],
+  "group": "信息数据"
+}

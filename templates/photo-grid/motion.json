@@ -1,0 +1,14 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "photo-grid",
+  "name": "图片拼贴",
+  "version": "1.0.0",
+  "description": "图片素材类：2×2 图片拼贴，当前图片放大、其他图片退后，配一句说明，适合多图产品/旅行/纪实。",
+  "tags": ["图片", "拼贴", "多图", "产品", "竖屏"],
+  "runtime": { "profile": "html/1", "entry": "src/index.html", "network": false },
+  "output": { "width": 1080, "height": 1920, "fps": 30, "duration": 10 },
+  "params": { "schema": "params.schema.json", "defaultPreset": "presets/default.json" },
+  "license": "LICENSE",
+  "preview": "preview.png"
+}

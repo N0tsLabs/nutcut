@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>光标终端 · Cursor Terminal</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #030705; }
+  body { font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", system-ui, sans-serif; color: #e8fff2; }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden;
+    background: radial-gradient(900px 560px at 20% 10%, rgba(124,255,178,.08), transparent 62%), linear-gradient(160deg, #030705, #06110b 58%, #020503); }
+  .scan { position: absolute; inset: 0; pointer-events: none; opacity: .24;
+    background: repeating-linear-gradient(180deg, rgba(232,255,242,.045) 0 1px, transparent 1px 4px); }
+  .scene { position: absolute; inset: 0; opacity: 0; visibility: hidden; z-index: 5; }
+  .inner { position: absolute; left: 112px; right: 112px; top: 148px; }
+  .tag { display: flex; align-items: center; gap: 14px; font: 700 14px/1 "Consolas", monospace; letter-spacing: .24em; color: #7cffb2; }
+  .tag i { width: 34px; height: 1px; background: #7cffb2; box-shadow: 0 0 10px #7cffb2; }
+  h1, h2 { font-weight: 900; letter-spacing: -.05em; }
+  h1 { margin-top: 28px; font-size: 104px; line-height: 1.06; min-height: 120px; }
+  h2 { margin-top: 22px; font-size: 74px; line-height: 1.14; }
+  .sub { margin-top: 18px; font: 400 22px/1.5 "Consolas", monospace; letter-spacing: .08em; color: #4f7a62; }
+  .rule { margin-top: 28px; width: 220px; height: 2px; background: linear-gradient(90deg, #7cffb2, transparent); }
+  .caret { display: inline-block; width: 10px; height: 1em; margin-left: 6px; vertical-align: -2px; background: #7cffb2; box-shadow: 0 0 12px #7cffb2; }
+
+  .term { margin-top: 42px; width: 1560px; border: 1px solid rgba(124,255,178,.32); background: rgba(7,16,12,.82); box-shadow: 0 30px 80px rgba(0,0,0,.5); }
+  .term-bar { display: flex; align-items: center; gap: 12px; height: 48px; padding: 0 18px; border-bottom: 1px solid rgba(124,255,178,.2); }
+  .dots { display: flex; gap: 7px; }
+  .dots i { width: 10px; height: 10px; border-radius: 50%; background: rgba(124,255,178,.32); }
+  .dots i:nth-child(2) { background: rgba(255,209,102,.5); }
+  .dots i:nth-child(3) { background: rgba(255,107,107,.5); }
+  .term-bar b { font: 700 12px/1 "Consolas", monospace; letter-spacing: .14em; color: #4f7a62; }
+  .term-bar em { margin-left: auto; font: 700 11px/1 "Consolas", monospace; letter-spacing: .14em; color: #7cffb2; }
+  .term-body { padding: 38px 40px 44px; font: 400 24px/1.8 "Consolas", monospace; color: #c9f7da; }
+  .term-body .prompt { color: #7cffb2; }
+  .term-body .cmd { font-size: 30px; color: #e8fff2; min-height: 52px; }
+  .term-body .out { margin-top: 18px; color: #4f7a62; }
+  .term-body .out b { color: #ffd166; font-weight: 400; }
+
+  .table { margin-top: 40px; width: 1560px; border: 1px solid rgba(124,255,178,.3); background: rgba(7,16,12,.7); }
+  .tr { display: grid; grid-template-columns: 520px 220px 200px 620px; gap: 8px; padding: 15px 22px; align-items: center; border-top: 1px solid rgba(124,255,178,.1); }
+  .tr:first-child { border-top: 0; }
+  .th { border-bottom: 1px solid rgba(124,255,178,.35); font: 700 12px/1 "Consolas", monospace; letter-spacing: .14em; color: #4f7a62; background: rgba(124,255,178,.06); }
+  .tr b { font: 700 18px/1.3 "Consolas", monospace; color: #e8fff2; }
+  .tr em { font-style: normal; font: 700 16px/1 "Consolas", monospace; color: #ffd166; }
+  .tr i { font-style: normal; font: 400 15px/1 "Consolas", monospace; color: #4f7a62; }
+  .tr .ok { color: #7cffb2; }
+
+  .split { display: grid; grid-template-columns: 1fr 470px; gap: 54px; margin-top: 34px; align-items: start; }
+  .log { border: 1px solid rgba(124,255,178,.24); background: rgba(7,16,12,.7); padding: 22px 26px; font: 400 18px/2 "Consolas", monospace; color: #4f7a62; }
+  .log div { opacity: 0; transform: translateX(-12px); }
+  .log b { color: #7cffb2; font-weight: 400; }
+  .log em { color: #ffd166; font-style: normal; }
+  .image-slot { position: relative; border: 1px dashed rgba(124,255,178,.55); background: rgba(7,16,12,.55); display: grid; place-items: center; overflow: hidden; }
+  .image-slot::before { content: ""; position: absolute; inset: 12px; border: 1px solid rgba(124,255,178,.2); }
+  .image-slot span { position: relative; font: 700 12px/1 "Consolas", monospace; letter-spacing: .18em; color: #4f7a62; }
+  .image-slot.has-image { background-size: cover; background-position: center; border-style: solid; }
+  .image-slot.has-image span { display: none; }
+  .split .image-slot { height: 430px; }
+
+  .chart { margin-top: 48px; display: flex; align-items: end; gap: 46px; height: 370px; padding-left: 22px; border-left: 1px solid rgba(124,255,178,.4); border-bottom: 1px solid rgba(124,255,178,.4); }
+  .bar { width: 130px; height: 100%; display: flex; flex-direction: column; justify-content: end; align-items: center; position: relative; }
+  .bar i { width: 100%; height: 0; background: linear-gradient(180deg, #7cffb2, rgba(124,255,178,.12)); border: 1px solid rgba(124,255,178,.6); }
+  .bar b { position: absolute; top: -32px; font: 700 17px/1 "Consolas", monospace; color: #ffd166; }
+  .bar span { position: absolute; bottom: -30px; font: 700 11px/1 "Consolas", monospace; letter-spacing: .12em; color: #4f7a62; }
+  .side { position: absolute; right: 112px; top: 580px; width: 410px; }
+  .side div { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(124,255,178,.16); padding: 12px 0; font: 700 13px/1 "Consolas", monospace; color: #4f7a62; }
+  .side b { color: #7cffb2; }
+
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 40px; }
+  .two .image-slot { height: 400px; }
+  .cap { margin-top: 10px; font: 700 11px/1 "Consolas", monospace; letter-spacing: .14em; color: #4f7a62; }
+
+  .endline { margin-top: 40px; font: 400 64px/1.3 "Consolas", monospace; color: #e8fff2; }
+  .endline b { color: #7cffb2; font-weight: 400; }
+  .hud { position: absolute; left: 112px; right: 112px; bottom: 46px; z-index: 20; display: flex; align-items: center; gap: 22px; font: 700 11px/1 "Consolas", monospace; letter-spacing: .18em; color: rgba(79,122,98,.9); }
+  .hud .track { flex: 1; height: 1px; background: rgba(124,255,178,.14); }
+  .hud .track i { display: block; height: 100%; width: 0; background: #7cffb2; }
+  .hud .idx { color: #7cffb2; }
+  @media (max-width: 900px) { body { zoom: .5; } }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="scan"></div>
+
+  <section class="scene" id="sc1">
+    <div class="inner">
+      <div class="tag"><i></i><span>A2 / CURSOR TERMINAL</span></div>
+      <div class="term">
+        <div class="term-bar"><div class="dots"><i></i><i></i><i></i></div><b>nutcut://terminal</b><em>LIVE</em></div>
+        <div class="term-body">
+          <div class="out">$ nutcut --project my-video --mode explainer</div>
+          <div class="cmd"><span class="prompt">$ </span><span id="typed-title" data-title>剪辑，从一条命令开始</span><span class="caret" id="caret1"></span></div>
+          <div class="out">→ loading timeline ... <b>OK</b></div>
+          <div class="out">→ voice profile: me ... <b>READY</b></div>
+        </div>
+      </div>
+      <div class="sub" data-sub>CURSOR TERMINAL · 30S</div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc2">
+    <div class="inner">
+      <div class="tag"><i></i><span>A2 / COMMAND TABLE</span></div>
+      <h2>把意图写清楚，机器才听得懂。</h2>
+      <div class="table">
+        <div class="tr th"><span>命令</span><span>耗时</span><span>状态</span><span>输出</span></div>
+        <div class="tr"><b>voice --project</b><em>3.2s</em><i class="ok">DONE</i><i>out/vo/01.wav</i></div>
+        <div class="tr"><b>timeline --project</b><em>0.8s</em><i class="ok">DONE</i><i>out/timing.json</i></div>
+        <div class="tr"><b>mix --project</b><em>4.1s</em><i class="ok">DONE</i><i>out/mix.wav</i></div>
+        <div class="tr"><b>render --template</b><em>18.6s</em><i class="ok">DONE</i><i>out/film-silent.mp4</i></div>
+        <div class="tr"><b>produce --project</b><em>26.7s</em><i class="ok">DONE</i><i>out/film.mp4</i></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc3">
+    <div class="inner">
+      <div class="tag"><i></i><span>A2 / LOG STREAM</span></div>
+      <h2>每一步，都有日志。</h2>
+      <div class="split">
+        <div class="log">
+          <div>[00:01] <b>voice</b> line 01 · 3.239s</div>
+          <div>[00:04] <b>voice</b> line 02 · 3.239s</div>
+          <div>[00:08] <b>timeline</b> 6 scenes · 29.94s</div>
+          <div>[00:09] <b>mix</b> bgm almost-floating · ducking</div>
+          <div>[00:14] <b>render</b> frame 0000 / 0898</div>
+          <div>[00:22] <b>render</b> frame 0898 / 0898</div>
+          <div>[00:27] <em>produce</em> film.mp4 · 8.1MB</div>
+        </div>
+        <div class="image-slot" data-image-slot><span>截图 / IMAGE 01</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc4">
+    <div class="inner">
+      <div class="tag"><i></i><span>A2 / LATENCY</span></div>
+      <h2>延迟，是体验的真相。</h2>
+      <div class="chart">
+        <div class="bar"><b>120</b><i data-h="120"></i><span>voice</span></div>
+        <div class="bar"><b>80</b><i data-h="80"></i><span>timeline</span></div>
+        <div class="bar"><b>410</b><i data-h="410"></i><span>mix</span></div>
+        <div class="bar"><b>1860</b><i data-h="1860"></i><span>render</span></div>
+        <div class="bar"><b>2670</b><i data-h="2670"></i><span>produce</span></div>
+      </div>
+      <div class="side">
+        <div><span>总耗时</span><b>26.7s</b></div>
+        <div><span>最慢步骤</span><b>render / 18.6s</b></div>
+        <div><span>最快步骤</span><b>timeline / 0.8s</b></div>
+        <div><span>采样</span><b>1 条 30s 成片</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc5">
+    <div class="inner">
+      <div class="tag"><i></i><span>A2 / OUTPUT</span></div>
+      <h2>结果，要能被看见。</h2>
+      <div class="two">
+        <div><div class="image-slot" data-image-slot><span>终端截图 / IMAGE 01</span></div><div class="cap">FIG.01 · 命令执行</div></div>
+        <div><div class="image-slot" data-image-slot><span>成片截图 / IMAGE 02</span></div><div class="cap">FIG.02 · 最终画面</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc6">
+    <div class="inner">
+      <div class="tag"><i></i><span>A2 / EXIT</span></div>
+      <div class="endline">$ <b>命令结束，片子开始。</b><span class="caret" id="caret2"></span></div>
+      <div class="rule"></div>
+      <div class="sub">exit 0 · 1920 × 1080 · 30FPS</div>
+    </div>
+  </section>
+
+  <div class="hud">
+    <span data-brand>NUTCUT / TERMINAL</span>
+    <span class="track"><i id="hud-bar"></i></span>
+    <span class="idx" id="hud-idx">01 / 06</span>
+    <span id="hud-time">00:00</span>
+  </div>
+</div>
+<script>
+(function () {
+  var FPS = 30, DUR = 30;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var C = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+  var S = function (v) { v = C(v); return v * v * (3 - 2 * v); };
+  var E = function (v) { return 1 - Math.pow(1 - C(v), 3); };
+  var DEFAULT_TITLE = '剪辑，从一条命令开始';
+  var DEFAULT_SUB = 'CURSOR TERMINAL · 30S';
+  var DEMO = [
+    { id: '01', text: '剪辑，从一条命令开始。', start: 0, end: 4.7 },
+    { id: '02', text: '把意图写清楚，机器才听得懂。', start: 5, end: 9.7 },
+    { id: '03', text: '每一步，都有日志。', start: 10, end: 14.7 },
+    { id: '04', text: '延迟，是体验的真相。', start: 15, end: 19.7 },
+    { id: '05', text: '结果，要能被看见。', start: 20, end: 24.7 },
+    { id: '06', text: '命令结束，片子开始。', start: 25, end: 29.7 }
+  ];
+  var scenes = $$('.scene');
+  var plan = DEMO.slice();
+  var typed = '';
+  var fullTitle = DEFAULT_TITLE;
+
+  function buildPlan(inputs) {
+    var src = Array.isArray(inputs.lines) && inputs.lines.length ? inputs.lines.slice(0, 6) : DEMO;
+    var timed = src.length === 6 && src.every(function (l) { return Number.isFinite(l.start) && Number.isFinite(l.end) && l.end > l.start; });
+    plan = scenes.map(function (el, i) {
+      var line = src[i] || DEMO[i];
+      return { start: timed ? src[i].start : i * 5, end: timed ? src[i].end : (i + 1) * 5 + 0.35, text: String(line.text == null ? DEMO[i].text : line.text), id: String(line.id == null ? DEMO[i].id : line.id) };
+    });
+  }
+  function setText(el, value) { if (el && el.textContent !== value) el.textContent = value; }
+  function applyInputs(inputs) {
+    var brand = inputs.brand || 'NUTCUT / TERMINAL';
+    $$('[data-brand]').forEach(function (el) { setText(el, brand); });
+    fullTitle = inputs.title || DEFAULT_TITLE;
+    var sub = inputs.subtitle || DEFAULT_SUB;
+    $$('[data-sub]').forEach(function (el) { setText(el, sub); });
+    var images = Array.isArray(inputs.images) ? inputs.images : [];
+    $$('[data-image-slot]').forEach(function (el, i) {
+      var item = images[i];
+      var url = item && (typeof item === 'string' ? item : item.url);
+      if (url) { el.style.backgroundImage = 'url("' + url + '")'; el.classList.add('has-image'); }
+      else { el.style.backgroundImage = ''; el.classList.remove('has-image'); }
+    });
+  }
+  function setTyped(el, text, p) {
+    var n = Math.floor(C(p) * text.length);
+    var val = text.slice(0, n);
+    if (el.textContent !== val) el.textContent = val;
+  }
+  function blink(t) { return Math.floor(t * 2) % 2 === 0 ? 1 : 0.25; }
+  function renderFrame(frame, inputs) {
+    inputs = inputs || {};
+    buildPlan(inputs);
+    applyInputs(inputs);
+    var t = frame / FPS;
+    var active = 0;
+    for (var i = 0; i < plan.length; i += 1) if (t >= plan[i].start - 0.001) active = i;
+    scenes.forEach(function (el, i) {
+      var p = plan[i];
+      var op = Math.min(S((t - p.start + 0.7) / 0.7), S((p.end - t) / 0.6));
+      el.style.visibility = op > 0.001 ? 'visible' : 'hidden';
+      el.style.opacity = op;
+      el.style.transform = 'translateY(' + ((1 - S((t - p.start + 0.7) / 0.7)) * 18) + 'px)';
+    });
+    var local1 = Math.max(0, t - plan[0].start);
+    setTyped($('#typed-title'), fullTitle, (local1 + 0.2) / 1.6);
+    var c1 = $('#caret1'); if (c1) c1.style.opacity = blink(t);
+    var c2 = $('#caret2'); if (c2) c2.style.opacity = blink(t);
+    var local3 = Math.max(0, t - plan[2].start);
+    $$('.log div').forEach(function (el, i) {
+      var q = E((local3 + 0.2 - i * 0.16) / 0.5);
+      el.style.opacity = q;
+      el.style.transform = 'translateX(' + ((1 - q) * -12) + 'px)';
+    });
+    $$('.bar i').forEach(function (bar, i) {
+      var p = C((t - 15 - i * 0.1) / 1.0);
+      bar.style.height = (Number(bar.dataset.h) / 30 * p) + 'px';
+    });
+    $('#hud-bar').style.width = (C(t / DUR) * 100) + '%';
+    $('#hud-idx').textContent = String(active + 1).padStart(2, '0') + ' / 06';
+    $('#hud-time').textContent = '00:' + String(Math.floor(t)).padStart(2, '0');
+  }
+  window.renderFrame = renderFrame;
+  applyInputs({});
+  renderFrame(0, {});
+  window.__ready = true;
+})();
+</script>
+</body>
+</html>

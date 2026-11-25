@@ -1,0 +1,14 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "video-pip",
+  "name": "视频画中画",
+  "version": "1.0.0",
+  "description": "视频素材类：主视频全屏，小窗在四角之间平滑移动、放大缩小，适合讲解、反应视频和产品演示。",
+  "tags": ["视频", "画中画", "PIP", "移动", "讲解"],
+  "runtime": { "profile": "html/1", "entry": "src/index.html", "network": false },
+  "output": { "width": 1920, "height": 1080, "fps": 30, "duration": 10 },
+  "params": { "schema": "params.schema.json", "defaultPreset": "presets/default.json" },
+  "license": "LICENSE",
+  "preview": "preview.png"
+}

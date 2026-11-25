@@ -1,0 +1,43 @@
+{
+  "id": "comic-pop",
+  "name": "漫画分镜",
+  "category": "漫画",
+  "description": "高饱和美式漫画分镜模板：粗黑描边、网点阴影、速度线与爆炸对话框，适合潮流、娱乐和观点短片。",
+  "tags": [
+    "漫画",
+    "高饱和",
+    "分镜",
+    "潮流",
+    "粗描边"
+  ],
+  "palette": {
+    "background": "#ffe14d",
+    "surface": "#fffdf5",
+    "primary": "#ff3b30",
+    "accent": "#2563eb",
+    "text": "#111111",
+    "muted": "#5b4b2a"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 400,
+    "titleSize": 120
+  },
+  "motion": {
+    "transition": "pop",
+    "speed": "fast"
+  },
+  "duration": 30,
+  "sceneCount": 6,
+  "stylePrompt": "美式漫画分镜，高饱和黄红蓝配色，粗黑描边与网点阴影，速度线和爆炸对话框，波普艺术印刷质感，夸张动态构图",
+  "preview": "preview.svg",
+  "features": [
+    "image-slot"
+  ],
+  "styleRefs": [
+    "K6",
+    "K13",
+    "K14"
+  ],
+  "group": "主题创意"
+}

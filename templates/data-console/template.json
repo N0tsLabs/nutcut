@@ -1,0 +1,52 @@
+{
+  "id": "data-console",
+  "name": "数据驾驶舱",
+  "category": "数据",
+  "description": "深色仪表盘模板：KPI 卡片、折线图、柱状分布、事件表格与监控图片位，适合数据汇报、运营复盘与实时监控主题。",
+  "tags": [
+    "数据",
+    "仪表盘",
+    "深色",
+    "监控",
+    "图表"
+  ],
+  "palette": {
+    "background": "#070b10",
+    "surface": "#0f171f",
+    "primary": "#5eead4",
+    "accent": "#fbbf24",
+    "text": "#e6f1f6",
+    "muted": "#8fa3b0"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 400,
+    "titleSize": 96
+  },
+  "motion": {
+    "transition": "scan-wipe",
+    "speed": "medium"
+  },
+  "duration": 30,
+  "sceneCount": 6,
+  "features": [
+    "table",
+    "chart",
+    "image-slot"
+  ],
+  "stylePrompt": "深色数据驾驶舱，青绿色仪表盘光芒与琥珀色警示色，细网格与等宽数字，KPI 卡片、折线与柱状图、事件流表格，冷峻精密的技术监控视觉",
+  "preview": "preview.svg",
+  "styleRefs": [
+    "F1",
+    "F2",
+    "M34"
+  ],
+  "group": "信息数据",
+  "remotion": {
+    "composition": "DataConsole",
+    "fps": 30,
+    "durationInFrames": 300,
+    "width": 1920,
+    "height": 1080
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "talk-bubble",
+  "name": "口播气泡",
+  "version": "1.0.0",
+  "description": "口播/头像类：头像固定在左下，右侧对话气泡随章节换文案；主体是四张内容卡片，适合知识分享和轻松讲解。",
+  "tags": ["口播", "头像", "气泡", "卡片", "竖屏"],
+  "runtime": { "profile": "html/1", "entry": "src/index.html", "network": false },
+  "output": { "width": 1080, "height": 1920, "fps": 30, "duration": 10 },
+  "params": { "schema": "params.schema.json", "defaultPreset": "presets/default.json" },
+  "license": "LICENSE",
+  "preview": "preview.png"
+}

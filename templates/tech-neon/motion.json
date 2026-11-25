@@ -1,0 +1,32 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "tech-neon",
+  "name": "科技霓虹",
+  "version": "1.0.0",
+  "description": "深色赛博质感的科技短片模板：霓虹描边标题、扫描线与透视网格背景，适合产品发布、AI 与硬件主题。",
+  "tags": [
+    "科技",
+    "霓虹",
+    "深色",
+    "赛博",
+    "产品"
+  ],
+  "runtime": {
+    "profile": "html/1",
+    "entry": "src/index.html",
+    "network": false
+  },
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 30
+  },
+  "params": {
+    "schema": "params.schema.json",
+    "defaultPreset": "presets/default.json"
+  },
+  "license": "LICENSE",
+  "preview": "preview.svg"
+}

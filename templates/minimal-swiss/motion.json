@@ -1,0 +1,32 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "minimal-swiss",
+  "name": "极简瑞士",
+  "version": "1.0.0",
+  "description": "白底黑字、严格十二栏网格的瑞士排版模板：单一红色强调、硬切与遮罩揭示，适合品牌宣言与观点输出。",
+  "tags": [
+    "极简",
+    "瑞士",
+    "网格",
+    "排版",
+    "白底"
+  ],
+  "runtime": {
+    "profile": "html/1",
+    "entry": "src/index.html",
+    "network": false
+  },
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 30
+  },
+  "params": {
+    "schema": "params.schema.json",
+    "defaultPreset": "presets/default.json"
+  },
+  "license": "LICENSE",
+  "preview": "preview.svg"
+}

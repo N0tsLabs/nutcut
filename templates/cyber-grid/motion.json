@@ -1,0 +1,32 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "cyber-grid",
+  "name": "赛博网格",
+  "version": "1.0.0",
+  "description": "深蓝黑终端界面的赛博模板：荧光绿透视网格、数据框与等宽标注，适合数据、网络安全与未来议题。",
+  "tags": [
+    "赛博",
+    "网格",
+    "数据",
+    "深色",
+    "未来"
+  ],
+  "runtime": {
+    "profile": "html/1",
+    "entry": "src/index.html",
+    "network": false
+  },
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 30
+  },
+  "params": {
+    "schema": "params.schema.json",
+    "defaultPreset": "presets/default.json"
+  },
+  "license": "LICENSE",
+  "preview": "preview.svg"
+}

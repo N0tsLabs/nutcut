@@ -1,0 +1,14 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "talk-split",
+  "name": "口播分屏",
+  "version": "1.0.0",
+  "description": "口播/头像类：左侧或右侧放口播画面，另一侧放标题、要点卡片；换边时画面平滑滑过去。",
+  "tags": ["口播", "分屏", "头像", "平移", "讲解"],
+  "runtime": { "profile": "html/1", "entry": "src/index.html", "network": false },
+  "output": { "width": 1920, "height": 1080, "fps": 30, "duration": 10 },
+  "params": { "schema": "params.schema.json", "defaultPreset": "presets/default.json" },
+  "license": "LICENSE",
+  "preview": "preview.png"
+}

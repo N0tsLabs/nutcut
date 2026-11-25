@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="时间线档案模板预览">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e6ddca"/><stop offset=".52" stop-color="#ded4c0"/><stop offset="1" stop-color="#d3c8b2"/>
+    </linearGradient>
+    <radialGradient id="stain" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#8c6e3c" stop-opacity=".1"/><stop offset="1" stop-color="#8c6e3c" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="fiber" width="6" height="5" patternUnits="userSpaceOnUse">
+      <rect width="6" height="1" fill="#1b1813" fill-opacity=".03"/>
+    </pattern>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#paper)"/>
+  <rect width="1920" height="1080" fill="url(#fiber)"/>
+  <circle cx="1720" cy="900" r="220" fill="url(#stain)"/>
+
+  <g stroke="#1b1813" stroke-opacity=".35" fill="none">
+    <path d="M42 68V42H68"/><path d="M1852 42H1878V68"/>
+    <path d="M42 1012V1038H68"/><path d="M1878 1012V1038H1852"/>
+  </g>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <g transform="translate(136 176)">
+      <rect width="26" height="26" fill="none" stroke="#8f2f1f" stroke-opacity=".5"/>
+      <text x="8" y="18" font-family="Consolas, monospace" font-size="11" fill="#8f2f1f">01</text>
+      <text x="42" y="18" font-family="Consolas, monospace" font-size="12" font-weight="700" letter-spacing="5" fill="#8f2f1f">卷宗 / ARCHIVE DOSSIER</text>
+    </g>
+    <text x="132" y="346" font-size="138" font-weight="900" letter-spacing="-6" fill="#17140f">被时间压平的档案</text>
+    <text x="136" y="414" font-family="Consolas, Microsoft YaHei, monospace" font-size="24" letter-spacing="1" fill="#574c3d">TIMELINE ARCHIVE · 1987—2026 六段记录</text>
+    <g font-family="Consolas, monospace" font-size="30" font-weight="900" fill="#b4552d">
+      <text x="136" y="494">1987</text>
+      <text x="232" y="494" font-size="22" font-weight="400">—</text>
+      <text x="270" y="494">2026</text>
+      <text x="396" y="492" font-size="13" font-weight="400" letter-spacing="3" fill="#6d6353">39 YEARS ON FILE</text>
+    </g>
+  </g>
+
+  <!-- photo frame -->
+  <g transform="translate(1112 168) rotate(1.4)">
+    <rect width="680" height="512" fill="#f5efe1" stroke="#1b1813" stroke-opacity=".2"/>
+    <rect x="14" y="14" width="652" height="484" fill="#e7dfcd"/>
+    <g stroke="#1b1813" stroke-opacity=".08">
+      <path d="M14 256H666M340 14V498"/>
+    </g>
+    <g font-family="Microsoft YaHei, sans-serif" text-anchor="middle">
+      <text x="340" y="238" font-size="24" font-weight="900" letter-spacing="2" fill="#4a4234">图片位 01</text>
+      <text x="340" y="268" font-family="Consolas, monospace" font-size="11" font-weight="700" letter-spacing="5" fill="#b4552d">IMAGE SLOT 01</text>
+      <text x="340" y="296" font-family="Consolas, monospace" font-size="11" letter-spacing="3" fill="#7d7263">档案照片 / ARCHIVE PHOTO</text>
+    </g>
+    <g fill="#e2d1a4" fill-opacity=".72">
+      <rect x="-30" y="-14" width="132" height="34" transform="rotate(-38)"/>
+      <rect x="560" y="482" width="132" height="34" transform="rotate(-38)"/>
+    </g>
+  </g>
+  <text x="1120" y="722" font-family="Consolas, monospace" font-size="12" fill="#6d6353"><tspan fill="#8f2f1f">FIG. 01</tspan> — 档案照片，建议使用 4:3 或横向构图。</text>
+
+  <!-- axis -->
+  <g transform="translate(136 806)">
+    <path d="M0 0H1648" stroke="#1b1813" stroke-width="2"/>
+    <g stroke="#1b1813" stroke-width="2">
+      <path d="M0 -5V7M329 -5V7M659 -5V7M989 -5V7M1318 -5V7M1648 -5V7"/>
+    </g>
+    <g font-family="Consolas, monospace" font-size="14" font-weight="700" fill="#4a4234" text-anchor="middle">
+      <text x="0" y="34">1987</text><text x="329" y="34">1996</text><text x="659" y="34">2004</text>
+      <text x="989" y="34">2012</text><text x="1318" y="34">2019</text><text x="1648" y="34">2026</text>
+    </g>
+  </g>
+
+  <g font-family="Consolas, monospace" font-size="12" letter-spacing="3" fill="#6d6353">
+    <text x="136" y="1030">NUTCUT ARCHIVE / 006</text>
+    <text x="1784" y="1030" text-anchor="end" fill="#8f2f1f">1987 — 2026</text>
+  </g>
+</svg>

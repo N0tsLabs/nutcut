@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "口播侧栏 · 参数合同",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "title": { "type": "string", "default": "左边是结构，右边是人" }
+  }
+}

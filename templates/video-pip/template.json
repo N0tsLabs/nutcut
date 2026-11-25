@@ -1,0 +1,42 @@
+{
+  "id": "video-pip",
+  "name": "视频画中画",
+  "group": "视频素材",
+  "category": "视频",
+  "description": "主视频全屏，小窗在四角之间平滑移动、放大缩小，适合讲解、反应视频和产品演示。",
+  "tags": [
+    "视频",
+    "画中画",
+    "PIP",
+    "移动",
+    "讲解"
+  ],
+  "palette": {
+    "background": "#0b0d10",
+    "surface": "#161a20",
+    "primary": "#ffffff",
+    "accent": "#ffb08f",
+    "text": "#ffffff",
+    "muted": "#a2a8b2"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 500,
+    "titleSize": 86
+  },
+  "motion": {
+    "transition": "pip-slide",
+    "speed": "smooth"
+  },
+  "duration": 10,
+  "sceneCount": 4,
+  "stylePrompt": "视频画中画，主视频全屏，白色边框小窗在四角之间平滑移动并缩放，底部大字提示，适合讲解和反应视频。",
+  "preview": "preview.png",
+  "features": [
+    "image-slot"
+  ],
+  "styleRefs": [
+    "H1",
+    "K34"
+  ]
+}

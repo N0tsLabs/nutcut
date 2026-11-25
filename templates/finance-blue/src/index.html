@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>金融蓝 · Finance Blue</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #071a33; }
+  body { font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", system-ui, sans-serif; color: #eaf1ff; }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden;
+    background:
+      radial-gradient(1000px 720px at 82% 12%, rgba(47,111,237,.2), transparent 62%),
+      radial-gradient(800px 620px at 10% 90%, rgba(22,163,74,.1), transparent 62%),
+      linear-gradient(160deg, #0a2244 0%, #071a33 55%, #051326 100%); }
+  #fx { position: absolute; inset: 0; width: 1920px; height: 1080px; z-index: 0; }
+  .scene { position: absolute; inset: 0; visibility: hidden; opacity: 0; z-index: 5; }
+  .inner { position: absolute; left: 112px; right: 112px; }
+  .tag { display: flex; align-items: center; gap: 12px; font: 700 12px/1 "Consolas", monospace; letter-spacing: .26em; color: #8fb0d9; text-transform: uppercase; }
+  .tag i { width: 28px; height: 2px; background: #2f6fed; }
+  h1, h2 { font-weight: 900; color: #eaf1ff; }
+  .ch { display: inline-block; }
+  em { font-style: normal; color: #16a34a; }
+  .up { color: #16a34a; } .down { color: #ef4444; }
+  .mono { font-family: "Consolas", monospace; }
+
+  .s1 { top: 0; height: 100%; }
+  .s1 .topline { position: absolute; left: 112px; right: 112px; top: 64px; display: flex; justify-content: space-between; align-items: center; }
+  .s1 .quote { display: flex; gap: 34px; font: 700 12px/1 "Consolas", monospace; letter-spacing: .16em; color: #8fb0d9; }
+  .s1 .quote b { color: #16a34a; font-weight: 700; }
+  .s1 .quote .red { color: #ef4444; }
+  .s1 h1 { position: absolute; left: 112px; top: 264px; width: 1120px; font-size: 104px; line-height: 1.12; letter-spacing: -.045em; }
+  .s1 .sub { position: absolute; left: 116px; top: 512px; font-size: 24px; letter-spacing: .16em; color: #8fb0d9; }
+  .s1 .kicker { position: absolute; left: 116px; top: 566px; font-size: 15px; letter-spacing: .1em; color: #4f8ef7; }
+  .s1 .kpis { position: absolute; left: 112px; right: 112px; bottom: 134px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .kpi { padding: 24px 28px; border: 1px solid rgba(143,176,217,.2); background: linear-gradient(160deg, rgba(13,37,71,.86), rgba(7,26,51,.6)); }
+  .kpi .k { font: 700 10px/1 "Consolas", monospace; letter-spacing: .22em; color: #8fb0d9; }
+  .kpi .v { margin-top: 14px; font: 900 44px/1 "Consolas", monospace; letter-spacing: -.03em; color: #eaf1ff; }
+  .kpi .v small { font-size: 18px; color: #8fb0d9; }
+  .kpi .d { margin-top: 8px; font: 700 12px/1 "Consolas", monospace; letter-spacing: .1em; }
+  .s1 .chart { position: absolute; right: 76px; top: 240px; width: 760px; height: 500px; }
+  .s1 .chart svg { width: 100%; height: 100%; overflow: visible; }
+  .s1 .chart .gridline { stroke: rgba(143,176,217,.14); }
+  .s1 .chart .line { fill: none; stroke: #4f8ef7; stroke-width: 3; stroke-dasharray: 1; stroke-dashoffset: 1; filter: drop-shadow(0 0 8px rgba(79,142,247,.5)); }
+  .s1 .chart .dot { fill: #16a34a; }
+
+  .s2 { top: 148px; }
+  .s2 h2 { margin-top: 26px; width: 1400px; font-size: 74px; line-height: 1.16; letter-spacing: -.04em; }
+  .s2 .cards { margin-top: 58px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+  .fcard { position: relative; height: 430px; padding: 32px 30px; border: 1px solid rgba(143,176,217,.22); background: linear-gradient(165deg, rgba(15,43,82,.9), rgba(7,26,51,.72)); }
+  .fcard .k { font: 700 10px/1 "Consolas", monospace; letter-spacing: .22em; color: #8fb0d9; }
+  .fcard .v { margin-top: 22px; font: 900 56px/1 "Consolas", monospace; letter-spacing: -.04em; color: #eaf1ff; }
+  .fcard .v small { font-size: 22px; color: #8fb0d9; }
+  .fcard .d { margin-top: 10px; font: 700 13px/1 "Consolas", monospace; }
+  .fcard .spark { position: absolute; left: 30px; right: 30px; bottom: 92px; height: 92px; width: calc(100% - 60px); }
+  .fcard .bar { position: absolute; left: 30px; right: 30px; bottom: 44px; height: 5px; background: rgba(143,176,217,.14); }
+  .fcard .bar i { display: block; height: 100%; width: 0; background: #2f6fed; }
+  .fcard .note { position: absolute; left: 30px; bottom: 20px; font-size: 14px; color: #8fb0d9; }
+
+  .s3 { top: 150px; }
+  .s3 h2 { margin-top: 24px; width: 1320px; font-size: 76px; line-height: 1.14; letter-spacing: -.04em; }
+  .s3 .rows { margin-top: 64px; width: 1080px; }
+  .mrow { display: grid; grid-template-columns: 220px 1fr 140px; gap: 28px; align-items: center; height: 104px; border-bottom: 1px solid rgba(143,176,217,.14); }
+  .mrow .k { font-size: 20px; color: #b7cbe6; }
+  .mrow .bar { height: 10px; background: rgba(143,176,217,.13); }
+  .mrow .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #2f6fed, #4f8ef7); }
+  .mrow .v { text-align: right; font: 900 30px/1 "Consolas", monospace; color: #eaf1ff; }
+  .mrow:nth-child(2) .bar i { background: linear-gradient(90deg, #16a34a, #4ade80); }
+  .mrow:nth-child(4) .bar i { background: linear-gradient(90deg, #ef4444, #f87171); }
+  .s3 .donut { position: absolute; right: 10px; top: 330px; width: 520px; height: 520px; }
+  .s3 .donut text { font-family: "Consolas", monospace; }
+  .s3 .donut .track { fill: none; stroke: rgba(143,176,217,.14); stroke-width: 22; }
+  .s3 .donut .val { fill: none; stroke: #2f6fed; stroke-width: 22; stroke-linecap: round; stroke-dasharray: 691; stroke-dashoffset: 691; transform: rotate(-90deg); transform-origin: 50% 50%; }
+  .s3 .donut .val2 { fill: none; stroke: #16a34a; stroke-width: 22; stroke-linecap: round; stroke-dasharray: 691; stroke-dashoffset: 691; transform: rotate(40deg); transform-origin: 50% 50%; }
+
+  .s4 { top: 0; height: 100%; }
+  .s4 .head { position: absolute; left: 112px; top: 148px; width: 720px; }  .s4 h2 { margin-top: 24px; font-size: 72px; line-height: 1.16; letter-spacing: -.04em; }
+  .s4 .legend { margin-top: 40px; width: 620px; }
+  .s4 .legend .row { display: flex; align-items: flex-start; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(143,176,217,.14); font-size: 19px; line-height: 1.6; color: #b7cbe6; }
+  .s4 .legend .row b { flex: 0 0 10px; height: 10px; margin-top: 9px; background: #16a34a; }
+  .s4 .legend .row:nth-child(2) b { background: #ef4444; }
+  .s4 .quad { position: absolute; right: 20px; top: 236px; width: 900px; height: 660px; }
+  .s4 .quad svg { width: 100%; height: 100%; overflow: visible; }
+  .s4 .quad .axis { stroke: rgba(143,176,217,.3); }
+  .s4 .quad .gridline { stroke: rgba(143,176,217,.1); }
+  .s4 .quad .label { fill: #8fb0d9; font: 700 11px "Consolas", monospace; letter-spacing: .18em; }
+  .s4 .quad .candle { stroke-width: 2; }
+  .s4 .quad .zone { fill: rgba(47,111,237,.08); }
+  .s4 .quad .dot { fill: #16a34a; }
+
+  .s5 { top: 190px; }
+  .s5 h2 { margin-top: 22px; width: 1200px; font-size: 72px; line-height: 1.14; letter-spacing: -.04em; }
+  .s5 .row { margin-top: 54px; display: flex; align-items: flex-end; gap: 80px; }
+  .s5 .big { font: 900 300px/.78 "Consolas", monospace; letter-spacing: -.07em; color: #4f8ef7; text-shadow: 0 0 50px rgba(79,142,247,.2); }
+  .s5 .big small { font-size: 90px; color: #16a34a; }
+  .s5 .copy { width: 720px; padding-bottom: 16px; }
+  .s5 .copy .k { font: 700 11px/1 "Consolas", monospace; letter-spacing: .24em; color: #8fb0d9; }
+  .s5 .copy p { margin-top: 20px; font-size: 20px; line-height: 1.8; color: #b7cbe6; }
+  .s5 .bars { position: absolute; right: 20px; bottom: 150px; width: 620px; height: 230px; display: flex; align-items: flex-end; gap: 22px; border-bottom: 1px solid rgba(143,176,217,.3); }
+  .s5 .bars i { flex: 1; height: 0; background: linear-gradient(180deg, #4f8ef7, rgba(47,111,237,.35)); }
+  .s5 .bars i:nth-child(4), .s5 .bars i:nth-child(6) { background: linear-gradient(180deg, #16a34a, rgba(22,163,74,.3)); }
+
+  .s6 { top: 254px; text-align: center; }
+  .s6 .tag { justify-content: center; }
+  .s6 h2 { margin-top: 32px; font-size: 104px; line-height: 1.12; letter-spacing: -.045em; }
+  .s6 .rule { margin: 42px auto 0; width: 0; height: 1px; background: rgba(143,176,217,.5); }
+  .s6 .sub { margin-top: 28px; font-size: 23px; letter-spacing: .26em; color: #8fb0d9; }
+  .s6 .note { margin-top: 44px; font-size: 18px; letter-spacing: .06em; color: #b7cbe6; }
+  .s6 .disc { position: absolute; left: 50%; bottom: -182px; width: 900px; transform: translateX(-50%);
+    font: 400 11px/1.8 "Consolas", monospace; letter-spacing: .12em; color: rgba(143,176,217,.45); }
+
+  .hud { position: absolute; left: 112px; right: 112px; bottom: 40px; z-index: 20; display: flex; align-items: center; gap: 24px;
+    font: 700 11px/1 "Consolas", monospace; letter-spacing: .2em; color: #8fb0d9; }
+  .hud .track { flex: 1; height: 2px; background: rgba(143,176,217,.16); }
+  .hud .track i { display: block; height: 100%; width: 0; background: #2f6fed; }
+  .hud .idx { color: #4f8ef7; }
+  @media (max-width: 900px) { body { zoom: .5; } }
+
+  .nutcut-image-slot { position: absolute; right: 112px; bottom: 112px; width: 280px; height: 158px; border: 1px dashed #8a93a1; opacity: .62; display: grid; place-items: center; font: 700 11px/1 "Consolas", monospace; letter-spacing: .2em; z-index: 9; pointer-events: none; color: #8a93a1; }
+  .nutcut-image-slot::before { content: ""; position: absolute; inset: 12px; border: 1px solid currentColor; opacity: .22; }
+  .nutcut-image-slot span { position: relative; }
+  .nutcut-image-slot.has-image { opacity: .9; border-style: solid; background-size: cover; background-position: center; }
+  .nutcut-image-slot.has-image span { display: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="fx" width="1920" height="1080"></canvas>
+
+  <section class="scene" id="sc1">
+    <div class="inner s1">
+      <div class="topline">
+        <div class="tag"><i></i><span>01 / MARKET OPEN</span></div>
+        <div class="quote"><span>SSE <b>+0.82%</b></span><span>NASDAQ <b>+1.14%</b></span><span>HSI <span class="red">-0.36%</span></span></div>
+      </div>
+      <h1 id="s1-title" data-title></h1>
+      <div class="sub" id="s1-sub" data-sub></div>
+      <div class="kicker mono" id="s1-kicker"></div>
+      <div class="chart">
+        <svg viewBox="0 0 760 500" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="fillLine" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#2f6fed" stop-opacity=".3"/>
+              <stop offset="1" stop-color="#2f6fed" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <g class="gridline">
+            <line x1="0" y1="100" x2="760" y2="100"/><line x1="0" y1="200" x2="760" y2="200"/>
+            <line x1="0" y1="300" x2="760" y2="300"/><line x1="0" y1="400" x2="760" y2="400"/>
+          </g>
+          <path d="M0 420L95 390 190 410 285 330 380 352 475 250 570 272 665 176 760 118V500H0Z" fill="url(#fillLine)"/>
+          <path class="line" id="s1-line" pathLength="1" d="M0 420L95 390 190 410 285 330 380 352 475 250 570 272 665 176 760 118"/>
+          <circle class="dot" cx="760" cy="118" r="7"/>
+        </svg>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><div class="k">TOTAL RETURN</div><div class="v">+18.4<small>%</small></div><div class="d up">▲ 2.1% YOY</div></div>
+        <div class="kpi"><div class="k">VOLATILITY</div><div class="v">0.38</div><div class="d down">▼ 0.04</div></div>
+        <div class="kpi"><div class="k">CONFIDENCE</div><div class="v">92<small>%</small></div><div class="d up">▲ 6 pts</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc2">
+    <div class="inner s2">
+      <div class="tag"><i></i><span>02 / THE FIRST READ</span></div>
+      <h2 id="s2-title"></h2>
+      <div class="cards">
+        <article class="fcard">
+          <div class="k">REVENUE / 营收</div><div class="v">2.4<small>B</small></div><div class="d up">▲ 12.6% QOQ</div>
+          <svg class="spark" viewBox="0 0 380 92"><polyline points="0,80 60,70 120,74 180,52 240,58 300,30 380,12" fill="none" stroke="#4f8ef7" stroke-width="3"/></svg>
+          <div class="bar"><i data-bar="0"></i></div><div class="note">口径：合并报表 / 未经审计</div>
+        </article>
+        <article class="fcard">
+          <div class="k">MARGIN / 毛利</div><div class="v">41.8<small>%</small></div><div class="d up">▲ 3.2 pts</div>
+          <svg class="spark" viewBox="0 0 380 92"><polyline points="0,72 60,74 120,60 180,64 240,44 300,40 380,22" fill="none" stroke="#16a34a" stroke-width="3"/></svg>
+          <div class="bar"><i data-bar="1"></i></div><div class="note">成本下降来自供应链优化</div>
+        </article>
+        <article class="fcard">
+          <div class="k">CASH FLOW / 现金流</div><div class="v">680<small>M</small></div><div class="d down">▼ 4.8% QOQ</div>
+          <svg class="spark" viewBox="0 0 380 92"><polyline points="0,20 60,30 120,26 180,44 240,40 300,58 380,66" fill="none" stroke="#ef4444" stroke-width="3"/></svg>
+          <div class="bar"><i data-bar="2"></i></div><div class="note">季节性回款，属正常波动</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc3">
+    <div class="inner s3">
+      <div class="tag"><i></i><span>03 / THREE INDICATORS</span></div>
+      <h2 id="s3-title"></h2>
+      <div class="rows">
+        <div class="mrow"><span class="k">收入增长</span><span class="bar"><i data-m="0"></i></span><span class="v">+18.4%</span></div>
+        <div class="mrow"><span class="k">毛利水平</span><span class="bar"><i data-m="1"></i></span><span class="v">41.8%</span></div>
+        <div class="mrow"><span class="k">现金储备</span><span class="bar"><i data-m="2"></i></span><span class="v">92 天</span></div>
+        <div class="mrow"><span class="k">风险敞口</span><span class="bar"><i data-m="3"></i></span><span class="v">-12.6%</span></div>
+      </div>
+      <div class="donut">
+        <svg viewBox="0 0 520 520" aria-hidden="true">
+          <circle class="track" cx="260" cy="260" r="196"/>
+          <circle class="val" id="s3-donut" cx="260" cy="260" r="196"/>
+          <circle class="val2" id="s3-donut2" cx="260" cy="260" r="196"/>
+          <text x="260" y="244" text-anchor="middle" font-size="15" letter-spacing="4" fill="#8fb0d9">ALLOCATION</text>
+          <text x="260" y="304" text-anchor="middle" font-size="62" font-weight="700" fill="#eaf1ff"><tspan id="s3-pct">0</tspan>%</text>
+          <text x="260" y="342" text-anchor="middle" font-size="13" letter-spacing="3" fill="#8fb0d9">EQUITY / 权益</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc4">
+    <div class="inner s4">
+      <div class="head">
+        <div class="tag"><i></i><span>04 / RISK &amp; RETURN</span></div>
+        <h2 id="s4-title"></h2>
+        <div class="legend">
+          <div class="row"><b></b><span>收益不是免费的：每一段上行，背后都标着波动率。</span></div>
+          <div class="row"><b></b><span>先想清楚能承受多少回撤，再谈目标回报。</span></div>
+        </div>
+      </div>
+      <div class="quad">
+        <svg viewBox="0 0 900 660" aria-hidden="true">
+          <rect class="zone" x="80" y="60" width="760" height="500"/>
+          <g class="gridline">
+            <line x1="80" y1="185" x2="840" y2="185"/><line x1="80" y1="310" x2="840" y2="310"/><line x1="80" y1="435" x2="840" y2="435"/>
+            <line x1="270" y1="60" x2="270" y2="560"/><line x1="460" y1="60" x2="460" y2="560"/><line x1="650" y1="60" x2="650" y2="560"/>
+          </g>
+          <line class="axis" x1="80" y1="560" x2="840" y2="560"/>
+          <line class="axis" x1="80" y1="60" x2="80" y2="560"/>
+          <text class="label" x="80" y="596">LOW RISK</text>
+          <text class="label" x="840" y="596" text-anchor="end">HIGH RISK</text>
+          <text class="label" x="42" y="74" transform="rotate(-90 42 74)">RETURN →</text>
+          <g stroke-width="2">
+            <g class="candle" stroke="#16a34a" fill="#16a34a">
+              <line x1="150" y1="430" x2="150" y2="500"/><rect x="142" y="446" width="16" height="34"/>
+              <line x1="240" y1="370" x2="240" y2="440"/><rect x="232" y="388" width="16" height="34"/>
+              <line x1="330" y1="300" x2="330" y2="380"/><rect x="322" y="326" width="16" height="40"/>
+              <line x1="510" y1="230" x2="510" y2="300"/><rect x="502" y="246" width="16" height="38"/>
+              <line x1="690" y1="160" x2="690" y2="230"/><rect x="682" y="178" width="16" height="36"/>
+            </g>
+            <g class="candle" stroke="#ef4444" fill="#ef4444">
+              <line x1="195" y1="400" x2="195" y2="470"/><rect x="187" y="418" width="16" height="30"/>
+              <line x1="420" y1="330" x2="420" y2="410"/><rect x="412" y="352" width="16" height="38"/>
+              <line x1="600" y1="260" x2="600" y2="330"/><rect x="592" y="278" width="16" height="34"/>
+              <line x1="770" y1="220" x2="770" y2="300"/><rect x="762" y="246" width="16" height="32"/>
+            </g>
+          </g>
+          <circle class="dot" cx="690" cy="150" r="8" id="s4-dot"/>
+          <path d="M80 560C240 520 420 430 560 340S760 220 840 150" fill="none" stroke="#4f8ef7" stroke-width="2" stroke-dasharray="6 8" opacity=".7"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc5">
+    <div class="inner s5">
+      <div class="tag"><i></i><span>05 / LONG VIEW</span></div>
+      <h2 id="s5-title"></h2>
+      <div class="row">
+        <div class="big"><span id="s5-num">0.0</span><small>%</small></div>
+        <div class="copy">
+          <div class="k">ANNUALIZED RETURN / 年化</div>
+          <p>把时间拉长，噪声会消失。真正留下来的，是结构、现金流和耐心。</p>
+        </div>
+      </div>
+      <div class="bars"><i data-b="0"></i><i data-b="1"></i><i data-b="2"></i><i data-b="3"></i><i data-b="4"></i><i data-b="5"></i></div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc6">
+    <div class="inner s6">
+      <div class="tag"><i></i><span>06 / DISCLOSURE</span></div>
+      <h2 id="s6-title" data-title></h2>
+      <div class="rule" id="s6-rule"></div>
+      <div class="sub" id="s6-sub" data-sub></div>
+      <div class="note" id="s6-note"></div>
+      <div class="disc">本模板仅用于视觉演示，不构成任何投资建议。市场有风险，决策需谨慎。<br>PAST PERFORMANCE IS NOT INDICATIVE OF FUTURE RESULTS.</div>
+    </div>
+    <div class="nutcut-image-slot" data-image-slot><span>图片位 01</span></div>
+  </section>
+
+  <div class="hud">
+    <span data-brand>NUTCUT / CAPITAL</span>
+    <span class="track"><i id="hud-bar"></i></span>
+    <span class="idx" id="hud-idx">01 / 06</span>
+    <span id="hud-time">00:00</span>
+  </div>
+</div>
+<script>
+(function () {
+  const FPS = 30, DUR = 30;
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+  const C = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
+  const S = (v) => { v = C(v); return v * v * (3 - 2 * v); };
+  const E = (v) => 1 - Math.pow(1 - C(v), 3);
+  const EI = (v) => { v = C(v); return v < .5 ? 2 * v * v : 1 - Math.pow(-2 * v + 2, 2) / 2; };
+  const EB = (v) => { v = C(v); const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(v - 1, 3) + c1 * Math.pow(v - 1, 2); };
+  const R = (i, s) => { const x = Math.sin(i * 127.1 + (s || 0) * 311.7) * 43758.5453; return x - Math.floor(x); };
+  const DEFAULT_TITLE = '让每一分，都看得见';
+  const DEFAULT_SUB = 'CLARITY IN EVERY NUMBER';
+  const DEMO = [
+    { id: '01', text: '数字不会说谎，但需要被读懂。', start: 0, end: 4.7 },
+    { id: '02', text: '先看趋势，再看波动。', start: 5, end: 9.7 },
+    { id: '03', text: '三个指标，撑起一次判断。', start: 10, end: 14.7 },
+    { id: '04', text: '风险，永远和收益并排站立。', start: 15, end: 19.7 },
+    { id: '05', text: '把时间拉长，噪声会消失。', start: 20, end: 24.7 },
+    { id: '06', text: '让每一分投入，都有迹可循。', start: 25, end: 30.6 }
+  ];
+  const scenes = $$('.scene');
+  let plan = [];
+
+  function buildPlan(inputs) {
+    const src = Array.isArray(inputs.lines) && inputs.lines.length ? inputs.lines.slice(0, 6) : DEMO;
+    const timed = src.length === 6 && src.every((l) => Number.isFinite(l.start) && Number.isFinite(l.end) && l.end > l.start);
+    plan = scenes.map((el, i) => {
+      const line = src[i] || DEMO[i];
+      return {
+        start: timed ? src[i].start : i * 5,
+        end: timed ? src[i].end : (i + 1) * 5 + .35,
+        text: String(line.text == null ? DEMO[i].text : line.text),
+        id: String(line.id == null ? DEMO[i].id : line.id)
+      };
+    });
+  }
+
+  function setText(el, value) { if (el && el.textContent !== value) el.textContent = value; }
+
+  function setChars(el, value) {
+    if (!el) return [];
+    if (el.dataset.text !== value) {
+      el.dataset.text = value; el.textContent = '';
+      for (const ch of Array.from(value)) {
+        const s = document.createElement('span'); s.className = 'ch'; s.textContent = ch; el.appendChild(s);
+      }
+    }
+    return Array.from(el.children);
+  }
+
+  function revealChars(list, local, delay, stagger, y) {
+    list.forEach((node, i) => {
+      const p = E((local - delay - i * stagger) / .5);
+      node.style.opacity = p;
+      node.style.transform = 'translateY(' + ((1 - p) * y) + '%)';
+    });
+  }
+
+  function applyInputs(inputs) {
+    if (inputs.accent) document.documentElement.style.setProperty('--accent', inputs.accent);
+    const brand = inputs.brand || 'NUTCUT / CAPITAL';
+    $$('[data-brand]').forEach((el) => setText(el, brand));
+    const title = inputs.title || DEFAULT_TITLE;
+    const sub = inputs.subtitle || DEFAULT_SUB;
+    $$('[data-title]').forEach((el) => setText(el, title));
+    $$('[data-sub]').forEach((el) => setText(el, sub));
+  }
+
+  const fx = $('#fx');
+  const g = fx.getContext('2d');
+  function drawBG(t, active) {
+    g.clearRect(0, 0, 1920, 1080);
+    g.strokeStyle = 'rgba(143,176,217,.055)';
+    g.lineWidth = 1;
+    for (let x = 0; x <= 1920; x += 96) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, 1080); g.stroke(); }
+    for (let y = 0; y <= 1080; y += 90) { g.beginPath(); g.moveTo(0, y); g.lineTo(1920, y); g.stroke(); }
+    for (let i = 0; i < 40; i++) {
+      const x = R(i, 1) * 1920;
+      const y = (R(i, 2) * 1080 + t * (3 + R(i, 3) * 8)) % 1080;
+      g.fillStyle = 'rgba(79,142,247,' + (.08 + R(i, 4) * .16) + ')';
+      g.fillRect(x, y, 2, 2);
+    }
+    const gy = (t * 90) % 1080;
+    const grad = g.createLinearGradient(0, gy - 60, 0, gy + 60);
+    grad.addColorStop(0, 'rgba(47,111,237,0)');
+    grad.addColorStop(.5, 'rgba(47,111,237,.07)');
+    grad.addColorStop(1, 'rgba(47,111,237,0)');
+    g.fillStyle = grad;
+    g.fillRect(0, gy - 60, 1920, 120);
+  }
+
+  function updateScene1(local, t, p) {
+    setText($('#s1-title'), $('#s1-title').dataset.text || DEFAULT_TITLE);
+    setText($('#s1-kicker'), p.text);
+    const chars = setChars($('#s1-title'), $('#s1-title').dataset.text || DEFAULT_TITLE);
+    revealChars(chars, local, .1, .045, 110);
+    $('#s1-line').style.strokeDashoffset = (1 - E((local - .5) / 1.8)).toFixed(3);
+    $('#s1-sub').style.opacity = S((local - 1.0) / .7);
+    $('.s1 .kpis').style.opacity = S((local - 1.3) / .7);
+    $('.s1 .kpis').style.transform = 'translateY(' + ((1 - E((local - 1.3) / .7)) * 24) + 'px)';
+    $('.quote').style.opacity = S((local - .2) / .6);
+  }
+
+  function updateScene2(local, t, p) {
+    setText($('#s2-title'), p.text);
+    $$('.fcard').forEach((el, i) => {
+      const e = E((local - .1 - i * .15) / .6);
+      el.style.opacity = e;
+      el.style.transform = 'translateY(' + ((1 - e) * 60) + 'px)';
+      el.querySelector('.bar i').style.width = ([86, 72, 58][i] * E((local - .7 - i * .15) / 1.1)) + '%';
+    });
+  }
+
+  function updateScene3(local, t, p) {
+    setText($('#s3-title'), p.text);
+    const vals = [82, 68, 74, 34];
+    $$('.mrow .bar i').forEach((bar, i) => {
+      bar.style.width = (vals[i] * E((local - .25 - i * .12) / .9)) + '%';
+    });
+    $$('.mrow').forEach((row, i) => {
+      const e = E((local - .15 - i * .1) / .5);
+      row.style.opacity = e;
+      row.style.transform = 'translateX(' + ((1 - e) * -20) + 'px)';
+    });
+    const pct = Math.round(64 * E((local - .6) / 1.5));
+    setText($('#s3-pct'), String(pct));
+    const off = 691 * (1 - C((local - .6) / 1.5));
+    $('#s3-donut').style.strokeDashoffset = off.toFixed(0);
+    $('#s3-donut2').style.strokeDashoffset = (691 * (1 - C((local - 1.0) / 1.2) * .36)).toFixed(0);
+  }
+
+  function updateScene4(local, t, p) {
+    setText($('#s4-title'), p.text);
+    const e = E((local - .15) / .6);
+    $('.s4 .head').style.opacity = e;
+    $('.s4 .head').style.transform = 'translateY(' + ((1 - e) * 28) + 'px)';
+    $$('.s4 .candle').forEach((el, i) => {
+      el.style.opacity = S((local - .4 - i * .06) / .5);
+    });
+    $('#s4-dot').style.opacity = S((local - 1.2) / .5);
+    $('.s4 .quad').style.opacity = S((local - .3) / .8);
+  }
+
+  function updateScene5(local, t, p) {
+    setText($('#s5-title'), p.text);
+    setText($('#s5-num'), (8.4 * E((local - .3) / 1.9)).toFixed(1));
+    const e = E((local - .2) / .7);
+    $('.s5 .copy').style.opacity = S((local - .4) / .7);
+    $('.s5 .copy').style.transform = 'translateY(' + ((1 - e) * 22) + 'px)';
+    const hs = [42, 58, 66, 78, 88, 100];
+    $$('.s5 .bars i').forEach((bar, i) => {
+      bar.style.height = (hs[i] * E((local - .5 - i * .1) / .9)) + '%';
+    });
+  }
+
+  function updateScene6(local, t, p) {
+    const chars = setChars($('#s6-title'), $('#s6-title').dataset.text || DEFAULT_TITLE);
+    revealChars(chars, local, .1, .05, 110);
+    $('#s6-rule').style.width = (520 * E((local - .9) / .8)) + 'px';
+    $('#s6-sub').style.opacity = S((local - 1.0) / .6);
+    setText($('#s6-note'), p.text);
+    $('#s6-note').style.opacity = S((local - 1.3) / .7);
+    $('.s6 .disc').style.opacity = S((local - 1.7) / .7);
+  }
+
+  const updates = [updateScene1, updateScene2, updateScene3, updateScene4, updateScene5, updateScene6];
+
+  window.renderFrame = function (frame, inputs) {
+    inputs = inputs || {};
+    buildPlan(inputs);
+    applyInputs(inputs);
+    const t = frame / FPS;
+    let active = 0;
+    for (let i = 0; i < plan.length; i += 1) if (t >= plan[i].start - .001) active = i;
+    scenes.forEach((el, i) => {
+      const p = plan[i];
+      const op = Math.min(S((t - p.start + .7) / .7), S((p.end - t) / .6));
+      el.style.visibility = op > .001 ? 'visible' : 'hidden';
+      el.style.opacity = op.toFixed(3);
+    });
+    updates[active](Math.max(0, t - plan[active].start) + (active === 0 ? 1.4 : 0), t, plan[active]);
+    drawBG(t, active);
+    $('#hud-bar').style.width = (C(t / DUR) * 100) + '%';
+    setText($('#hud-idx'), String(active + 1).padStart(2, '0') + ' / 06');
+    setText($('#hud-time'), '00:' + String(Math.floor(t)).padStart(2, '0'));
+  };
+
+  applyInputs({});
+  window.renderFrame(0, {});
+  window.__ready = true;
+})();
+</script>
+<script>
+  (function () {
+    var slot = document.querySelector('[data-image-slot]');
+    if (!slot) return;
+    var original = window.renderFrame;
+    window.renderFrame = function (frame, inputs) {
+      var image = inputs && inputs.images && inputs.images[0];
+      var url = image && (typeof image === 'string' ? image : image.url);
+      if (url) { slot.style.backgroundImage = 'url("' + url + '")'; slot.classList.add('has-image'); }
+      else { slot.style.backgroundImage = ''; slot.classList.remove('has-image'); }
+      return original(frame, inputs);
+    };
+  })();
+</script>
+</body>
+</html>

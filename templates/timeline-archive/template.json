@@ -1,0 +1,45 @@
+{
+  "id": "timeline-archive",
+  "name": "时间线档案",
+  "category": "纪实",
+  "description": "牛皮纸档案质感的时间线模板：横向年表、事件表、年度入库柱图与档案照片位，适合品牌史、项目复盘与纪录短片。",
+  "tags": [
+    "时间线",
+    "档案",
+    "纪实",
+    "年表",
+    "复古"
+  ],
+  "palette": {
+    "background": "#ded4c0",
+    "surface": "#f5efe1",
+    "primary": "#b4552d",
+    "accent": "#4a5a45",
+    "text": "#1b1813",
+    "muted": "#6d6353"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 400,
+    "titleSize": 138
+  },
+  "motion": {
+    "transition": "film-swipe",
+    "speed": "medium"
+  },
+  "duration": 30,
+  "sceneCount": 6,
+  "features": [
+    "table",
+    "chart",
+    "image-slot"
+  ],
+  "stylePrompt": "牛皮纸与旧档案袋质感，铁锈红与橄榄绿，横向年表与打字机字体，胶带与盖章痕迹，记录影像与表格并存，克制的纪实摄影色调",
+  "preview": "preview.svg",
+  "styleRefs": [
+    "M20",
+    "G1",
+    "F3"
+  ],
+  "group": "信息数据"
+}

@@ -1,0 +1,32 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "data-console",
+  "name": "数据驾驶舱",
+  "version": "1.0.0",
+  "description": "深色仪表盘模板：KPI 卡片、折线图、柱状分布、事件表格与监控图片位，适合数据汇报、运营复盘与实时监控主题。",
+  "tags": [
+    "数据",
+    "仪表盘",
+    "深色",
+    "监控",
+    "图表"
+  ],
+  "runtime": {
+    "profile": "html/1",
+    "entry": "src/index.html",
+    "network": false
+  },
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 30
+  },
+  "params": {
+    "schema": "params.schema.json",
+    "defaultPreset": "presets/default.json"
+  },
+  "license": "LICENSE",
+  "preview": "preview.svg"
+}

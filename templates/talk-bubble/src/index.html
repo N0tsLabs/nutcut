@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>口播气泡 · Talk Bubble</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1080px; height:1920px; overflow:hidden; background:#f7f2ea; }
+  body { font-family:"Microsoft YaHei","PingFang SC","Segoe UI",sans-serif; color:#221b17; }
+  #stage { position:relative; width:1080px; height:1920px; overflow:hidden; background:radial-gradient(circle at 90% 8%,#ffe0cf,transparent 36%),radial-gradient(circle at 2% 84%,#e4e9ff,transparent 38%),#f7f2ea; }
+  .grid { position:absolute; inset:0; opacity:.22; background-image:linear-gradient(90deg,rgba(34,27,23,.06) 1px,transparent 1px),linear-gradient(0deg,rgba(34,27,23,.045) 1px,transparent 1px); background-size:90px 90px; }
+  .head { position:absolute; left:84px; right:84px; top:84px; z-index:5; display:flex; justify-content:space-between; align-items:flex-start; }
+  .kicker { font:800 16px/1 "Consolas",monospace; letter-spacing:.2em; color:#d85b3f; }
+  h1 { margin-top:18px; font-size:82px; line-height:1.03; font-weight:900; letter-spacing:-.055em; }
+  h1 em { font-style:normal; color:#d85b3f; }
+  .scene-no { font:900 120px/.8 "Consolas",monospace; color:rgba(34,27,23,.08); letter-spacing:-.08em; }
+  .cards { position:absolute; left:84px; right:84px; top:430px; bottom:560px; display:grid; grid-template-columns:1fr 1fr; gap:18px; z-index:4; }
+  .card { border:1px solid rgba(34,27,23,.12); background:rgba(255,250,243,.82); border-radius:16px; padding:24px; position:relative; overflow:hidden; }
+  .card b { font:900 38px/1 "Consolas",monospace; color:#d85b3f; }
+  .card h3 { margin-top:20px; font-size:30px; font-weight:900; }
+  .card p { margin-top:10px; font-size:20px; line-height:1.6; color:#7b6a5f; }
+  .avatar { position:absolute; left:84px; bottom:110px; z-index:7; width:230px; height:230px; border-radius:50%; background:#323a4a; border:8px solid #fff; box-shadow:0 24px 60px rgba(60,38,26,.22); display:grid; place-items:center; color:rgba(255,255,255,.7); font:800 18px/1 "Microsoft YaHei",sans-serif; }
+  .bubble { position:absolute; left:340px; right:84px; bottom:150px; z-index:6; background:#fffaf3; border:1px solid rgba(34,27,23,.1); border-radius:22px 22px 22px 6px; padding:26px 30px; box-shadow:0 20px 50px rgba(60,38,26,.12); font-size:32px; line-height:1.45; font-weight:800; }
+  .bubble em { font-style:normal; color:#d85b3f; }
+  .hud { position:absolute; left:84px; right:84px; bottom:54px; z-index:9; display:flex; align-items:center; gap:18px; font:800 13px/1 "Consolas",monospace; letter-spacing:.13em; color:rgba(34,27,23,.45); }
+  .hud .bar { flex:1; height:3px; background:rgba(34,27,23,.12); border-radius:2px; overflow:hidden; }
+  .hud .bar i { display:block; height:100%; width:0; background:#d85b3f; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="grid"></div>
+  <div class="head"><div><div class="kicker">TALK BUBBLE / 01</div><h1>让头像<br><em>说人话</em></h1></div><div class="scene-no" id="sceneNo">01</div></div>
+  <div class="cards" id="cards"></div>
+  <div class="avatar">头像占位</div>
+  <div class="bubble" id="bubble">画面可以很小，但说的话要清楚。</div>
+  <div class="hud"><span id="idx">01 / 04</span><div class="bar"><i id="bar"></i></div><span>10 SEC</span></div>
+</div>
+<script>
+(function(){
+  var FPS=30,DUR=10,$=function(s){return document.querySelector(s)};
+  var data=[
+    {title:'让头像说人话',bubble:'画面可以很小，但说的话要清楚。',cards:[['01','先讲结论','一句话只做一件事。'],['02','再补细节','用画面解释，不用堆字。'],['03','留点呼吸','关键点停半拍。'],['04','收住情绪','最后一句要记得住。']]},
+    {title:'头像不是主角',bubble:'头像负责亲切，内容负责价值。',cards:[['01','位置固定','不要每句话都移动。'],['02','尺寸克制','角落里的表情就够了。'],['03','近景一次','强调时再放大。'],['04','回到内容','别让头像抢走注意力。']]},
+    {title:'一句话一个画面',bubble:'观众记不住十件事，只记得住一句。',cards:[['01','删掉形容词','留下动作和结果。'],['02','字幕短一点','手机上要能一眼看完。'],['03','节奏慢一点','重要信息多停一会儿。'],['04','结尾留白','不要把话说满。']]},
+    {title:'最后落到人',bubble:'技术只是工具，表达才是目的。',cards:[['01','说人话','不用术语堆砌。'],['02','给例子','一个具体场景胜过十个概念。'],['03','留温度','让观众感觉你在跟他说话。'],['04','做收束','用一个动作结束。']]}
+  ];
+  function clamp(v){return Math.max(0,Math.min(1,v))}
+  function cubicBezier(x1,y1,x2,y2){var cx=3*x1,bx=3*(x2-x1)-cx,ax=1-cx-bx,cy=3*y1,by=3*(y2-y1)-cy,ay=1-cy-by;function fx(t){return((ax*t+bx)*t+cx)*t}function dfx(t){return(3*ax*t+2*bx)*t+cx}function fy(t){return((ay*t+by)*t+cy)*t}return function(v){v=clamp(v);var t=v;for(var i=0;i<6;i++){var x=fx(t)-v;if(Math.abs(x)<1e-5)break;var d=dfx(t);if(Math.abs(d)<1e-5)break;t=clamp(t-x/d)}return fy(t)}}
+  var ease=cubicBezier(.16,1,.3,1);
+  function smooth(v){return ease(v)}
+  var last=-1;
+  window.renderFrame=function(frame,inputs){
+    var t=Math.max(0,frame/FPS),active=Math.min(3,Math.floor(t/2.5));
+    if(active!==last){
+      last=active;var d=data[active];
+      $('h1').innerHTML=d.title.replace(/(人话|主角|画面|人)$/,'<em>$1</em>');
+      $('#sceneNo').textContent=String(active+1).padStart(2,'0');
+      $('#bubble').textContent=d.bubble;
+      $('#cards').innerHTML=d.cards.map(function(c){return '<div class="card"><b>'+c[0]+'</b><h3>'+c[1]+'</h3><p>'+c[2]+'</p></div>'}).join('');
+    }
+    var local=t-active*2.5,e=smooth(local/.5);
+    $('#cards').style.opacity=e.toFixed(3);
+    $('#cards').style.transform='translateY('+((1-e)*18).toFixed(1)+'px)';
+    $('#bubble').style.opacity=e.toFixed(3);
+    $('#bubble').style.transform='translateY('+((1-e)*14).toFixed(1)+'px)';
+    $('#idx').textContent=String(active+1).padStart(2,'0')+' / 04';
+    $('#bar').style.width=(t/DUR*100).toFixed(2)+'%';
+  };
+  window.renderFrame(0,{}); window.__ready=true;
+})();
+</script>
+</body>
+</html>

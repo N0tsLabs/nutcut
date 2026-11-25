@@ -1,0 +1,26 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "talk-frame",
+  "name": "口播画中画",
+  "version": "1.0.0",
+  "description": "竖屏口播动态模板：原视频作为页面元素，随章节改变位置和大小；顶部当前章节，底部大字幕。无 Logo。",
+  "tags": ["口播", "画中画", "竖屏", "动态", "字幕"],
+  "runtime": {
+    "profile": "html/1",
+    "entry": "src/index.html",
+    "network": false
+  },
+  "output": {
+    "width": 720,
+    "height": 1280,
+    "fps": 30,
+    "duration": 36.55
+  },
+  "params": {
+    "schema": "params.schema.json",
+    "defaultPreset": "presets/default.json"
+  },
+  "license": "LICENSE",
+  "preview": "preview.svg"
+}

@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>赛博网格 · Cyber Grid</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #020806; }
+  body { font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", system-ui, sans-serif; color: #d7ffe8; }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden;
+    background: radial-gradient(1000px 700px at 50% 40%, rgba(6,32,24,.9), transparent 70%), #020806; }
+  #fx { position: absolute; inset: 0; width: 1920px; height: 1080px; z-index: 0; }
+  .scan { position: absolute; inset: 0; pointer-events: none; z-index: 3; opacity: .22;
+    background: repeating-linear-gradient(180deg, rgba(215,255,232,.09) 0 1px, transparent 1px 3px); }
+  .vignette { position: absolute; inset: 0; pointer-events: none; z-index: 4;
+    background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,8,5,.78) 100%); }
+  .scene { position: absolute; inset: 0; visibility: hidden; opacity: 0; z-index: 5; }
+  .inner { position: absolute; left: 112px; right: 112px; }
+  .mono { font-family: "Consolas", "SF Mono", monospace; }
+  .tag { display: flex; align-items: center; gap: 12px; font: 700 12px/1 "Consolas", monospace; letter-spacing: .28em;
+    color: #4ade80; text-transform: uppercase; }
+  .tag i { width: 8px; height: 8px; background: #39ff88; box-shadow: 0 0 12px #39ff88; }
+  .bracket { position: absolute; width: 26px; height: 26px; border: 1px solid rgba(57,255,136,.6); }
+  .bracket.tl { left: 0; top: 0; border-right: 0; border-bottom: 0; }
+  .bracket.tr { right: 0; top: 0; border-left: 0; border-bottom: 0; }
+  .bracket.bl { left: 0; bottom: 0; border-right: 0; border-top: 0; }
+  .bracket.br { right: 0; bottom: 0; border-left: 0; border-top: 0; }
+  .ch { display: inline-block; }
+  em { font-style: normal; color: #39ff88; }
+
+  .s1 { top: 0; }
+  .s1 .frame { position: absolute; left: 112px; right: 112px; top: 150px; height: 690px; border: 1px solid rgba(57,255,136,.22);
+    background: linear-gradient(160deg, rgba(4,18,15,.55), rgba(2,8,6,.15)); }
+  .s1 .head { position: absolute; left: 44px; top: 36px; right: 44px; display: flex; justify-content: space-between; }
+  .s1 .head .r { text-align: right; line-height: 1.9; }
+  .s1 h1 { position: absolute; left: 38px; top: 190px; width: 1300px; font-size: 126px; line-height: 1.08; font-weight: 900; letter-spacing: -.05em;
+    color: #d7ffe8; text-shadow: 0 0 26px rgba(57,255,136,.45), 0 0 70px rgba(34,211,238,.22); }
+  .s1 .sub { position: absolute; left: 42px; bottom: 120px; font: 400 19px/1 "Consolas", monospace; letter-spacing: .22em; color: #4ade80; }
+  .s1 .bar { position: absolute; left: 42px; bottom: 74px; width: 0; height: 2px; background: #39ff88; box-shadow: 0 0 12px #39ff88; }
+  .s1 .coords { position: absolute; right: 44px; top: 190px; text-align: right; font: 400 12px/2.1 "Consolas", monospace; color: rgba(74,222,128,.6); }
+  .s1 .ghost { position: absolute; right: 30px; bottom: 20px; font: 700 180px/1 "Consolas", monospace; color: rgba(57,255,136,.05); }
+
+  .s2 { top: 152px; }
+  .s2 h2 { margin-top: 26px; width: 1360px; font-size: 74px; line-height: 1.16; font-weight: 900; letter-spacing: -.04em; }
+  .s2 .table { margin-top: 54px; width: 1230px; border-top: 1px solid rgba(57,255,136,.3); }
+  .s2 .row { display: grid; grid-template-columns: 120px 1fr 180px 160px; gap: 28px; align-items: center; height: 92px;
+    border-bottom: 1px solid rgba(57,255,136,.16); font: 400 16px/1 "Consolas", monospace; color: rgba(215,255,232,.65); }
+  .s2 .row b { font-weight: 400; color: #39ff88; }
+  .s2 .row .ok { color: #22d3ee; letter-spacing: .16em; }
+  .s2 .row .bar { height: 6px; background: rgba(57,255,136,.12); }
+  .s2 .row .bar i { display: block; height: 100%; width: 0; background: #39ff88; box-shadow: 0 0 10px rgba(57,255,136,.7); }
+  .s2 .side { position: absolute; right: 6px; top: 10px; width: 330px; padding: 24px 24px; border: 1px solid rgba(34,211,238,.28); background: rgba(4,18,15,.5); }
+  .s2 .side .k { font: 700 10px/1 "Consolas", monospace; letter-spacing: .24em; color: #22d3ee; }
+  .s2 .side p { margin-top: 14px; font-size: 17px; line-height: 1.8; color: rgba(215,255,232,.55); }
+  .s2 .side .meter { margin-top: 20px; height: 4px; background: rgba(34,211,238,.15); }
+  .s2 .side .meter i { display: block; height: 100%; width: 0; background: #22d3ee; }
+
+  .s3 { top: 148px; }
+  .s3 h2 { margin-top: 24px; width: 1420px; font-size: 78px; line-height: 1.14; font-weight: 900; letter-spacing: -.04em; }
+  .s3 .mods { margin-top: 62px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+  .mod { position: relative; height: 400px; padding: 30px 28px; border: 1px solid rgba(57,255,136,.24); background: rgba(4,18,15,.55); overflow: hidden; }
+  .mod .head { display: flex; justify-content: space-between; font: 700 11px/1 "Consolas", monospace; letter-spacing: .2em; color: rgba(74,222,128,.7); }
+  .mod h3 { margin-top: 40px; font-size: 48px; font-weight: 900; letter-spacing: -.03em; }
+  .mod p { margin-top: 12px; font-size: 18px; line-height: 1.7; color: rgba(215,255,232,.5); }
+  .mod .data { position: absolute; left: 28px; right: 28px; bottom: 34px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .mod .data b { font: 900 40px/1 "Consolas", monospace; color: #39ff88; }
+  .mod .data span { font: 400 10px/1 "Consolas", monospace; letter-spacing: .2em; color: rgba(215,255,232,.35); }
+  .mod .spark { position: absolute; right: 22px; bottom: 34px; width: 130px; height: 44px; opacity: .7; }
+
+  .s4 .warn { position: absolute; inset: 74px; border: 1px solid rgba(244,63,94,.42); }
+  .s4 .warn::before { content: "ANOMALY DETECTED / 04"; position: absolute; left: 24px; top: -9px; padding: 0 12px; background: #020806;
+    font: 700 11px/1 "Consolas", monospace; letter-spacing: .28em; color: #f43f5e; }
+  .s4 .inner { top: 250px; }
+  .s4 h2 { margin-top: 26px; width: 1500px; font-size: 104px; line-height: 1.14; font-weight: 900; letter-spacing: -.05em; }
+  .s4 .ghost { position: absolute; left: 0; top: 0; width: 100%; opacity: .18; mix-blend-mode: screen; }
+  .s4 .ghost.g1 { color: #f43f5e; }
+  .s4 .ghost.g2 { color: #22d3ee; }
+  .s4 .alert { position: absolute; left: 0; right: 0; bottom: -120px; height: 54px; border-top: 1px solid rgba(244,63,94,.35); border-bottom: 1px solid rgba(244,63,94,.35);
+    overflow: hidden; font: 700 13px/54px "Consolas", monospace; letter-spacing: .3em; color: #f43f5e; white-space: nowrap; }
+  .s4 .alert span { display: inline-block; }
+
+  .s5 .head { position: absolute; left: 0; right: 0; top: 0; display: flex; justify-content: space-between; align-items: flex-start; }
+  .s5 h2 { margin-top: 24px; width: 780px; font-size: 66px; line-height: 1.16; font-weight: 900; letter-spacing: -.04em; }
+  .s5 .num { text-align: right; font: 900 130px/.9 "Consolas", monospace; color: #39ff88; letter-spacing: -.05em; text-shadow: 0 0 30px rgba(57,255,136,.3); }
+  .s5 .num small { font-size: 34px; color: #22d3ee; }
+  .s5 .num .k { display: block; margin-bottom: 12px; font: 700 10px/1 "Consolas", monospace; letter-spacing: .3em; color: rgba(74,222,128,.6); }
+  .s5 .chart { position: absolute; left: 0; right: 0; top: 360px; height: 380px; }
+  .s5 .chart svg { width: 100%; height: 100%; overflow: visible; }
+  .s5 .chart .gridline { stroke: rgba(57,255,136,.14); stroke-width: 1; }
+  .s5 .chart .area { fill: url(#areaGrad); opacity: .22; }
+  .s5 .chart .line { fill: none; stroke: #39ff88; stroke-width: 3; filter: drop-shadow(0 0 8px rgba(57,255,136,.7)); stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .s5 .chart .dot { fill: #22d3ee; }
+  .s5 .caption { position: absolute; left: 0; bottom: 34px; font-size: 19px; line-height: 1.7; color: rgba(215,255,232,.5); max-width: 780px; }
+
+  .s6 .frame { position: absolute; left: 206px; right: 206px; top: 210px; height: 620px; border: 1px solid rgba(57,255,136,.3); background: rgba(4,18,15,.4); }
+  .s6 .center { position: absolute; left: 0; right: 0; top: 320px; text-align: center; }
+  .s6 h2 { margin-top: 28px; font-size: 108px; line-height: 1.1; font-weight: 900; letter-spacing: -.05em;
+    color: #d7ffe8; text-shadow: 0 0 26px rgba(57,255,136,.4), 0 0 70px rgba(34,211,238,.2); }
+  .s6 .sub { margin-top: 24px; font: 400 16px/1 "Consolas", monospace; letter-spacing: .3em; color: #22d3ee; }
+  .s6 .bar { margin: 44px auto 0; width: 0; height: 2px; background: #39ff88; box-shadow: 0 0 14px #39ff88; }
+  .s6 .note { margin-top: 34px; font: 400 15px/1 "Consolas", monospace; letter-spacing: .2em; color: rgba(215,255,232,.45); }
+  .s6 .cursor { display: inline-block; width: 10px; height: 16px; background: #39ff88; vertical-align: -2px; margin-left: 6px; }
+
+  .hud { position: absolute; left: 112px; right: 112px; bottom: 40px; z-index: 20; display: flex; align-items: center; gap: 24px;
+    font: 700 11px/1 "Consolas", monospace; letter-spacing: .2em; color: rgba(74,222,128,.55); }
+  .hud .track { flex: 1; height: 2px; background: rgba(57,255,136,.14); }
+  .hud .track i { display: block; height: 100%; width: 0; background: #39ff88; box-shadow: 0 0 10px rgba(57,255,136,.7); }
+  .hud .idx { color: #39ff88; }
+  @media (max-width: 900px) { body { zoom: .5; } }
+
+  .nutcut-image-slot { position: absolute; right: 112px; bottom: 112px; width: 280px; height: 158px; border: 1px dashed #8a93a1; opacity: .62; display: grid; place-items: center; font: 700 11px/1 "Consolas", monospace; letter-spacing: .2em; z-index: 9; pointer-events: none; color: #8a93a1; }
+  .nutcut-image-slot::before { content: ""; position: absolute; inset: 12px; border: 1px solid currentColor; opacity: .22; }
+  .nutcut-image-slot span { position: relative; }
+  .nutcut-image-slot.has-image { opacity: .9; border-style: solid; background-size: cover; background-position: center; }
+  .nutcut-image-slot.has-image span { display: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="fx" width="1920" height="1080"></canvas>
+  <div class="scan"></div>
+  <div class="vignette"></div>
+
+  <section class="scene" id="sc1">
+    <div class="inner s1">
+      <div class="frame">
+        <span class="bracket tl"></span><span class="bracket tr"></span><span class="bracket bl"></span><span class="bracket br"></span>
+        <div class="head">
+          <div class="tag"><i></i><span id="s1-kicker"></span></div>
+          <div class="r mono" style="font-size:11px;letter-spacing:.2em;color:rgba(74,222,128,.55)">SYS.BOOT / 06 NODES<br>1920×1080 / 30FPS</div>
+        </div>
+        <h1 id="s1-title" data-title></h1>
+        <div class="sub" id="s1-sub" data-sub></div>
+        <div class="bar" id="s1-bar"></div>
+        <div class="coords">LAT 31.2304<br>LON 121.4737<br>GRID 12×12<br>UPLINK 100%</div>
+        <div class="ghost">01</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc2">
+    <div class="inner s2">
+      <div class="tag"><i></i><span>02 / DATA INTAKE</span></div>
+      <h2 id="s2-title"></h2>
+      <div class="table">
+        <div class="row" data-row="0"><b>NODE 01</b><span>perception.stream</span><span class="ok">LOCKED</span><span class="bar"><i></i></span></div>
+        <div class="row" data-row="1"><b>NODE 02</b><span>reasoning.graph</span><span class="ok">LOCKED</span><span class="bar"><i></i></span></div>
+        <div class="row" data-row="2"><b>NODE 03</b><span>output.render</span><span class="ok">LOCKED</span><span class="bar"><i></i></span></div>
+      </div>
+      <div class="side">
+        <div class="k">PACKET SUMMARY</div>
+        <p>输入被拆成可读的帧，逐层校验之后，再交还给创作者。</p>
+        <div class="meter"><i id="s2-meter"></i></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc3">
+    <div class="inner s3">
+      <div class="tag"><i></i><span>03 / SYSTEM MODULES</span></div>
+      <h2 id="s3-title"></h2>
+      <div class="mods">
+        <article class="mod">
+          <div class="head"><span>MOD / 01</span><span>ACTIVE</span></div>
+          <h3>采集</h3><p>把散落的信号收进同一条时间线。</p>
+          <div class="data"><b>1.2K</b><span>FRAMES / SEC</span></div>
+          <svg class="spark" viewBox="0 0 130 44"><path d="M0 40L18 30 34 34 52 16 70 22 90 8 110 14 130 2" fill="none" stroke="#39ff88" stroke-width="2"/></svg>
+        </article>
+        <article class="mod">
+          <div class="head"><span>MOD / 02</span><span>ACTIVE</span></div>
+          <h3>计算</h3><p>在网格里找到最短的那条路径。</p>
+          <div class="data"><b>0.8ms</b><span>LATENCY</span></div>
+          <svg class="spark" viewBox="0 0 130 44"><path d="M0 36L20 34 38 18 56 24 74 12 92 18 112 6 130 10" fill="none" stroke="#22d3ee" stroke-width="2"/></svg>
+        </article>
+        <article class="mod">
+          <div class="head"><span>MOD / 03</span><span>ACTIVE</span></div>
+          <h3>输出</h3><p>把结果落成可以播放的画面。</p>
+          <div class="data"><b>99.9%</b><span>UPTIME</span></div>
+          <svg class="spark" viewBox="0 0 130 44"><path d="M0 42L18 40 36 38 54 34 72 30 90 24 108 18 130 4" fill="none" stroke="#39ff88" stroke-width="2"/></svg>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene s4" id="sc4">
+    <div class="warn"></div>
+    <div class="inner">
+      <div class="tag"><i style="background:#f43f5e;box-shadow:0 0 12px #f43f5e"></i><span style="color:#f43f5e">04 / INTEGRITY CHECK</span></div>
+      <h2 id="s4-title"></h2>
+      <h2 class="ghost g1" id="s4-g1"></h2>
+      <h2 class="ghost g2" id="s4-g2"></h2>
+      <div class="alert"><span id="s4-ticker">WARNING · UNVERIFIED OUTPUT · HUMAN REVIEW REQUIRED · WARNING · UNVERIFIED OUTPUT · HUMAN REVIEW REQUIRED ·</span></div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc5">
+    <div class="inner s5">
+      <div class="head">
+        <div>
+          <div class="tag"><i></i><span>05 / THROUGHPUT</span></div>
+          <h2 id="s5-title"></h2>
+        </div>
+        <div class="num"><span class="k">SIGNAL INTEGRITY</span><span id="s5-num">0</span><small>%</small></div>
+      </div>
+      <div class="chart">
+        <svg viewBox="0 0 1696 380" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#39ff88"/><stop offset="1" stop-color="#39ff88" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <line class="gridline" x1="0" y1="60" x2="1696" y2="60"/>
+          <line class="gridline" x1="0" y1="160" x2="1696" y2="160"/>
+          <line class="gridline" x1="0" y1="260" x2="1696" y2="260"/>
+          <line class="gridline" x1="0" y1="360" x2="1696" y2="360"/>
+          <path class="area" d="M0 330L150 300 300 312 450 220 600 246 750 160 900 182 1050 110 1200 138 1350 70 1500 88 1696 30V380H0Z"/>
+          <path class="line" id="s5-line" pathLength="1" d="M0 330L150 300 300 312 450 220 600 246 750 160 900 182 1050 110 1200 138 1350 70 1500 88 1696 30"/>
+          <circle class="dot" cx="1696" cy="30" r="7" id="s5-dot"/>
+        </svg>
+      </div>
+      <div class="caption" id="s5-caption"></div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc6">
+    <div class="frame"></div>
+    <div class="inner s6">
+      <div class="center">
+        <div class="tag" style="justify-content:center"><i></i><span>06 / LINK ESTABLISHED</span><i></i></div>
+        <h2 id="s6-title" data-title></h2>
+        <div class="sub" id="s6-sub" data-sub></div>
+        <div class="bar" id="s6-bar"></div>
+        <div class="note"><span id="s6-note"></span><span class="cursor" id="s6-cursor"></span></div>
+      </div>
+    </div>
+    <div class="nutcut-image-slot" data-image-slot><span>图片位 01</span></div>
+  </section>
+
+  <div class="hud">
+    <span data-brand>NUTCUT / SYS</span>
+    <span class="track"><i id="hud-bar"></i></span>
+    <span class="idx" id="hud-idx">01 / 06</span>
+    <span id="hud-time">00:00</span>
+  </div>
+</div>
+<script>
+(function () {
+  const FPS = 30, DUR = 30;
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+  const C = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
+  const S = (v) => { v = C(v); return v * v * (3 - 2 * v); };
+  const E = (v) => 1 - Math.pow(1 - C(v), 3);
+  const EI = (v) => { v = C(v); return v < .5 ? 2 * v * v : 1 - Math.pow(-2 * v + 2, 2) / 2; };
+  const EB = (v) => { v = C(v); const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(v - 1, 3) + c1 * Math.pow(v - 1, 2); };
+  const R = (i, s) => { const x = Math.sin(i * 127.1 + (s || 0) * 311.7) * 43758.5453; return x - Math.floor(x); };
+  const DEFAULT_TITLE = '数据正在成形';
+  const DEFAULT_SUB = 'GRID LINK ESTABLISHED';
+  const DEMO = [
+    { id: '01', text: '信号接入，界面开始呼吸。', start: 0, end: 4.7 },
+    { id: '02', text: '第一层，是流动的数据。', start: 5, end: 9.7 },
+    { id: '03', text: '第二层，是规则的网格。', start: 10, end: 14.7 },
+    { id: '04', text: '异常出现，系统开始自检。', start: 15, end: 19.7 },
+    { id: '05', text: '节点全部在线，路径闭合。', start: 20, end: 24.7 },
+    { id: '06', text: '连接建立，故事开始传输。', start: 25, end: 30.6 }
+  ];
+  const scenes = $$('.scene');
+  let plan = [];
+
+  function buildPlan(inputs) {
+    const src = Array.isArray(inputs.lines) && inputs.lines.length ? inputs.lines.slice(0, 6) : DEMO;
+    const timed = src.length === 6 && src.every((l) => Number.isFinite(l.start) && Number.isFinite(l.end) && l.end > l.start);
+    plan = scenes.map((el, i) => {
+      const line = src[i] || DEMO[i];
+      return {
+        start: timed ? src[i].start : i * 5,
+        end: timed ? src[i].end : (i + 1) * 5 + .35,
+        text: String(line.text == null ? DEMO[i].text : line.text),
+        id: String(line.id == null ? DEMO[i].id : line.id)
+      };
+    });
+  }
+
+  function setText(el, value) { if (el && el.textContent !== value) el.textContent = value; }
+
+  function setChars(el, value) {
+    if (!el) return [];
+    if (el.dataset.text !== value) {
+      el.dataset.text = value; el.textContent = '';
+      for (const ch of Array.from(value)) {
+        const s = document.createElement('span'); s.className = 'ch'; s.textContent = ch; el.appendChild(s);
+      }
+    }
+    return Array.from(el.children);
+  }
+
+  function revealChars(list, local, delay, stagger, y) {
+    list.forEach((node, i) => {
+      const p = E((local - delay - i * stagger) / .5);
+      node.style.opacity = p;
+      node.style.transform = 'translateY(' + ((1 - p) * y) + '%)';
+    });
+  }
+
+  function applyInputs(inputs) {
+    if (inputs.accent) document.documentElement.style.setProperty('--accent', inputs.accent);
+    const brand = inputs.brand || 'NUTCUT / SYS';
+    $$('[data-brand]').forEach((el) => setText(el, brand));
+    const title = inputs.title || DEFAULT_TITLE;
+    const sub = inputs.subtitle || DEFAULT_SUB;
+    $$('[data-title]').forEach((el) => setText(el, title));
+    $$('[data-sub]').forEach((el) => setText(el, sub));
+  }
+
+  const fx = $('#fx');
+  const g = fx.getContext('2d');
+  const GLYPHS = '01ABCDEF#%&';
+  function drawBG(t, active) {
+    g.clearRect(0, 0, 1920, 1080);
+    g.font = '15px Consolas, monospace';
+    for (let c = 0; c < 48; c++) {
+      const x = c * 40 + 10;
+      const speed = 60 + R(c, 1) * 120;
+      const len = 5 + Math.floor(R(c, 2) * 9);
+      const base = (t * speed + R(c, 3) * 1200) % 1240 - 80;
+      for (let k = 0; k < len; k++) {
+        const y = base + k * 22;
+        if (y < -20 || y > 1100) continue;
+        const ch = GLYPHS[Math.floor(R(c * 31 + k + Math.round(t * 4), 4) * GLYPHS.length)];
+        g.fillStyle = 'rgba(57,255,136,' + (k === 0 ? .3 : .16 * (1 - k / len)).toFixed(3) + ')';
+        g.fillText(ch, x, y);
+      }
+    }
+    const horizon = 620;
+    const gridA = [1, .5, .35, .15, .6, .9][active] || 0;
+    g.lineWidth = 1;
+    for (let i = -14; i <= 14; i++) {
+      g.strokeStyle = 'rgba(57,255,136,' + (.1 * gridA) + ')';
+      g.beginPath();
+      g.moveTo(960 + i * 80, horizon);
+      g.lineTo(960 + i * 280, 1080);
+      g.stroke();
+    }
+    for (let k = 0; k < 16; k++) {
+      const ph = ((k + (t * .1) % 1) / 16);
+      const y = horizon + Math.pow(ph, 2.2) * 440;
+      g.strokeStyle = 'rgba(57,255,136,' + (.15 * gridA * (1 - ph * .5)) + ')';
+      g.beginPath(); g.moveTo(0, y); g.lineTo(1920, y); g.stroke();
+    }
+    const sy = (t * 160) % 1200 - 60;
+    const grad = g.createLinearGradient(0, sy - 40, 0, sy + 40);
+    grad.addColorStop(0, 'rgba(57,255,136,0)');
+    grad.addColorStop(.5, 'rgba(57,255,136,.06)');
+    grad.addColorStop(1, 'rgba(57,255,136,0)');
+    g.fillStyle = grad;
+    g.fillRect(0, sy - 40, 1920, 80);
+  }
+
+  function updateScene1(local, t, p) {
+    setText($('#s1-kicker'), p.text);
+    const chars = setChars($('#s1-title'), $('#s1-title').dataset.text || DEFAULT_TITLE);
+    revealChars(chars, local, .15, .05, 120);
+    $('#s1-bar').style.width = (520 * E((local - .9) / .8)) + 'px';
+    $('#s1-sub').style.opacity = S((local - .9) / .6);
+    $('#s1-sub').style.transform = 'translateX(' + ((1 - E((local - .9) / .6)) * -18) + 'px)';
+    $('.s1 .coords').style.opacity = S((local - 1.2) / .6);
+    $('.s1 .frame').style.clipPath = 'inset(0 ' + ((1 - E((local - .05) / .7)) * 100) + '% 0 0)';
+  }
+
+  function updateScene2(local, t, p) {
+    setText($('#s2-title'), p.text);
+    $$('.s2 .row').forEach((row, i) => {
+      const e = E((local - .15 - i * .18) / .55);
+      row.style.opacity = e;
+      row.style.transform = 'translateX(' + ((1 - e) * 50) + 'px)';
+      row.querySelector('.bar i').style.width = (100 * E((local - .4 - i * .18) / 1.1)) + '%';
+    });
+    $('#s2-meter').style.width = (100 * E((local - .9) / 1.4)) + '%';
+    $('.s2 .side').style.opacity = S((local - .7) / .6);
+    $('.s2 .side').style.transform = 'translateY(' + ((1 - E((local - .7) / .6)) * 26) + 'px)';
+  }
+
+  function updateScene3(local, t, p) {
+    setText($('#s3-title'), p.text);
+    $$('.mod').forEach((el, i) => {
+      const e = E((local - .1 - i * .14) / .6);
+      el.style.opacity = e;
+      el.style.clipPath = 'inset(' + ((1 - e) * 100) + '% 0 0 0)';
+      el.style.transform = 'translateY(' + ((1 - e) * 30) + 'px)';
+    });
+  }
+
+  function updateScene4(local, t, p) {
+    setText($('#s4-title'), p.text);
+    setText($('#s4-g1'), p.text);
+    setText($('#s4-g2'), p.text);
+    const enter = E((local - .05) / .45);
+    $('#s4-title').style.opacity = enter;
+    const jit = local < 1.3 ? Math.sin(local * 80) * (1 - local / 1.3) : 0;
+    $('#s4-g1').style.transform = 'translate(' + (jit * 16 + 3) + 'px,0)';
+    $('#s4-g2').style.transform = 'translate(' + (jit * -13 - 3) + 'px,0)';
+    $('#s4-g1').style.opacity = .12 + Math.abs(jit) * .3;
+    $('#s4-g2').style.opacity = .1 + Math.abs(jit) * .24;
+    const tick = $('#s4-ticker');
+    tick.style.transform = 'translateX(' + (-((t * 220) % 1200)) + 'px)';
+  }
+
+  function updateScene5(local, t, p) {
+    setText($('#s5-title'), p.text);
+    setText($('#s5-num'), String((99.2 * E((local - .3) / 1.8))).slice(0, 4));
+    $('#s5-line').style.strokeDashoffset = (1 - E((local - .25) / 2.0)).toFixed(3);
+    $('#s5-dot').style.opacity = S((local - 2.0) / .4);
+    setText($('#s5-caption'), p.text);
+    $('#s5-caption').style.opacity = S((local - 1.0) / .7);
+  }
+
+  function updateScene6(local, t, p) {
+    const chars = setChars($('#s6-title'), $('#s6-title').dataset.text || DEFAULT_TITLE);
+    revealChars(chars, local, .1, .05, 110);
+    $('#s6-bar').style.width = (560 * E((local - .9) / .8)) + 'px';
+    setText($('#s6-note'), '> ' + p.text);
+    $('#s6-note').style.opacity = S((local - 1.2) / .7);
+    $('#s6-cursor').style.opacity = Math.floor(t * 3) % 2 === 0 ? 1 : 0;
+    $('.s6 .sub').style.opacity = S((local - 1.0) / .6);
+  }
+
+  const updates = [updateScene1, updateScene2, updateScene3, updateScene4, updateScene5, updateScene6];
+
+  window.renderFrame = function (frame, inputs) {
+    inputs = inputs || {};
+    buildPlan(inputs);
+    applyInputs(inputs);
+    const t = frame / FPS;
+    let active = 0;
+    for (let i = 0; i < plan.length; i += 1) if (t >= plan[i].start - .001) active = i;
+    scenes.forEach((el, i) => {
+      const p = plan[i];
+      const op = Math.min(S((t - p.start + .7) / .7), S((p.end - t) / .6));
+      el.style.visibility = op > .001 ? 'visible' : 'hidden';
+      el.style.opacity = op.toFixed(3);
+    });
+    updates[active](Math.max(0, t - plan[active].start) + (active === 0 ? 1.4 : 0), t, plan[active]);
+    drawBG(t, active);
+    $('#hud-bar').style.width = (C(t / DUR) * 100) + '%';
+    setText($('#hud-idx'), String(active + 1).padStart(2, '0') + ' / 06');
+    setText($('#hud-time'), '00:' + String(Math.floor(t)).padStart(2, '0'));
+  };
+
+  applyInputs({});
+  window.renderFrame(0, {});
+  window.__ready = true;
+})();
+</script>
+<script>
+  (function () {
+    var slot = document.querySelector('[data-image-slot]');
+    if (!slot) return;
+    var original = window.renderFrame;
+    window.renderFrame = function (frame, inputs) {
+      var image = inputs && inputs.images && inputs.images[0];
+      var url = image && (typeof image === 'string' ? image : image.url);
+      if (url) { slot.style.backgroundImage = 'url("' + url + '")'; slot.classList.add('has-image'); }
+      else { slot.style.backgroundImage = ''; slot.classList.remove('has-image'); }
+      return original(frame, inputs);
+    };
+  })();
+</script>
+</body>
+</html>

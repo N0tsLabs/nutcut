@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>图片引言 · Photo Quote</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}html,body{width:1080px;height:1920px;overflow:hidden;background:#0c0f13}body{font-family:"Microsoft YaHei","PingFang SC","Segoe UI",sans-serif;color:#fff}
+  #stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#0c0f13}
+  .bg{position:absolute;inset:-4%;background:#8f9aa8;transform:scale(1.03)}.bg::after{content:attr(data-label);position:absolute;left:50%;top:22%;transform:translate(-50%,-50%);font:800 15px/1 "Consolas",monospace;letter-spacing:.15em;color:rgba(255,255,255,.5)}
+  .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,10,14,.18),rgba(8,10,14,.2) 40%,rgba(8,10,14,.86))}
+  .kicker{position:absolute;left:84px;top:110px;font:800 16px/1 "Consolas",monospace;letter-spacing:.2em;color:#ffd08a;z-index:5}
+  .quote{position:absolute;left:84px;right:84px;top:360px;z-index:5;font-size:96px;line-height:1.08;font-weight:900;letter-spacing:-.055em}
+  .quote em{font-style:normal;color:#ffd08a}
+  .by{position:absolute;left:86px;top:1060px;z-index:5;font-size:22px;color:rgba(255,255,255,.52)}
+  .card{position:absolute;right:84px;bottom:270px;z-index:6;width:260px;height:330px;border-radius:16px;overflow:hidden;border:5px solid #fff;box-shadow:0 26px 70px rgba(0,0,0,.4);background:#b58b9c}
+  .card::after{content:"图片占位";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:rgba(255,255,255,.55);font:800 13px/1 "Consolas",monospace;letter-spacing:.12em}
+  .hud{position:absolute;left:84px;right:84px;bottom:64px;z-index:8;display:flex;align-items:center;gap:18px;font:800 13px/1 "Consolas",monospace;letter-spacing:.13em;color:rgba(255,255,255,.5)}.hud .bar{flex:1;height:3px;background:rgba(255,255,255,.16);border-radius:2px;overflow:hidden}.hud .bar i{display:block;height:100%;width:0;background:#ffd08a}
+</style>
+</head>
+<body><div id="stage">
+<div class="bg" data-label="图片占位 01"></div><div class="shade"></div>
+<div class="kicker" id="kicker">PHOTO QUOTE / 01</div>
+<div class="quote" id="quote">一张图<br><em>一句记得住的话</em></div>
+<div class="by" id="by">PHOTO QUOTE / 2026</div>
+<div class="card"></div>
+<div class="hud"><span id="idx">01 / 04</span><div class="bar"><i id="bar"></i></div><span>10 SEC</span></div>
+</div><script>
+(function(){var FPS=30,DUR=10,$=function(s){return document.querySelector(s)};var data=[['一张图<br><em>一句记得住的话</em>'],['先让图<br><em>自己说话</em>'],['文字只负责<br><em>点题</em>'],['最后留一点<br><em>空白</em>']];
+function clamp(v){return Math.max(0,Math.min(1,v))}function cubicBezier(x1,y1,x2,y2){var cx=3*x1,bx=3*(x2-x1)-cx,ax=1-cx-bx,cy=3*y1,by=3*(y2-y1)-cy,ay=1-cy-by;function fx(t){return((ax*t+bx)*t+cx)*t}function dfx(t){return(3*ax*t+2*bx)*t+cx}function fy(t){return((ay*t+by)*t+cy)*t}return function(v){v=clamp(v);var t=v;for(var i=0;i<6;i++){var x=fx(t)-v;if(Math.abs(x)<1e-5)break;var d=dfx(t);if(Math.abs(d)<1e-5)break;t=clamp(t-x/d)}return fy(t)}}var ease=cubicBezier(.16,1,.3,1);function smooth(v){return ease(v)}
+window.renderFrame=function(frame,inputs){var t=Math.max(0,frame/FPS),active=Math.min(3,Math.floor(t/2.5));$('#kicker').textContent='PHOTO QUOTE / '+String(active+1).padStart(2,'0');$('#quote').innerHTML=data[active][0];var local=t-active*2.5,e=smooth(local/.55);$('#quote').style.opacity=e.toFixed(3);$('#quote').style.transform='translateY('+((1-e)*22).toFixed(1)+'px)';$('.bg').style.transform='scale('+(1.03+Math.min(1,local/2.5)*.06).toFixed(3)+')';$('.card').style.transform='rotate('+((active%2?-3:3))+'deg) translateY('+((1-e)*18).toFixed(1)+'px)';$('#idx').textContent=String(active+1).padStart(2,'0')+' / 04';$('#bar').style.width=(t/DUR*100).toFixed(2)+'%'};window.renderFrame(0,{});window.__ready=true})();
+</script></body></html>

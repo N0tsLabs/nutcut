@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>字雨 · Type Rain</title>
+<style>
+  :root {
+    --bg: #0b0b0d;
+    --surface: #14131a;
+    --paper: #f4f1ea;
+    --muted: rgba(244, 241, 234, .54);
+    --line: rgba(244, 241, 234, .14);
+    --accent: #ff5a2b;
+    --amber: #ffd166;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+  body { font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", system-ui, sans-serif; color: var(--paper); }
+  #stage {
+    position: relative; width: 1920px; height: 1080px; overflow: hidden;
+    background:
+      radial-gradient(1180px 800px at 78% 10%, rgba(255, 90, 43, .13), transparent 62%),
+      radial-gradient(900px 720px at 8% 94%, rgba(255, 209, 102, .07), transparent 60%),
+      linear-gradient(162deg, #0f0e12 0%, #08080a 58%, #0d0b0e 100%);
+  }
+  #rain { position: absolute; inset: 0; width: 1920px; height: 1080px; z-index: 1; }
+  .grain { position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: .5;
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0 1px, transparent 1px 3px); }
+  .vignette { position: absolute; inset: 0; z-index: 4; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 44%, transparent 38%, rgba(4,4,6,.78) 100%); }
+  .scene { position: absolute; inset: 0; visibility: hidden; opacity: 0; z-index: 5; will-change: transform, opacity; }
+  .shell { position: absolute; left: 96px; right: 96px; top: 96px; bottom: 96px; }
+
+  .kicker { display: flex; align-items: center; gap: 16px; font: 600 12px/1 "Consolas", "SF Mono", monospace;
+    letter-spacing: .28em; text-transform: uppercase; color: rgba(244,241,234,.52); }
+  .kicker b { font-weight: 700; color: var(--accent); }
+  .kicker i { width: 44px; height: 1px; background: rgba(244,241,234,.3); }
+  .kicker em { font-style: normal; margin-left: auto; color: rgba(244,241,234,.32); letter-spacing: .2em; }
+  .ch { display: inline-block; will-change: transform, opacity; }
+  em.hot { font-style: normal; color: var(--accent); }
+
+  /* scene 1 */
+  .s1-kicker { opacity: 0; }
+  .mega { margin-top: 46px; width: 1500px; font-size: 150px; line-height: 1.02; font-weight: 900;
+    letter-spacing: -.065em; color: #f7f4ec; }
+  .mega .ch { text-shadow: 0 22px 60px rgba(0,0,0,.55); }
+  .lede { margin-top: 38px; max-width: 980px; font-size: 28px; line-height: 1.7; font-weight: 400;
+    letter-spacing: .05em; color: rgba(244,241,234,.6); }
+  .hero-foot { position: absolute; left: 0; bottom: 24px; display: flex; gap: 72px; }
+  .hstat { border-left: 1px solid rgba(244,241,234,.2); padding-left: 18px; }
+  .hstat b { display: block; font: 900 42px/.92 "Consolas", monospace; color: var(--paper); letter-spacing: -.02em; }
+  .hstat span { display: block; margin-top: 12px; font: 600 11px/1 "Consolas", monospace; letter-spacing: .24em; color: rgba(244,241,234,.38); }
+  .ghost-vert { position: absolute; right: -18px; top: 120px; writing-mode: vertical-rl;
+    font: 900 176px/1 "Microsoft YaHei", sans-serif; letter-spacing: .18em; color: rgba(244,241,234,.045); }
+  .s1-note { position: absolute; right: 0; bottom: 96px; width: 330px; text-align: right;
+    font: 600 12px/1.9 "Consolas", monospace; letter-spacing: .16em; color: rgba(255,90,43,.72); }
+
+  /* scene 2 */
+  .s2-body { position: absolute; left: 0; top: 190px; width: 1400px; }
+  .quote-mark { position: absolute; left: -26px; top: -116px; font: 900 250px/1 Georgia, serif;
+    color: rgba(255,90,43,.2); }
+  .statement { position: relative; max-width: 1310px; font-size: 68px; line-height: 1.3; font-weight: 900;
+    letter-spacing: -.035em; color: #f6f2ea; }
+  .s2-meta { display: flex; gap: 90px; margin-top: 96px; }
+  .s2-meta div { border-top: 1px solid rgba(244,241,234,.2); padding-top: 16px; min-width: 200px; }
+  .s2-meta span { display: block; font: 600 11px/1 "Consolas", monospace; letter-spacing: .24em; color: rgba(244,241,234,.36); }
+  .s2-meta b { display: block; margin-top: 16px; font: 900 46px/1 "Consolas", monospace; color: var(--paper); }
+  .s2-meta b i { font-style: normal; font-size: 15px; font-weight: 400; color: rgba(244,241,234,.4); margin-left: 6px; }
+  .rain-tag { position: absolute; left: 96px; bottom: 44px; display: flex; align-items: center; gap: 14px;
+    font: 600 11px/1 "Consolas", monospace; letter-spacing: .24em; color: rgba(244,241,234,.34); }
+  .rain-tag::before { content: ""; width: 6px; height: 6px; background: var(--accent); box-shadow: 0 0 14px var(--accent); }
+
+  /* scene 3 */
+  .s3-head { display: flex; align-items: flex-end; justify-content: space-between; margin-top: 34px; }
+  .s3-head h2 { width: 1180px; font-size: 54px; line-height: 1.24; font-weight: 900; letter-spacing: -.04em; }
+  .s3-read { text-align: right; }
+  .s3-read span { display: block; font: 600 11px/1 "Consolas", monospace; letter-spacing: .24em; color: rgba(244,241,234,.36); }
+  .s3-read b { display: inline-block; margin-top: 10px; font: 900 64px/1 "Consolas", monospace; color: var(--accent); }
+  .s3-read i { font-style: normal; margin-left: 8px; font-size: 15px; color: rgba(244,241,234,.4); }
+  .chart { position: absolute; left: 0; right: 0; bottom: 10px; height: 520px; padding: 30px 36px 22px;
+    background: linear-gradient(165deg, rgba(24,23,31,.92), rgba(11,11,15,.9));
+    border: 1px solid rgba(244,241,234,.12); }
+  .chart::before { content: ""; position: absolute; left: 0; top: 0; width: 100%; height: 2px;
+    background: linear-gradient(90deg, var(--accent), rgba(255,90,43,0)); }
+  .chart-top { display: flex; align-items: center; justify-content: space-between; font: 600 11px/1 "Consolas", monospace;
+    letter-spacing: .2em; color: rgba(244,241,234,.36); }
+  .legend { display: flex; align-items: center; gap: 10px; letter-spacing: .14em; }
+  .legend i { width: 18px; height: 3px; background: var(--accent); display: inline-block; }
+  .legend i.dim { background: rgba(244,241,234,.28); }
+  .bars-wrap { position: relative; height: 348px; margin-top: 24px; }
+  .avg { position: absolute; left: 0; right: 0; bottom: 58%; border-top: 1px dashed rgba(244,241,234,.22); }
+  .avg span { position: absolute; right: 0; top: -18px; font: 600 10px/1 "Consolas", monospace; letter-spacing: .18em; color: rgba(244,241,234,.32); }
+  .bars { position: absolute; inset: 0; display: flex; align-items: flex-end; gap: 30px; padding: 0 8px; }
+  .bar { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .col { position: relative; width: 100%; height: 292px; display: flex; align-items: flex-end; justify-content: center; }
+  .col i { display: block; width: 62%; height: 0; background: linear-gradient(180deg, #ff7a45 0%, rgba(255,90,43,.34) 100%);
+    box-shadow: 0 0 30px rgba(255,90,43,.14); }
+  .col b { position: absolute; left: 50%; transform: translateX(-50%); bottom: 0;
+    font: 900 22px/1 "Consolas", monospace; color: #f7f4ec; }
+  .bar > span { font: 600 11px/1 "Consolas", monospace; letter-spacing: .14em; color: rgba(244,241,234,.34); }
+  .chart-foot { display: flex; justify-content: space-between; margin-top: 14px;
+    font: 600 10px/1 "Consolas", monospace; letter-spacing: .2em; color: rgba(244,241,234,.26); }
+
+  /* scene 4 */
+  .s4-head { display: flex; align-items: flex-end; justify-content: space-between; margin: 34px 0 18px; }
+  .s4-head h2 { font-size: 66px; line-height: 1.1; font-weight: 900; letter-spacing: -.05em; }
+  .s4-week { font: 600 11px/1 "Consolas", monospace; letter-spacing: .22em; color: rgba(244,241,234,.34); padding-bottom: 10px; }
+  .tbl { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  .tbl th { padding: 16px 18px 16px 0; text-align: left; border-bottom: 1px solid rgba(244,241,234,.3);
+    font: 600 11px/1 "Consolas", monospace; letter-spacing: .24em; color: rgba(244,241,234,.42); }
+  .tbl th:nth-child(1) { width: 90px; }
+  .tbl th:nth-child(3), .tbl th:nth-child(4) { width: 210px; }
+  .tbl th:nth-child(5) { width: 330px; }
+  .tbl td { padding: 21px 18px 21px 0; border-bottom: 1px solid rgba(244,241,234,.1); vertical-align: middle; }
+  .tbl td:first-child { font: 700 14px/1 "Consolas", monospace; color: var(--accent); letter-spacing: .1em; }
+  .tbl td.word { font-size: 32px; font-weight: 600; letter-spacing: .06em; }
+  .tbl td.num { font: 700 26px/1 "Consolas", monospace; color: rgba(244,241,234,.9); }
+  .tbl td.up { font: 600 16px/1 "Consolas", monospace; color: var(--amber); }
+  .mini { display: inline-block; width: 150px; height: 4px; background: rgba(244,241,234,.12); vertical-align: middle; margin-right: 16px; }
+  .mini i { display: block; height: 100%; background: var(--accent); }
+  .dense { font: 600 13px/1 "Consolas", monospace; color: rgba(244,241,234,.46); }
+  .tbl-note { margin-top: 26px; font: 400 12px/1.8 "Consolas", monospace; letter-spacing: .1em; color: rgba(244,241,234,.28); }
+
+  /* scene 5 */
+  .frame { position: absolute; padding: 14px; background: #141218; border: 1px solid rgba(244,241,234,.16); }
+  .frame .nutcut-image-slot { position: relative; width: 100%; height: 100%; }
+  .frame figcaption { position: absolute; left: 14px; right: 14px; bottom: 14px; display: flex; align-items: center; gap: 12px;
+    padding: 14px 16px; background: linear-gradient(180deg, rgba(10,9,12,0), rgba(10,9,12,.86));
+    font: 600 11px/1 "Consolas", monospace; letter-spacing: .2em; color: rgba(244,241,234,.7); }
+  .frame figcaption b { color: var(--accent); }
+  .frame-a { left: 0; top: 154px; width: 792px; height: 512px; }
+  .frame-b { right: 0; top: 246px; width: 526px; height: 396px; }
+  .s5-text { position: absolute; left: 0; bottom: 6px; width: 792px; font-size: 30px; line-height: 1.5; font-weight: 400;
+    letter-spacing: .04em; color: rgba(244,241,234,.62); }
+  .s5-mark { position: absolute; right: 0; bottom: 4px; width: 526px; text-align: right;
+    font: 900 96px/1 "Consolas", monospace; color: rgba(255,90,43,.24); letter-spacing: -.04em; }
+
+  /* scene 6 */
+  .s6-center { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); text-align: center; }
+  .s6-center .kicker { justify-content: center; }
+  .s6-title { margin-top: 44px; font-size: 154px; line-height: 1.04; font-weight: 900; letter-spacing: -.06em; color: #f8f5ee; }
+  .s6-rule { height: 2px; width: 0; margin: 42px auto 0; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+  .s6-sub { margin-top: 30px; font-size: 25px; font-weight: 400; letter-spacing: .3em; color: rgba(244,241,234,.54); }
+  .seal { position: relative; display: inline-grid; place-items: center; width: 116px; height: 116px; margin-top: 58px;
+    background: var(--accent); color: #160b07; font-size: 36px; font-weight: 900; letter-spacing: .12em; }
+  .seal::after { content: ""; position: absolute; inset: 8px; border: 2px solid rgba(22,11,7,.4); }
+  .s6-foot { margin-top: 34px; font: 600 11px/1 "Consolas", monospace; letter-spacing: .26em; color: rgba(244,241,234,.3); }
+
+  /* hud */
+  .hud { position: absolute; left: 96px; right: 96px; bottom: 34px; z-index: 20; display: flex; align-items: center; gap: 24px;
+    font: 600 11px/1 "Consolas", monospace; letter-spacing: .22em; color: rgba(244,241,234,.36); }
+  .hud .brand { color: rgba(244,241,234,.58); }
+  .hud .track { flex: 1; height: 1px; background: rgba(244,241,234,.14); }
+  .hud .track i { display: block; height: 100%; width: 0; background: var(--accent); }
+  .hud .idx { color: var(--accent); }
+  .hud .dot { width: 5px; height: 5px; background: var(--accent); }
+
+  .nutcut-image-slot { position: relative; display: block; overflow: hidden; color: var(--paper); }
+  .nutcut-image-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+  .nutcut-image-slot.has-image img { opacity: 1; }
+  .nutcut-image-slot .ph { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 12px; background: repeating-linear-gradient(135deg, rgba(244,241,234,.05) 0 2px, transparent 2px 15px); }
+  .nutcut-image-slot.has-image .ph { opacity: 0; }
+  .nutcut-image-slot .ph b { font-size: 24px; font-weight: 600; letter-spacing: .16em; color: rgba(244,241,234,.62); }
+  .nutcut-image-slot .ph span { font: 600 10px/1 "Consolas", monospace; letter-spacing: .28em; color: rgba(255,90,43,.62); }
+  .nutcut-image-slot .ph::before { content: ""; position: absolute; inset: 18px; border: 1px dashed rgba(244,241,234,.18); }
+  @media (max-width: 900px) { body { zoom: .5; } }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="rain" width="1920" height="1080"></canvas>
+  <div class="grain"></div>
+  <div class="vignette"></div>
+
+  <section class="scene" id="sc1">
+    <div class="shell">
+      <div class="kicker s1-kicker" id="s1-kicker"><b>01</b><span>字雨 / TYPE RAIN</span><i></i><em>1920 × 1080</em></div>
+      <h1 class="mega" id="hero-title"></h1>
+      <p class="lede" id="hero-sub"></p>
+      <div class="hero-foot" id="s1-foot">
+        <div class="hstat"><b>06</b><span>场景 / SCENES</span></div>
+        <div class="hstat"><b>30</b><span>秒 / SECONDS</span></div>
+        <div class="hstat"><b>900</b><span>字重 / TITLE WEIGHT</span></div>
+      </div>
+      <div class="s1-note" id="s1-note">每个字都是一滴雨<br />落下 · 堆叠 · 冲刷</div>
+      <div class="ghost-vert" id="s1-ghost">RAIN</div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc2">
+    <div class="shell">
+      <div class="kicker"><b>02</b><span>堆叠 / ACCUMULATION</span><i></i><em>STILL FALLING</em></div>
+      <div class="s2-body">
+        <div class="quote-mark" id="s2-quote">“</div>
+        <p class="statement" id="s2-text"></p>
+        <div class="s2-meta" id="s2-meta">
+          <div><span>下落速度 / SPEED</span><b>4.6<i>字 / 秒</i></b></div>
+          <div><span>累计字符 / TOTAL</span><b>1,284</b></div>
+          <div><span>留白比例 / AIR</span><b>38<i>%</i></b></div>
+        </div>
+      </div>
+    </div>
+    <div class="rain-tag">RAIN / 持续下落</div>
+  </section>
+
+  <section class="scene" id="sc3">
+    <div class="shell">
+      <div class="kicker"><b>03</b><span>密度 / DENSITY CURVE</span><i></i><em>30 SEC SAMPLING</em></div>
+      <div class="s3-head">
+        <h2 id="s3-text"></h2>
+        <div class="s3-read"><span>峰值 / PEAK</span><b id="s3-peak">0</b><i>字 / 秒</i></div>
+      </div>
+      <div class="chart" id="s3-chart">
+        <div class="chart-top">
+          <span>字符密度 / CHARS PER SECOND</span>
+          <span class="legend"><i></i>实测 <i class="dim"></i>均值</span>
+        </div>
+        <div class="bars-wrap">
+          <div class="avg"><span>AVG 58</span></div>
+          <div class="bars" id="s3-bars"></div>
+        </div>
+        <div class="chart-foot"><span>00:00</span><span>30.0 SEC</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc4">
+    <div class="shell">
+      <div class="kicker"><b>04</b><span>索引 / WORD INDEX</span><i></i><em>WEEK 47</em></div>
+      <div class="s4-head">
+        <h2 id="s4-text"></h2>
+        <span class="s4-week">统计周期 2026 / 11 / 16 — 11 / 22</span>
+      </div>
+      <table class="tbl">
+        <thead>
+          <tr><th>NO.</th><th>高频词 / WORD</th><th>出现 / COUNT</th><th>增幅 / DELTA</th><th>密度 / DENSITY</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>01</td><td class="word">留白</td><td class="num">128</td><td class="up">+24%</td><td><span class="mini"><i style="width:92%"></i></span><span class="dense">0.92</span></td></tr>
+          <tr><td>02</td><td class="word">堆叠</td><td class="num">96</td><td class="up">+18%</td><td><span class="mini"><i style="width:78%"></i></span><span class="dense">0.78</span></td></tr>
+          <tr><td>03</td><td class="word">冲刷</td><td class="num">84</td><td class="up">+12%</td><td><span class="mini"><i style="width:66%"></i></span><span class="dense">0.66</span></td></tr>
+          <tr><td>04</td><td class="word">节奏</td><td class="num">71</td><td class="up">+07%</td><td><span class="mini"><i style="width:54%"></i></span><span class="dense">0.54</span></td></tr>
+          <tr><td>05</td><td class="word">重量</td><td class="num">58</td><td class="up">+03%</td><td><span class="mini"><i style="width:42%"></i></span><span class="dense">0.42</span></td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-note">统计范围 00:00 — 30:00 · 去重后 1,284 字 · 采样 30 fps · 仅统计标题与字幕</div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc5">
+    <div class="shell">
+      <div class="kicker"><b>05</b><span>影像 / TWO FRAMES</span><i></i><em>STILLS</em></div>
+      <figure class="frame frame-a" id="s5-a">
+        <div class="nutcut-image-slot" data-image-slot="1">
+          <img alt="" />
+          <div class="ph"><b>图片位 01</b><span>IMAGE SLOT 01</span></div>
+        </div>
+        <figcaption><b>01</b><span>雨中的手稿 / DRAFT</span></figcaption>
+      </figure>
+      <figure class="frame frame-b" id="s5-b">
+        <div class="nutcut-image-slot" data-image-slot="2">
+          <img alt="" />
+          <div class="ph"><b>图片位 02</b><span>IMAGE SLOT 02</span></div>
+        </div>
+        <figcaption><b>02</b><span>窗边的字 / TYPE</span></figcaption>
+      </figure>
+      <p class="s5-text" id="s5-text"></p>
+      <div class="s5-mark">/ / /</div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc6">
+    <div class="shell">
+      <div class="s6-center">
+        <div class="kicker"><i></i><span>06 / AFTER THE RAIN</span><i></i></div>
+        <h1 class="s6-title" id="end-title"></h1>
+        <div class="s6-rule" id="s6-rule"></div>
+        <p class="s6-sub" id="s6-sub"></p>
+        <div class="seal" id="s6-seal">字雨</div>
+        <div class="s6-foot">TYPE RAIN · NUTCUT TEMPLATE · CC0</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="hud">
+    <span class="dot"></span>
+    <span class="brand">NUTCUT / TYPE RAIN</span>
+    <span class="track"><i id="hud-fill"></i></span>
+    <span class="idx" id="hud-idx">01 / 06</span>
+    <span id="hud-time">00:00</span>
+  </div>
+</div>
+
+<script>
+(function () {
+  var FPS = 30, DUR = 30, PRE = .9;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var C = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+  var S = function (v) { v = C(v); return v * v * (3 - 2 * v); };
+  var E = function (v) { return 1 - Math.pow(1 - C(v), 3); };
+  var EB = function (v) { v = C(v); var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(v - 1, 3) + c1 * Math.pow(v - 1, 2); };
+  var R = function (i, s) { var x = Math.sin(i * 127.1 + (s || 0) * 311.7) * 43758.5453; return x - Math.floor(x); };
+  var DEFAULT_TITLE = '字，落成一场雨';
+  var DEFAULT_SUB = 'TYPE RAIN · 让文字自己走完这段路';
+  var DEMO = [
+    { id: '01', text: '每一个字，都是一滴下落的雨。', start: 0, end: 5 },
+    { id: '02', text: '先落下，再堆叠，最后冲刷成一句话。', start: 5, end: 10 },
+    { id: '03', text: '密度决定节奏，留白决定呼吸。', start: 10, end: 15 },
+    { id: '04', text: '被看见的词，才有重量。', start: 15, end: 20 },
+    { id: '05', text: '让文字自己走完这段路。', start: 20, end: 25 },
+    { id: '06', text: '雨停了，句子还亮着。', start: 25, end: 30 }
+  ];
+  var RAIN_CHARS = '字雨落成句下堆叠冲刷语言密度留白呼吸重量亮着风纸光墨';
+  var stage = $('#stage');
+  var scenes = $$('.scene');
+  var plan = [];
+
+  function buildPlan(inputs) {
+    var src = Array.isArray(inputs.lines) && inputs.lines.length ? inputs.lines.slice(0, 6) : DEMO;
+    var timed = src.length === 6 && src.every(function (l) {
+      return Number.isFinite(l.start) && Number.isFinite(l.end) && l.end > l.start;
+    });
+    plan = scenes.map(function (el, i) {
+      var line = src[i] || DEMO[i];
+      return {
+        start: timed ? src[i].start : i * 5,
+        end: timed ? src[i].end : (i + 1) * 5,
+        text: String(line.text == null ? DEMO[i].text : line.text),
+        id: String(line.id == null ? DEMO[i].id : line.id)
+      };
+    });
+  }
+
+  function setText(el, value) { if (el && el.textContent !== value) el.textContent = value; }
+
+  function setChars(el, value) {
+    if (!el) return [];
+    if (el.dataset.text !== value) {
+      el.dataset.text = value;
+      el.textContent = '';
+      Array.from(value).forEach(function (ch) {
+        var s = document.createElement('span');
+        s.className = 'ch';
+        s.textContent = ch === ' ' ? '\u00a0' : ch;
+        el.appendChild(s);
+      });
+    }
+    return Array.prototype.slice.call(el.children);
+  }
+
+  function applyImages(inputs) {
+    var list = Array.isArray(inputs.images) ? inputs.images : [];
+    $$('[data-image-slot]').forEach(function (el, i) {
+      var raw = list[i];
+      var url = typeof raw === 'string' ? raw : (raw && typeof raw.url === 'string' ? raw.url : '');
+      var img = el.querySelector('img');
+      if (url) {
+        if (img.getAttribute('src') !== url) img.setAttribute('src', url);
+        el.classList.add('has-image');
+      } else {
+        el.classList.remove('has-image');
+        img.removeAttribute('src');
+      }
+    });
+  }
+
+  /* bars */
+  var S3_DATA = [
+    { l: '00:00', v: 26 }, { l: '00:06', v: 44 }, { l: '00:12', v: 62 },
+    { l: '00:18', v: 39 }, { l: '00:24', v: 74 }, { l: '00:30', v: 92 }
+  ];
+  var barsEl = $('#s3-bars');
+  var barNodes = S3_DATA.map(function (d) {
+    var b = document.createElement('div');
+    b.className = 'bar';
+    b.innerHTML = '<div class="col"><i></i><b>0</b></div><span>' + d.l + '</span>';
+    barsEl.appendChild(b);
+    return { col: b.querySelector('i'), val: b.querySelector('b') };
+  });
+
+  var fx = $('#rain');
+  var g = fx.getContext('2d');
+
+  function drawRain(t, active) {
+    g.clearRect(0, 0, 1920, 1080);
+    var boost = active === 1 ? 1.35 : active === 3 ? .85 : 1;
+    var i, x, y, size, ch, a;
+    g.textBaseline = 'alphabetic';
+    for (i = 0; i < 86; i++) {
+      var speed = 46 + R(i, 3) * 128;
+      x = R(i, 1) * 1920;
+      y = ((R(i, 2) * 1320 + t * speed) % 1340) - 130;
+      size = 13 + R(i, 4) * 14;
+      ch = RAIN_CHARS.charAt(Math.floor(R(i, 5) * RAIN_CHARS.length));
+      a = (0.045 + R(i, 6) * 0.11) * boost;
+      g.font = (R(i, 7) > .62 ? '600 ' : '400 ') + size.toFixed(1) + 'px "Microsoft YaHei", sans-serif';
+      g.fillStyle = i % 17 === 0 ? 'rgba(255,90,43,' + (a * 1.5).toFixed(3) + ')' : 'rgba(244,241,234,' + a.toFixed(3) + ')';
+      g.fillText(ch, x, y);
+    }
+    for (i = 0; i < 9; i++) {
+      var bx = R(i, 11) * 1780 + 60;
+      var by = 200 + R(i, 12) * 760;
+      g.font = '900 ' + (120 + R(i, 13) * 90).toFixed(0) + 'px "Microsoft YaHei", sans-serif';
+      g.fillStyle = 'rgba(244,241,234,.028)';
+      g.fillText(RAIN_CHARS.charAt(Math.floor(R(i, 14) * RAIN_CHARS.length)), bx, by + Math.sin(t * .3 + i) * 8);
+    }
+  }
+
+  function updateScene1(local, t, p) {
+    var chars = setChars($('#hero-title'), p.title);
+    chars.forEach(function (n, i) {
+      var d = local - .1 - i * .05;
+      var q = EB(d / .62);
+      n.style.opacity = C(d / .26);
+      n.style.transform = 'translateY(' + ((1 - q) * -118).toFixed(1) + '%) rotate(' + ((1 - q) * 5).toFixed(2) + 'deg)';
+    });
+    var k = E(local / .6);
+    $('#s1-kicker').style.opacity = k;
+    $('#s1-kicker').style.transform = 'translateY(' + ((1 - k) * 14) + 'px)';
+    var sub = $('#hero-sub');
+    var sp = E((local - .55) / .8);
+    sub.style.opacity = sp;
+    sub.style.transform = 'translateY(' + ((1 - sp) * 26) + 'px)';
+    var f = E((local - .9) / .9);
+    $('#s1-foot').style.opacity = f;
+    $('#s1-foot').style.transform = 'translateY(' + ((1 - f) * 22) + 'px)';
+    $('#s1-note').style.opacity = C((local - 1.15) / .8);
+    $('#s1-ghost').style.transform = 'translateY(' + ((1 - E(local / 1.4)) * 40) + 'px)';
+  }
+
+  function updateScene2(local, t, p) {
+    setText($('#s2-text'), p.text);
+    var e = E((local - .12) / 1);
+    var st = $('#s2-text');
+    st.style.opacity = C((local - .12) / .55);
+    st.style.transform = 'translateY(' + ((1 - e) * 54) + 'px)';
+    var q = E((local - .05) / .9);
+    $('#s2-quote').style.opacity = .55 * q;
+    $('#s2-quote').style.transform = 'scale(' + (.7 + .3 * q) + ')';
+    $$('#s2-meta div').forEach(function (el, i) {
+      var d = E((local - .55 - i * .11) / .8);
+      el.style.opacity = d;
+      el.style.transform = 'translateY(' + ((1 - d) * 26) + 'px)';
+    });
+  }
+
+  function updateScene3(local, t, p) {
+    setText($('#s3-text'), p.text);
+    var peak = 0;
+    S3_DATA.forEach(function (d, i) {
+      var grow = E((local - .16 - i * .07) / 1.15);
+      var h = d.v * grow;
+      barNodes[i].col.style.height = h.toFixed(1) + '%';
+      barNodes[i].val.textContent = String(Math.round(h));
+      barNodes[i].val.style.bottom = 'calc(' + h.toFixed(1) + '% + 10px)';
+      peak = Math.max(peak, h);
+    });
+    setText($('#s3-peak'), String(Math.round(peak)));
+    var e = E((local - .05) / .85);
+    var chart = $('#s3-chart');
+    chart.style.opacity = e;
+    chart.style.transform = 'translateY(' + ((1 - e) * 46) + 'px)';
+  }
+
+  function updateScene4(local, t, p) {
+    setText($('#s4-text'), p.text);
+    var head = E((local - .05) / .7);
+    $('.s4-head').style.opacity = head;
+    $('.s4-head').style.transform = 'translateY(' + ((1 - head) * 24) + 'px)';
+    $$('.tbl tbody tr').forEach(function (tr, i) {
+      var e = E((local - .22 - i * .1) / .8);
+      tr.style.opacity = e;
+      tr.style.transform = 'translateX(' + ((1 - e) * -38) + 'px)';
+    });
+    var th = E((local - .1) / .8);
+    $('.tbl thead').style.opacity = th;
+    $('.tbl-note').style.opacity = C((local - .85) / .7);
+  }
+
+  function updateScene5(local, t, p) {
+    setText($('#s5-text'), p.text);
+    var a = E((local - .06) / .95);
+    var b = E((local - .22) / .95);
+    var fa = $('#s5-a');
+    fa.style.opacity = a;
+    fa.style.transform = 'translateY(' + ((1 - a) * 54) + 'px) rotate(' + ((1 - a) * -2) + 'deg)';
+    var fb = $('#s5-b');
+    fb.style.opacity = b;
+    fb.style.transform = 'translateY(' + ((1 - b) * 44) + 'px) rotate(' + ((1 - b) * 1.6) + 'deg)';
+    var st = E((local - .7) / .8);
+    $('#s5-text').style.opacity = st;
+    $('.s5-mark').style.opacity = st;
+  }
+
+  function updateScene6(local, t, p) {
+    var chars = setChars($('#end-title'), p.title);
+    chars.forEach(function (n, i) {
+      var d = E((local - .12 - i * .045) / .7);
+      n.style.opacity = d;
+      n.style.transform = 'translateY(' + ((1 - d) * 70) + '%)';
+    });
+    $('#s6-rule').style.width = (560 * E((local - .55) / .8)) + 'px';
+    var sub = E((local - .7) / .8);
+    $('#s6-sub').style.opacity = sub;
+    $('#s6-sub').style.letterSpacing = (.3 + (1 - sub) * .14) + 'em';
+    var seal = EB((local - 1.0) / .8);
+    $('#s6-seal').style.opacity = C((local - 1.0) / .4);
+    $('#s6-seal').style.transform = 'scale(' + (.6 + .4 * seal) + ') rotate(' + ((1 - seal) * -8) + 'deg)';
+  }
+
+  var updates = [updateScene1, updateScene2, updateScene3, updateScene4, updateScene5, updateScene6];
+  var EXIT = [[0, -54, .004], [-74, 0, .006], [0, 34, .012], [66, 0, .008], [0, -40, .006], [0, 24, .004]];
+
+  window.renderFrame = function (frame, inputs) {
+    inputs = inputs || {};
+    buildPlan(inputs);
+    var title = String(inputs.title == null ? DEFAULT_TITLE : inputs.title);
+    var sub = String(inputs.subtitle == null ? DEFAULT_SUB : inputs.subtitle);
+    applyImages(inputs);
+    var t = frame / FPS;
+    var active = 0;
+    for (var i = 0; i < plan.length; i += 1) if (t >= plan[i].start - .001) active = i;
+
+    scenes.forEach(function (el, i) {
+      var p = plan[i];
+      var op = Math.min(S((t - p.start + .7) / .7), S((p.end - t) / .6));
+      el.style.opacity = op.toFixed(3);
+      el.style.visibility = op > .002 ? 'visible' : 'hidden';
+      var ex = 1 - S((p.end - t) / .6);
+      var d = EXIT[i];
+      el.style.transform = 'translate3d(' + (d[0] * ex).toFixed(1) + 'px,' + (d[1] * ex).toFixed(1) + 'px,0) scale(' + (1 - ex * d[2]).toFixed(4) + ')';
+      updates[i](t - p.start + PRE, t, { text: p.text, title: title });
+    });
+
+    setText($('#hero-sub'), sub);
+    setText($('#s6-sub'), sub);
+    drawRain(t, active);
+
+    $('#hud-fill').style.width = (C(t / DUR) * 100) + '%';
+    setText($('#hud-idx'), String(active + 1).padStart(2, '0') + ' / 06');
+    setText($('#hud-time'), '00:' + String(Math.floor(C(t / DUR) * DUR)).padStart(2, '0'));
+  };
+
+  window.renderFrame(0, {});
+  window.__ready = true;
+})();
+</script>
+</body>
+</html>

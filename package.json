@@ -1,0 +1,49 @@
+{
+  "name": "nutcut",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "NutCut video workflow: MiniMax voice clone + H3 image + Remotion/HTML renderer + local console.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "voice": "node bin/voice.mjs",
+    "image": "node bin/image.mjs",
+    "image-plan": "node bin/image-plan.mjs",
+    "timeline": "node bin/timeline.mjs",
+    "mix": "node bin/audio-mix.mjs",
+    "render": "node bin/render.mjs",
+    "render-remotion": "node bin/render-remotion.mjs",
+    "remotion-build": "node bin/remotion-build.mjs",
+    "analyze-video": "node bin/analyze-video.mjs",
+    "asr": "node bin/asr.mjs",
+    "remix-plan": "node bin/remix-plan.mjs",
+    "assemble": "node bin/assemble.mjs",
+    "compose-frame": "node bin/compose-frame.mjs",
+    "frame-video": "node bin/frame-video.mjs",
+    "check-templates": "node bin/check-templates.mjs",
+    "produce": "node bin/produce.mjs",
+    "console": "node console/server.mjs",
+    "start": "node console/server.mjs",
+    "doctor": "node bin/doctor.mjs",
+    "status": "node bin/status.mjs",
+    "new": "node bin/new-project.mjs",
+    "adapt-layout": "node bin/adapt-layout.mjs",
+    "set-spec": "node bin/set-spec.mjs",
+    "style": "node bin/style.mjs",
+    "install-skill": "node bin/install-skill.mjs",
+    "test": "node --test test/spec.test.mjs test/create-project.test.mjs test/skill.test.mjs test/doctor.test.mjs test/api.test.mjs",
+    "import-asset": "node bin/import.mjs"
+  },
+  "dependencies": {
+    "@remotion/bundler": "^4.0.547",
+    "@remotion/player": "^4.0.547",
+    "@remotion/renderer": "^4.0.547",
+    "esbuild": "^0.28.1",
+    "puppeteer-core": "^24.0.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remotion": "^4.0.547"
+  }
+}

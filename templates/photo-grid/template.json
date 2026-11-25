@@ -1,0 +1,41 @@
+{
+  "id": "photo-grid",
+  "name": "图片拼贴",
+  "group": "图片素材",
+  "category": "图片",
+  "description": "2×2 图片拼贴，当前图片放大、其他图片退后，配一句说明，适合多图展示。",
+  "tags": [
+    "图片",
+    "拼贴",
+    "多图",
+    "产品"
+  ],
+  "palette": {
+    "background": "#f4efe8",
+    "surface": "#fffaf3",
+    "primary": "#241d18",
+    "accent": "#d85b3f",
+    "text": "#241d18",
+    "muted": "#7c6d62"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 700,
+    "titleSize": 76
+  },
+  "motion": {
+    "transition": "focus-grid",
+    "speed": "smooth"
+  },
+  "duration": 10,
+  "sceneCount": 4,
+  "stylePrompt": "暖白底图片拼贴，2×2 大图网格，当前图片放大、其他图片变暗退后，底部一句大字说明，适合多图产品与旅行内容。",
+  "preview": "preview.png",
+  "features": [
+    "image-slot"
+  ],
+  "styleRefs": [
+    "H1",
+    "K34"
+  ]
+}

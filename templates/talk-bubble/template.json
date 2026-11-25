@@ -1,0 +1,48 @@
+{
+  "id": "talk-bubble",
+  "name": "口播气泡",
+  "group": "口播/头像",
+  "category": "口播",
+  "description": "头像固定在左下，对话气泡随章节换文案，四张内容卡片撑住主体，适合知识分享。",
+  "tags": [
+    "口播",
+    "头像",
+    "气泡",
+    "卡片"
+  ],
+  "palette": {
+    "background": "#f7f2ea",
+    "surface": "#fffaf3",
+    "primary": "#221b17",
+    "accent": "#d85b3f",
+    "text": "#221b17",
+    "muted": "#7b6a5f"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 800,
+    "titleSize": 82
+  },
+  "motion": {
+    "transition": "card-crossfade",
+    "speed": "smooth"
+  },
+  "duration": 10,
+  "sceneCount": 4,
+  "stylePrompt": "暖米白口播，左下圆形头像，右侧对话气泡，四张内容卡片；头像不频繁移动，文字高对比，适合手机观看。",
+  "preview": "preview.png",
+  "features": [
+    "image-slot"
+  ],
+  "styleRefs": [
+    "H1",
+    "K34"
+  ],
+  "remotion": {
+    "composition": "TalkBubble",
+    "fps": 30,
+    "durationInFrames": 300,
+    "width": 1080,
+    "height": 1920
+  }
+}

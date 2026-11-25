@@ -1,0 +1,48 @@
+{
+  "id": "talk-frame",
+  "name": "口播画中画",
+  "category": "口播",
+  "description": "口播动态模板：原视频作为页面里的一个元素，随章节改变位置和大小；另一侧用章节编号、关键词、注释和章节列表填充，顶部当前章节，底部大字幕。无 Logo。",
+  "tags": [
+    "口播",
+    "画中画",
+    "动态",
+    "字幕"
+  ],
+  "palette": {
+    "background": "#fbf4ee",
+    "surface": "#fffaf7",
+    "primary": "#2a1a22",
+    "accent": "#e86a5a",
+    "text": "#2a1a22",
+    "muted": "#8b7379"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 500,
+    "titleSize": 42
+  },
+  "motion": {
+    "transition": "card-switch",
+    "speed": "smooth"
+  },
+  "duration": 36.55,
+  "sceneCount": 6,
+  "stylePrompt": "暖米色口播版式，原视频作为页面元素在左/右/居中之间移动，大小随章节变化；顶部当前章节标签，底部暖白字幕卡，柔和粉色光斑背景；无 Logo，清晰、干净、适合手机观看。",
+  "preview": "preview.png",
+  "features": [
+    "image-slot"
+  ],
+  "styleRefs": [
+    "K34",
+    "H3"
+  ],
+  "group": "口播/头像",
+  "remotion": {
+    "composition": "TalkFrame",
+    "fps": 30,
+    "durationInFrames": 300,
+    "width": 1080,
+    "height": 1920
+  }
+}

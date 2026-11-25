@@ -1,0 +1,32 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "glass-3d",
+  "name": "玻璃拟态 3D",
+  "version": "1.0.0",
+  "description": "深紫背景上的玻璃拟态模板：半透明面板、3D 倾斜、环形图、参数表与图片位，适合产品概念、AI 与高端品牌短片。",
+  "tags": [
+    "玻璃拟态",
+    "3D",
+    "深色",
+    "高级",
+    "产品"
+  ],
+  "runtime": {
+    "profile": "html/1",
+    "entry": "src/index.html",
+    "network": false
+  },
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 30
+  },
+  "params": {
+    "schema": "params.schema.json",
+    "defaultPreset": "presets/default.json"
+  },
+  "license": "LICENSE",
+  "preview": "preview.svg"
+}

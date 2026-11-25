@@ -1,0 +1,43 @@
+{
+  "id": "warm-documentary",
+  "name": "温暖纪实",
+  "category": "纪实",
+  "description": "慢节奏人文纪实模板：暖棕奶油色调、胶片颗粒、柔和叠化与字幕条，适合人物故事与品牌纪实。",
+  "tags": [
+    "纪实",
+    "温暖",
+    "胶片",
+    "叙事",
+    "人文"
+  ],
+  "palette": {
+    "background": "#2a211b",
+    "surface": "#3a2d24",
+    "primary": "#e0a96d",
+    "accent": "#c07a4a",
+    "text": "#f0e2cd",
+    "muted": "#b9a58c"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 400,
+    "titleSize": 88
+  },
+  "motion": {
+    "transition": "dissolve",
+    "speed": "slow"
+  },
+  "duration": 30,
+  "sceneCount": 6,
+  "stylePrompt": "温暖纪实摄影，奶油色与暖棕色调，35mm 胶片颗粒与轻微漏光，自然窗光，安静的人物与生活场景，浅景深，克制构图",
+  "preview": "preview.svg",
+  "features": [
+    "image-slot"
+  ],
+  "styleRefs": [
+    "D2",
+    "G1",
+    "M20"
+  ],
+  "group": "主题创意"
+}

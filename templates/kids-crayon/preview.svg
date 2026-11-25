@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="儿童蜡笔模板预览">
+  <defs>
+    <radialGradient id="kbg" cx=".1" cy=".1" r=".9">
+      <stop offset="0" stop-color="#fffdf3"/><stop offset=".62" stop-color="#fff8e1"/><stop offset="1" stop-color="#ffefc4"/>
+    </radialGradient>
+    <pattern id="wax" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(24)">
+      <rect width="12" height="12" fill="none"/>
+      <path d="M0 0V12" stroke="#ffb703" stroke-opacity=".1" stroke-width="3"/>
+    </pattern>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#kbg)"/>
+  <rect width="1920" height="1080" fill="url(#wax)"/>
+
+  <g transform="translate(1450 170)">
+    <circle cx="150" cy="150" r="104" fill="#ffd23f" stroke="#2f2a25" stroke-width="6"/>
+    <circle cx="118" cy="130" r="9" fill="#2f2a25"/><circle cx="182" cy="130" r="9" fill="#2f2a25"/>
+    <path d="M110 172C128 198 172 198 190 172" fill="none" stroke="#2f2a25" stroke-width="6" stroke-linecap="round"/>
+    <g stroke="#ffb703" stroke-width="7" stroke-linecap="round">
+      <path d="M150 -16V16"/><path d="M150 284V316"/><path d="M-16 150H16"/><path d="M284 150H316"/>
+      <path d="M32 32L55 55"/><path d="M245 245L268 268"/><path d="M268 32L245 55"/><path d="M55 245L32 268"/>
+    </g>
+  </g>
+
+  <g transform="translate(1680 560)">
+    <path d="M33 3L41 23 63 25 46 39 51 60 33 48 15 60 20 39 3 25 25 23Z" fill="#ff7eb6" stroke="#2f2a25" stroke-width="3" stroke-linejoin="round"/>
+  </g>
+  <g transform="translate(1280 700)">
+    <path d="M18 2L23 12 34 14 25 21 28 32 18 26 8 32 11 21 2 14 13 12Z" fill="#4aa8ff" stroke="#2f2a25" stroke-width="2.5" stroke-linejoin="round"/>
+  </g>
+
+  <g font-family="YouYuan, Microsoft YaHei, PingFang SC, sans-serif">
+    <g transform="translate(112 196)">
+      <rect width="470" height="52" rx="24" fill="#ffffff" stroke="#ffb703" stroke-width="3" stroke-dasharray="8 6" transform="rotate(-1.4 235 26)"/>
+      <text x="26" y="33" font-size="15" font-family="Consolas, monospace" font-weight="700" letter-spacing="2" fill="#8a7a5c">01 · 今天，我们来画一个特别的世界。</text>
+    </g>
+    <text x="108" y="392" font-size="142" font-weight="900" letter-spacing="-2" fill="#2f2a25" transform="rotate(-1 108 392)">我们一起</text>
+    <text x="108" y="536" font-size="142" font-weight="900" letter-spacing="-2" fill="#2f2a25" transform="rotate(-1 108 536)">画个<span fill="#ff7eb6">世界</span></text>
+    <path d="M112 590C260 574 430 578 560 588S760 602 880 582" fill="none" stroke="#ffb703" stroke-width="12" stroke-linecap="round"/>
+    <text x="112" y="664" font-size="26" letter-spacing="3" fill="#8a7a5c">A CRAYON STORY / 30 SEC</text>
+  </g>
+
+  <g transform="translate(150 760)">
+    <rect width="680" height="224" fill="#ffffff" stroke="#2f2a25" stroke-width="6" rx="34"/>
+    <circle cx="112" cy="112" r="58" fill="#fff4c2" stroke="#2f2a25" stroke-width="5"/>
+    <circle cx="94" cy="98" r="6" fill="#2f2a25"/><circle cx="130" cy="98" r="6" fill="#2f2a25"/>
+    <path d="M88 126C100 142 124 142 136 126" fill="none" stroke="#2f2a25" stroke-width="4" stroke-linecap="round"/>
+    <text x="208" y="98" font-size="42" font-weight="900" fill="#2f2a25">先画一个会笑的太阳</text>
+    <text x="208" y="144" font-size="18" font-family="Consolas, monospace" font-weight="700" letter-spacing="2" fill="#8a7a5c">DRAW THE SUN FIRST</text>
+    <circle cx="208" cy="178" r="6" fill="#ff7eb6"/><circle cx="232" cy="178" r="6" fill="#ffb703"/><circle cx="256" cy="178" r="6" fill="#4aa8ff"/>
+  </g>
+
+  <g transform="translate(1180 830)">
+    <path d="M12 100C-6 62 10 26 46 20 62 4 96 8 108 28 138 24 156 52 146 80 156 104 132 120 108 112 84 130 46 128 32 108 20 106 16 104 12 100Z" fill="#ffe3ef" stroke="#ff7eb6" stroke-width="6"/>
+    <text x="78" y="76" font-family="Consolas, monospace" font-size="14" font-weight="700" letter-spacing="2" fill="#2f2a25">画错了？</text>
+    <text x="78" y="98" font-family="Consolas, monospace" font-size="14" font-weight="700" letter-spacing="2" fill="#2f2a25">没关系！</text>
+  </g>
+
+  <g font-family="Consolas, monospace" font-size="11" font-weight="700" letter-spacing="3" fill="#8a7a5c">
+    <text x="112" y="1042">NUTCUT / KIDS</text>
+    <rect x="330" y="1030" width="1400" height="10" rx="5" fill="#2f2a25" fill-opacity=".1"/>
+    <rect x="330" y="1030" width="390" height="10" rx="5" fill="#ffb703"/>
+    <text x="1808" y="1042" text-anchor="end" fill="#ff7eb6">01 / 06</text>
+  </g>
+</svg>

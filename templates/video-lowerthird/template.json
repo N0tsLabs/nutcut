@@ -1,0 +1,48 @@
+{
+  "id": "video-lowerthird",
+  "name": "视频下三分之一",
+  "group": "视频素材",
+  "category": "视频",
+  "description": "全屏视频、左下角信息条、右侧章节列表，适合访谈、课程和产品演示。",
+  "tags": [
+    "视频",
+    "下三分之一",
+    "访谈",
+    "课程"
+  ],
+  "palette": {
+    "background": "#0b0e12",
+    "surface": "#171c23",
+    "primary": "#ffffff",
+    "accent": "#ffb08f",
+    "text": "#ffffff",
+    "muted": "#a2a8b2"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 500,
+    "titleSize": 76
+  },
+  "motion": {
+    "transition": "lower-third-slide",
+    "speed": "smooth"
+  },
+  "duration": 10,
+  "sceneCount": 4,
+  "stylePrompt": "视频下三分之一，全屏 B-roll，左下角标题与说明，右侧章节列表，深色遮罩，适合访谈和课程。",
+  "preview": "preview.png",
+  "features": [
+    "image-slot"
+  ],
+  "styleRefs": [
+    "H1",
+    "K34"
+  ],
+  "remotion": {
+    "composition": "VideoLowerThird",
+    "fps": 30,
+    "durationInFrames": 300,
+    "width": 1920,
+    "height": 1080
+  }
+}

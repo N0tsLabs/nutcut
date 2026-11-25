@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>像素街机 · Pixel Arcade</title>
+<style>
+  :root {
+    --bg: #0d0b1f;
+    --surface: #161233;
+    --surface2: #1f1a42;
+    --yellow: #ffd93d;
+    --green: #4ade80;
+    --pink: #ff5d8f;
+    --cyan: #5eead4;
+    --text: #f6f4ff;
+    --muted: #8b86b8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+  body { font-family: "Consolas", "SF Mono", "Microsoft YaHei", monospace; color: var(--text); }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden;
+    background:
+      radial-gradient(900px 600px at 50% 8%, rgba(255,217,61,.08), transparent 62%),
+      radial-gradient(700px 500px at 90% 92%, rgba(255,93,143,.09), transparent 60%),
+      linear-gradient(180deg, #0e0c24 0%, #0a0818 55%, #0d0b1f 100%); }
+  #pixbg { position: absolute; inset: 0; width: 1920px; height: 1080px; z-index: 1; image-rendering: pixelated; }
+  .grid { position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: .5;
+    background-image: linear-gradient(rgba(139,134,184,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(139,134,184,.05) 1px, transparent 1px);
+    background-size: 40px 40px; }
+  .vig { position: absolute; inset: 0; z-index: 3; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 48%, transparent 44%, rgba(4,3,12,.66) 100%); }
+  .scene { position: absolute; inset: 0; visibility: hidden; opacity: 0; z-index: 5; will-change: transform, opacity; }
+  .shell { position: absolute; left: 96px; right: 96px; top: 96px; bottom: 96px; }
+
+  .tag { display: flex; align-items: center; gap: 14px; font: 700 12px/1 "Consolas", monospace;
+    letter-spacing: .26em; color: var(--muted); text-transform: uppercase; }
+  .tag b { color: var(--yellow); }
+  .tag i { width: 34px; height: 4px; background: var(--yellow); }
+  .tag em { margin-left: auto; font-style: normal; color: rgba(139,134,184,.7); }
+  .ch { display: inline-block; will-change: transform, opacity; }
+
+  /* pixel frame */
+  .pxframe { position: relative; border: 4px solid var(--text);
+    box-shadow: 0 0 0 4px var(--bg), 0 0 0 8px rgba(255,217,61,.85), 12px 12px 0 rgba(0,0,0,.4); }
+  .pxframe::before, .pxframe::after { content: ""; position: absolute; width: 10px; height: 10px; background: var(--yellow); z-index: 3; }
+  .pxframe::before { left: -7px; top: -7px; }
+  .pxframe::after { right: -7px; bottom: -7px; }
+
+  /* scene 1 */
+  .pix-hud { position: absolute; left: 0; right: 0; top: 0; display: flex; align-items: center; gap: 40px;
+    font: 700 15px/1 "Consolas", monospace; letter-spacing: .14em; color: var(--text); }
+  .pix-hud b { color: var(--yellow); font-weight: 700; }
+  .pix-hud .hi { margin-left: auto; }
+  .pix-hud .credit { color: var(--pink); }
+  .hero { position: absolute; left: 50%; top: 47%; width: 1500px; transform: translate(-50%, -50%); text-align: center; }
+  .logo { display: flex; justify-content: center; gap: 8px; margin-bottom: 34px; }
+  .logo i { width: 18px; height: 18px; background: var(--yellow); box-shadow: 0 0 0 4px #0d0b1f, 0 0 18px rgba(255,217,61,.5); }
+  .logo i:nth-child(2) { background: var(--pink); }
+  .logo i:nth-child(3) { background: var(--green); }
+  .logo i:nth-child(4) { background: var(--cyan); }
+  .hero h1 { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 168px; line-height: 1.06;
+    font-weight: 900; letter-spacing: .02em; color: #fffdf2;
+    text-shadow: 6px 6px 0 var(--pink), 12px 12px 0 #3b1e57, 0 0 60px rgba(255,217,61,.22); }
+  .hero .sub { margin-top: 30px; font: 700 18px/1 "Consolas", monospace; letter-spacing: .34em; color: var(--cyan); }
+  .press { display: inline-flex; align-items: center; gap: 16px; margin-top: 56px; padding: 16px 30px;
+    border: 4px solid var(--yellow); background: rgba(255,217,61,.06);
+    font: 700 22px/1 "Consolas", monospace; letter-spacing: .24em; color: var(--yellow); }
+  .press span { color: var(--pink); }
+  .coin { margin-top: 24px; font: 700 12px/1 "Consolas", monospace; letter-spacing: .26em; color: rgba(246,244,255,.42); }
+  .press-hint { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between;
+    font: 700 12px/1 "Consolas", monospace; letter-spacing: .2em; color: rgba(139,134,184,.6); }
+
+  /* scene 2 */
+  .mission { position: absolute; left: 0; top: 120px; width: 1160px; }
+  .mission h2 { margin-top: 30px; font-family: "Microsoft YaHei", sans-serif; font-size: 64px; line-height: 1.28;
+    font-weight: 900; letter-spacing: -.04em; color: #fffdf2; }
+  .chips { display: flex; gap: 20px; margin-top: 60px; }
+  .chips div { padding: 20px 26px; background: var(--surface); border: 3px solid rgba(246,244,255,.24); }
+  .chips div:nth-child(1) { border-color: var(--pink); }
+  .chips div:nth-child(2) { border-color: var(--green); }
+  .chips div:nth-child(3) { border-color: var(--cyan); }
+  .chips b { display: block; font: 900 34px/1 "Consolas", monospace; color: var(--text); }
+  .chips span { display: block; margin-top: 8px; font: 700 10px/1 "Consolas", monospace; letter-spacing: .18em; color: var(--muted); }
+  .stagecard { position: absolute; right: 0; top: 190px; width: 470px; padding: 28px; background: var(--surface);
+    border: 3px solid rgba(246,244,255,.2); }
+  .stagecard .row { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px dashed rgba(246,244,255,.14);
+    font: 700 12px/1 "Consolas", monospace; letter-spacing: .14em; color: var(--muted); }
+  .stagecard .row b { color: var(--yellow); }
+  .stagecard .screen { margin-top: 22px; height: 190px; background: #0a0818; border: 3px solid rgba(94,234,212,.35);
+    display: grid; place-items: center; }
+  .stagecard .screen span { font: 900 56px/1 "Consolas", monospace; color: var(--green); letter-spacing: .1em; }
+  .stagecard .screen i { display: block; margin-top: 10px; font-style: normal; font-size: 10px; letter-spacing: .24em; color: var(--muted); }
+
+  /* scene 3 chart */
+  .s3-head { margin-top: 28px; display: flex; align-items: flex-end; justify-content: space-between; }
+  .s3-head h2 { width: 1150px; font-family: "Microsoft YaHei", sans-serif; font-size: 52px; line-height: 1.25;
+    font-weight: 900; letter-spacing: -.04em; }
+  .s3-total { text-align: right; }
+  .s3-total span { display: block; font: 700 10px/1 "Consolas", monospace; letter-spacing: .22em; color: var(--muted); }
+  .s3-total b { display: block; margin-top: 8px; font: 900 58px/1 "Consolas", monospace; color: var(--yellow); letter-spacing: .02em; }
+  .pixel-chart { position: absolute; left: 0; right: 0; bottom: 6px; height: 500px; padding: 26px 34px 20px;
+    background: rgba(22,18,51,.9); border: 3px solid rgba(246,244,255,.18); }
+  .pixel-chart .cap { display: flex; justify-content: space-between; font: 700 10px/1 "Consolas", monospace;
+    letter-spacing: .2em; color: var(--muted); }
+  .pbars { display: flex; align-items: flex-end; gap: 26px; height: 390px; margin-top: 18px; padding: 0 6px; }
+  .pbar { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .pblocks { display: flex; flex-direction: column-reverse; gap: 4px; width: 100%; height: 330px; justify-content: flex-start; align-items: center; }
+  .pblocks i { display: block; width: 72%; height: 13px; background: rgba(246,244,255,.09); }
+  .pblocks i.on { background: var(--pink); }
+  .pblocks i.top { background: var(--yellow); }
+  .pbar > span { font: 700 12px/1 "Consolas", monospace; letter-spacing: .12em; color: var(--muted); }
+  .pbar > b { font: 700 15px/1 "Consolas", monospace; color: var(--text); }
+  .chart-axis { position: absolute; left: 34px; right: 34px; bottom: 18px; display: flex; justify-content: space-between;
+    font: 700 10px/1 "Consolas", monospace; letter-spacing: .18em; color: rgba(139,134,184,.7); }
+
+  /* scene 4 table */
+  .s4-head { margin-top: 28px; display: flex; align-items: flex-end; justify-content: space-between; }
+  .s4-head h2 { font-family: "Microsoft YaHei", sans-serif; font-size: 62px; line-height: 1.1; font-weight: 900; letter-spacing: -.04em; }
+  .s4-head span { font: 700 11px/1 "Consolas", monospace; letter-spacing: .2em; color: var(--muted); padding-bottom: 8px; }
+  .board { width: 100%; border-collapse: collapse; margin-top: 34px; table-layout: fixed; }
+  .board th { padding: 14px 18px; text-align: left; background: rgba(246,244,255,.06);
+    font: 700 11px/1 "Consolas", monospace; letter-spacing: .2em; color: var(--muted); border: 2px solid rgba(246,244,255,.1); }
+  .board th:nth-child(1) { width: 110px; }
+  .board th:nth-child(4), .board th:nth-child(5) { width: 200px; }
+  .board td { padding: 16px 18px; border: 2px solid rgba(246,244,255,.08); font: 700 19px/1 "Consolas", monospace; color: rgba(246,244,255,.84); }
+  .board td.rank { color: var(--yellow); font-size: 22px; }
+  .board td.score { color: var(--cyan); letter-spacing: .06em; }
+  .board tr.win td { background: var(--yellow); color: #1a1030; }
+  .board tr.win td.rank, .board tr.win td.score { color: #1a1030; }
+  .board tr.win td .crown { color: #d81b60; }
+  .board-note { margin-top: 22px; font: 400 12px/1.8 "Consolas", monospace; letter-spacing: .12em; color: rgba(139,134,184,.7); }
+
+  /* scene 5 images */
+  .crt { position: absolute; padding: 18px; background: var(--surface); }
+  .crt .screen { position: relative; width: 100%; height: 100%; background: #07060f; border: 3px solid rgba(94,234,212,.3); overflow: hidden; }
+  .crt .scan { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: repeating-linear-gradient(180deg, rgba(0,0,0,.24) 0 2px, transparent 2px 6px); }
+  .crt .nutcut-image-slot { width: 100%; height: 100%; }
+  .crt .label { position: absolute; left: 18px; right: 18px; bottom: -38px; display: flex; justify-content: space-between;
+    font: 700 11px/1 "Consolas", monospace; letter-spacing: .2em; color: var(--muted); }
+  .crt .label b { color: var(--yellow); }
+  .crt1 { left: 0; top: 120px; width: 940px; height: 540px; }
+  .crt2 { right: 0; top: 210px; width: 600px; height: 420px; }
+  .s5-copy { position: absolute; left: 0; bottom: 8px; width: 900px; font-family: "Microsoft YaHei", sans-serif;
+    font-size: 28px; line-height: 1.6; font-weight: 400; letter-spacing: .04em; color: rgba(246,244,255,.6); }
+
+  /* scene 6 */
+  .end-wrap { position: absolute; left: 50%; top: 50%; width: 1500px; transform: translate(-50%, -50%); text-align: center; }
+  .gameover { display: inline-block; padding: 10px 22px; border: 3px solid var(--pink);
+    font: 700 14px/1 "Consolas", monospace; letter-spacing: .3em; color: var(--pink); }
+  .end-title { margin-top: 34px; font-family: "Microsoft YaHei", sans-serif; font-size: 140px; line-height: 1.08;
+    font-weight: 900; letter-spacing: .01em; color: #fffdf2; text-shadow: 5px 5px 0 var(--pink), 10px 10px 0 #3b1e57; }
+  .end-sub { margin-top: 28px; font: 700 18px/1 "Consolas", monospace; letter-spacing: .3em; color: var(--cyan); }
+  .continue { margin-top: 54px; font: 700 26px/1 "Consolas", monospace; letter-spacing: .26em; color: var(--yellow); }
+  .continue span { color: var(--pink); }
+  .end-meta { margin-top: 30px; font: 700 11px/1 "Consolas", monospace; letter-spacing: .24em; color: rgba(139,134,184,.6); }
+  .end-meta b { color: var(--green); }
+
+  .hud { position: absolute; left: 96px; right: 96px; bottom: 34px; z-index: 20; display: flex; align-items: center; gap: 22px;
+    font: 700 11px/1 "Consolas", monospace; letter-spacing: .22em; color: rgba(246,244,255,.38); }
+  .hud .brand { color: rgba(246,244,255,.6); }
+  .hud .track { flex: 1; height: 4px; background: rgba(246,244,255,.1); }
+  .hud .track i { display: block; height: 100%; width: 0; background: var(--yellow); }
+  .hud .idx { color: var(--yellow); }
+  .hud .lives { color: var(--pink); letter-spacing: .3em; }
+
+  .nutcut-image-slot { position: relative; display: block; overflow: hidden; background: #07060f; }
+  .nutcut-image-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; image-rendering: auto; }
+  .nutcut-image-slot.has-image img { opacity: 1; }
+  .nutcut-image-slot .ph { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 12px; background: #0b0918; }
+  .nutcut-image-slot .ph::before { content: ""; position: absolute; inset: 20px; border: 3px solid rgba(94,234,212,.16); }
+  .nutcut-image-slot.has-image .ph { opacity: 0; }
+  .nutcut-image-slot .ph b { font-family: "Microsoft YaHei", sans-serif; font-size: 26px; font-weight: 600;
+    letter-spacing: .16em; color: rgba(246,244,255,.6); }
+  .nutcut-image-slot .ph span { font: 700 10px/1 "Consolas", monospace; letter-spacing: .28em; color: var(--yellow); }
+  @media (max-width: 900px) { body { zoom: .5; } }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="pixbg" width="1920" height="1080"></canvas>
+  <div class="grid"></div>
+  <div class="vig"></div>
+
+  <section class="scene" id="sc1">
+    <div class="shell">
+      <div class="pix-hud">
+        <span>1UP <b>004200</b></span>
+        <span class="hi">HI-SCORE <b>012800</b></span>
+        <span class="credit">CREDIT 01</span>
+      </div>
+      <div class="hero">
+        <div class="logo"><i></i><i></i><i></i><i></i></div>
+        <h1 id="hero-title"></h1>
+        <p class="sub" id="hero-sub"></p>
+        <div class="press" id="press">PRESS START <span>▶</span></div>
+        <div class="coin" id="coin">INSERT COIN · 6 STAGES / 30 SEC</div>
+      </div>
+      <div class="press-hint"><span>© NUTCUT ARCADE</span><span>30 FPS · 1920×1080</span><span>1 PLAYER</span></div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc2">
+    <div class="shell">
+      <div class="tag"><b>02</b><span>任务 / MISSION</span><i></i><em>STAGE 01</em></div>
+      <div class="mission">
+        <h2 id="s2-text"></h2>
+        <div class="chips" id="chips">
+          <div><b>03</b><span>LIVES / 生命</span></div>
+          <div><b>900</b><span>FRAMES / 帧</span></div>
+          <div><b>30</b><span>FPS / 帧率</span></div>
+        </div>
+      </div>
+      <div class="stagecard" id="stagecard">
+        <div class="row"><span>PLAYER</span><b>NUT-01</b></div>
+        <div class="row"><span>STAGE</span><b>01 / 06</b></div>
+        <div class="row"><span>MODE</span><b>NORMAL</b></div>
+        <div class="screen"><div><span id="stage-num">1-1</span><i>READY</i></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc3">
+    <div class="shell">
+      <div class="tag"><b>03</b><span>得分 / STAGE SCORE</span><i></i><em>BAR CHART</em></div>
+      <div class="s3-head">
+        <h2 id="s3-text"></h2>
+        <div class="s3-total"><span>TOTAL SCORE</span><b id="s3-total">0</b></div>
+      </div>
+      <div class="pixel-chart" id="s3-chart">
+        <div class="cap"><span>SCORE PER STAGE / 每关得分</span><span>MAX 18 BLOCKS</span></div>
+        <div class="pbars" id="pbars"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc4">
+    <div class="shell">
+      <div class="tag"><b>04</b><span>排行 / LEADERBOARD</span><i></i><em>TOP 6</em></div>
+      <div class="s4-head">
+        <h2 id="s4-text"></h2>
+        <span>WEEKLY / 2026 W47</span>
+      </div>
+      <table class="board">
+        <thead><tr><th>RANK</th><th>PLAYER</th><th>SCORE</th><th>STAGE</th><th>TIME</th></tr></thead>
+        <tbody>
+          <tr class="win"><td class="rank">01 ★</td><td>NOVA</td><td class="score">128,400</td><td>ST-06</td><td>04:12</td></tr>
+          <tr><td class="rank">02</td><td>KAI</td><td class="score">117,250</td><td>ST-06</td><td>04:38</td></tr>
+          <tr><td class="rank">03</td><td>RIN</td><td class="score">102,880</td><td>ST-05</td><td>03:56</td></tr>
+          <tr><td class="rank">04</td><td>MO</td><td class="score">96,140</td><td>ST-05</td><td>04:20</td></tr>
+          <tr><td class="rank">05</td><td>YU</td><td class="score">88,030</td><td>ST-04</td><td>03:41</td></tr>
+          <tr><td class="rank">06</td><td>ZED</td><td class="score">74,560</td><td>ST-04</td><td>03:29</td></tr>
+        </tbody>
+      </table>
+      <div class="board-note">排行榜每 60 秒刷新 · 仅统计 30 秒成片内的有效关卡 · 分数由画面密度与节奏共同计算</div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc5">
+    <div class="shell">
+      <div class="tag"><b>05</b><span>记忆卡 / MEMORY CARD</span><i></i><em>2 SLOTS</em></div>
+      <div class="crt crt1" id="crt1">
+        <div class="pxframe" style="position:relative;width:100%;height:100%">
+          <div class="screen">
+            <div class="nutcut-image-slot" data-image-slot="1">
+              <img alt="" /><div class="ph"><b>图片位 01</b><span>IMAGE SLOT 01</span></div>
+            </div>
+            <div class="scan"></div>
+          </div>
+        </div>
+        <div class="label"><span><b>PLAYER 1</b> / 主画面</span><span>SLOT A</span></div>
+      </div>
+      <div class="crt crt2" id="crt2">
+        <div class="pxframe" style="position:relative;width:100%;height:100%">
+          <div class="screen">
+            <div class="nutcut-image-slot" data-image-slot="2">
+              <img alt="" /><div class="ph"><b>图片位 02</b><span>IMAGE SLOT 02</span></div>
+            </div>
+            <div class="scan"></div>
+          </div>
+        </div>
+        <div class="label"><span><b>PLAYER 2</b> / 参考帧</span><span>SLOT B</span></div>
+      </div>
+      <p class="s5-copy" id="s5-text"></p>
+    </div>
+  </section>
+
+  <section class="scene" id="sc6">
+    <div class="shell">
+      <div class="end-wrap">
+        <div class="gameover" id="gameover">GAME CLEAR</div>
+        <h1 class="end-title" id="end-title"></h1>
+        <p class="end-sub" id="end-sub"></p>
+        <div class="continue" id="continue">CONTINUE? <span>09</span></div>
+        <div class="end-meta">SCENES <b>06</b> · DURATION <b>30.0s</b> · FPS <b>30</b> · LICENSE <b>CC0</b></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="hud">
+    <span class="brand">NUTCUT / PIXEL ARCADE</span>
+    <span class="lives">♥ ♥ ♥</span>
+    <span class="track"><i id="hud-fill"></i></span>
+    <span class="idx" id="hud-idx">01 / 06</span>
+    <span id="hud-time">00:00</span>
+  </div>
+</div>
+<script>
+(function () {
+  var FPS = 30, DUR = 30, PRE = 1.2;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var C = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+  var S = function (v) { v = C(v); return v * v * (3 - 2 * v); };
+  var E = function (v) { return 1 - Math.pow(1 - C(v), 3); };
+  var EB = function (v) { v = C(v); var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(v - 1, 3) + c1 * Math.pow(v - 1, 2); };
+  var R = function (i, s) { var x = Math.sin(i * 127.1 + (s || 0) * 311.7) * 43758.5453; return x - Math.floor(x); };
+  var DEFAULT_TITLE = '像素街机';
+  var DEFAULT_SUB = 'PIXEL ARCADE · INSERT COIN TO CONTINUE';
+  var DEMO = [
+    { id: '01', text: '一枚硬币，换一段像素冒险。', start: 0, end: 5 },
+    { id: '02', text: '第一关的任务：把想法打通。', start: 5, end: 10 },
+    { id: '03', text: '每过一关，分数都会亮一次。', start: 10, end: 15 },
+    { id: '04', text: '名字上榜，才算真的通关。', start: 15, end: 20 },
+    { id: '05', text: '记忆卡里，存着两个世界。', start: 20, end: 25 },
+    { id: '06', text: '继续投币，故事还没结束。', start: 25, end: 30 }
+  ];
+  var SCORES = [6, 9, 12, 8, 15, 18];
+  var scenes = $$('.scene');
+  var plan = [];
+
+  function buildPlan(inputs) {
+    var src = Array.isArray(inputs.lines) && inputs.lines.length ? inputs.lines.slice(0, 6) : DEMO;
+    var timed = src.length === 6 && src.every(function (l) {
+      return Number.isFinite(l.start) && Number.isFinite(l.end) && l.end > l.start;
+    });
+    plan = scenes.map(function (el, i) {
+      var line = src[i] || DEMO[i];
+      return {
+        start: timed ? src[i].start : i * 5,
+        end: timed ? src[i].end : (i + 1) * 5,
+        text: String(line.text == null ? DEMO[i].text : line.text)
+      };
+    });
+  }
+
+  function setText(el, value) { if (el && el.textContent !== value) el.textContent = value; }
+
+  function setChars(el, value) {
+    if (!el) return [];
+    if (el.dataset.text !== value) {
+      el.dataset.text = value;
+      el.textContent = '';
+      Array.from(value).forEach(function (ch) {
+        var s = document.createElement('span');
+        s.className = 'ch';
+        s.textContent = ch === ' ' ? '\u00a0' : ch;
+        el.appendChild(s);
+      });
+    }
+    return Array.prototype.slice.call(el.children);
+  }
+
+  function applyImages(inputs) {
+    var list = Array.isArray(inputs.images) ? inputs.images : [];
+    $$('[data-image-slot]').forEach(function (el, i) {
+      var raw = list[i];
+      var url = typeof raw === 'string' ? raw : (raw && typeof raw.url === 'string' ? raw.url : '');
+      var img = el.querySelector('img');
+      if (url) {
+        if (img.getAttribute('src') !== url) img.setAttribute('src', url);
+        el.classList.add('has-image');
+      } else {
+        el.classList.remove('has-image');
+        img.removeAttribute('src');
+      }
+    });
+  }
+
+  /* pixel bars */
+  var barsEl = $('#pbars');
+  var barNodes = SCORES.map(function (v, bi) {
+    var wrap = document.createElement('div');
+    wrap.className = 'pbar';
+    var blocks = document.createElement('div');
+    blocks.className = 'pblocks';
+    var cells = [];
+    for (var i = 0; i < 18; i++) {
+      var b = document.createElement('i');
+      blocks.appendChild(b);
+      cells.push(b);
+    }
+    var label = document.createElement('b');
+    label.textContent = '0';
+    var name = document.createElement('span');
+    name.textContent = 'ST-' + String(bi + 1).padStart(2, '0');
+    wrap.appendChild(blocks);
+    wrap.appendChild(label);
+    wrap.appendChild(name);
+    barsEl.appendChild(wrap);
+    return { cells: cells, label: label };
+  });
+
+  var fx = $('#pixbg');
+  var g = fx.getContext('2d');
+  var INVADER = [
+    '..X.....X..',
+    '...X...X...',
+    '..XXXXXXX..',
+    '.XX.XXX.XX.',
+    'XXXXXXXXXXX',
+    'X.XXXXXXX.X',
+    'X.X.....X.X',
+    '...XX.XX...'
+  ];
+  function drawInvader(px, py, s, color, alpha) {
+    g.globalAlpha = alpha;
+    g.fillStyle = color;
+    for (var r = 0; r < INVADER.length; r++) {
+      for (var c = 0; c < INVADER[r].length; c++) {
+        if (INVADER[r].charAt(c) === 'X') g.fillRect(px + c * s, py + r * s, s, s);
+      }
+    }
+    g.globalAlpha = 1;
+  }
+  function drawBG(t, active) {
+    g.clearRect(0, 0, 1920, 1080);
+    var i, x, y;
+    for (i = 0; i < 110; i++) {
+      x = Math.round(R(i, 1) * 480) * 4;
+      y = Math.round(R(i, 2) * 270) * 4;
+      var tw = .25 + .55 * Math.abs(Math.sin(t * (.6 + R(i, 3)) + i));
+      g.fillStyle = 'rgba(246,244,255,' + (tw * .45).toFixed(2) + ')';
+      g.fillRect(x, y, R(i, 4) > .82 ? 4 : 2, R(i, 4) > .82 ? 4 : 2);
+    }
+    for (i = 0; i < 4; i++) {
+      var cx = ((R(i, 5) * 1600 + t * (10 + i * 4)) % 1760) + 60;
+      var cy = 130 + R(i, 6) * 660 + Math.sin(t * .7 + i) * 14;
+      drawInvader(Math.round(cx / 4) * 4, Math.round(cy / 4) * 4, 4, i % 2 ? '#ff5d8f' : '#5eead4', .16);
+    }
+    var floorY = 980;
+    g.fillStyle = 'rgba(255,217,61,.18)';
+    for (i = 0; i < 48; i++) g.fillRect(i * 40, floorY, 20, 2);
+  }
+
+  function updateScene1(local, t, p) {
+    var chars = setChars($('#hero-title'), p.title);
+    chars.forEach(function (n, i) {
+      var d = local - .1 - i * .06;
+      var q = EB(d / .55);
+      n.style.opacity = C(d / .25);
+      n.style.transform = 'translateY(' + ((1 - q) * -60) + '%) scale(' + (.6 + .4 * q) + ')';
+    });
+    var sub = E((local - .5) / .7);
+    $('#hero-sub').style.opacity = sub;
+    $('#hero-sub').style.transform = 'translateY(' + ((1 - sub) * 18) + 'px)';
+    var pr = E((local - .8) / .7);
+    $('#press').style.opacity = pr;
+    $('#press').style.transform = 'scale(' + (.85 + .15 * pr) + ')';
+    $('#press span').style.opacity = Math.floor(t * 2.5) % 2 === 0 ? 1 : .15;
+    $('#coin').style.opacity = C((local - 1.1) / .6);
+    $('#hero-title').style.transform = '';
+  }
+
+  function updateScene2(local, t, p) {
+    setText($('#s2-text'), p.text);
+    var e = E((local - .05) / .75);
+    $('.mission h2').style.opacity = C((local - .05) / .5);
+    $('.mission h2').style.transform = 'translateY(' + ((1 - e) * 30) + 'px)';
+    $$('#chips div').forEach(function (el, i) {
+      var d = E((local - .45 - i * .1) / .7);
+      el.style.opacity = d;
+      el.style.transform = 'translateY(' + ((1 - d) * 26) + 'px)';
+    });
+    var c = E((local - .2) / .8);
+    $('#stagecard').style.opacity = c;
+    $('#stagecard').style.transform = 'translateX(' + ((1 - c) * 34) + 'px)';
+    setText($('#stage-num'), '1-' + (1 + Math.floor(C((local - .4) / 2) * 3)));
+  }
+
+  function updateScene3(local, t, p) {
+    setText($('#s3-text'), p.text);
+    var total = 0;
+    SCORES.forEach(function (v, bi) {
+      var grow = E((local - .15 - bi * .08) / 1.05);
+      var on = Math.round(v * grow);
+      total += on * 320;
+      barNodes[bi].cells.forEach(function (cell, ci) {
+        cell.classList.toggle('on', ci < on);
+        cell.classList.toggle('top', ci === on - 1);
+      });
+      barNodes[bi].label.textContent = String(on * 320) + '0';
+    });
+    setText($('#s3-total'), total.toLocaleString('en-US'));
+    var e = E((local - .05) / .8);
+    $('#s3-chart').style.opacity = e;
+    $('#s3-chart').style.transform = 'translateY(' + ((1 - e) * 34) + 'px)';
+  }
+
+  function updateScene4(local, t, p) {
+    setText($('#s4-text'), p.text);
+    var e = E((local - .05) / .7);
+    $('.s4-head').style.opacity = e;
+    $('.s4-head').style.transform = 'translateY(' + ((1 - e) * 22) + 'px)';
+    $$('.board tbody tr').forEach(function (tr, i) {
+      var d = E((local - .18 - i * .08) / .7);
+      tr.style.opacity = d;
+      tr.style.transform = 'translateX(' + ((1 - d) * 30) + 'px)';
+    });
+    $('.board thead').style.opacity = E((local - .12) / .6);
+    $('.board-note').style.opacity = C((local - .92) / .7);
+  }
+
+  function updateScene5(local, t, p) {
+    setText($('#s5-text'), p.text);
+    var a = E((local - .05) / .8);
+    var b = E((local - .2) / .8);
+    var c1 = $('#crt1');
+    c1.style.opacity = a;
+    c1.style.transform = 'translateY(' + ((1 - a) * 38) + 'px)';
+    var c2 = $('#crt2');
+    c2.style.opacity = b;
+    c2.style.transform = 'translateY(' + ((1 - b) * 34) + 'px)';
+    var c = E((local - .7) / .8);
+    $('#s5-text').style.opacity = c;
+    $('#crt1 .label').style.opacity = c;
+    $('#crt2 .label').style.opacity = c;
+  }
+
+  function updateScene6(local, t, p) {
+    var chars = setChars($('#end-title'), p.title);
+    chars.forEach(function (n, i) {
+      var d = EB((local - .15 - i * .06) / .6);
+      n.style.opacity = C((local - .15 - i * .06) / .3);
+      n.style.transform = 'translateY(' + ((1 - d) * -50) + '%)';
+    });
+    $('#gameover').style.opacity = E((local - .05) / .6);
+    $('#gameover').style.transform = 'translateY(' + ((1 - E((local - .05) / .6)) * -16) + 'px)';
+    $('#end-sub').style.opacity = C((local - .8) / .7);
+    var c = E((local - 1.0) / .8);
+    $('#continue').style.opacity = c;
+    $('#continue').style.transform = 'translateY(' + ((1 - c) * 18) + 'px)';
+    $('#continue span').style.opacity = Math.floor(t * 2) % 2 === 0 ? 1 : .2;
+    $('.end-meta').style.opacity = C((local - 1.2) / .8);
+  }
+
+  var updates = [updateScene1, updateScene2, updateScene3, updateScene4, updateScene5, updateScene6];
+  var EXIT = [[0, -50, .004], [-56, 0, .006], [0, 28, .01], [52, 0, .008], [0, -30, .006], [0, 20, .004]];
+
+  window.renderFrame = function (frame, inputs) {
+    inputs = inputs || {};
+    buildPlan(inputs);
+    var title = String(inputs.title == null ? DEFAULT_TITLE : inputs.title);
+    var sub = String(inputs.subtitle == null ? DEFAULT_SUB : inputs.subtitle);
+    applyImages(inputs);
+    var t = frame / FPS;
+    var active = 0;
+    for (var i = 0; i < plan.length; i += 1) if (t >= plan[i].start - .001) active = i;
+
+    scenes.forEach(function (el, i) {
+      var p = plan[i];
+      var op = Math.min(S((t - p.start + .7) / .7), S((p.end - t) / .6));
+      el.style.opacity = op.toFixed(3);
+      el.style.visibility = op > .002 ? 'visible' : 'hidden';
+      var ex = 1 - S((p.end - t) / .6);
+      var d = EXIT[i];
+      el.style.transform = 'translate3d(' + (d[0] * ex).toFixed(1) + 'px,' + (d[1] * ex).toFixed(1) + 'px,0) scale(' + (1 - ex * d[2]).toFixed(4) + ')';
+      updates[i](t - p.start + PRE, t, { text: p.text, title: title, subtitle: sub });
+    });
+
+    setText($('#hero-sub'), sub);
+    setText($('#end-sub'), sub);
+    drawBG(t, active);
+
+    $('#hud-fill').style.width = (C(t / DUR) * 100) + '%';
+    setText($('#hud-idx'), String(active + 1).padStart(2, '0') + ' / 06');
+    setText($('#hud-time'), '00:' + String(Math.floor(C(t / DUR) * DUR)).padStart(2, '0'));
+  };
+
+  window.renderFrame(0, {});
+  window.__ready = true;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+{
+  "id": "talk-corner",
+  "name": "头像角标",
+  "group": "口播/头像",
+  "category": "口播",
+  "description": "内容占主画面，圆形头像常驻角落，随章节在右下、左下和近景之间平滑移动。",
+  "tags": [
+    "口播",
+    "头像",
+    "角标",
+    "口播视频"
+  ],
+  "palette": {
+    "background": "#101316",
+    "surface": "#181d23",
+    "primary": "#f8f4ee",
+    "accent": "#ff6e4e",
+    "text": "#f8f4ee",
+    "muted": "#9aa0a8"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 500,
+    "titleSize": 122
+  },
+  "motion": {
+    "transition": "smooth-move",
+    "speed": "smooth"
+  },
+  "duration": 10,
+  "sceneCount": 4,
+  "stylePrompt": "深色口播版式，内容为主体，圆形头像固定在角落并平滑移动，近景时放大；高对比大标题，橙色强调，适合口播、访谈、知识分享。",
+  "preview": "preview.png",
+  "features": [
+    "image-slot"
+  ],
+  "styleRefs": [
+    "H3",
+    "K34"
+  ]
+}

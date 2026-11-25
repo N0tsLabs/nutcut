@@ -1,0 +1,14 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "photo-split",
+  "name": "图片分屏",
+  "version": "1.0.0",
+  "description": "图片素材类：上下两张图分屏对比，斜线分隔，适合前后对比、环境与细节、产品双图。",
+  "tags": ["图片", "分屏", "对比", "双图", "竖屏"],
+  "runtime": { "profile": "html/1", "entry": "src/index.html", "network": false },
+  "output": { "width": 1080, "height": 1920, "fps": 30, "duration": 10 },
+  "params": { "schema": "params.schema.json", "defaultPreset": "presets/default.json" },
+  "license": "LICENSE",
+  "preview": "preview.png"
+}

@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NutCut 中控台</title>
+  <link rel="icon" href="/ui/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/ui/style.css?v=__UI_VERSION__" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <a class="brand" href="#/">
+        <span class="brand-mark">N</span>
+        <span class="brand-copy"><b>NutCut</b><small>本地视频工作台</small></span>
+      </a>
+      <nav class="nav" id="nav">
+        <button class="nav-item active" data-view="dashboard"><span>01</span>总览<i></i></button>
+        <button class="nav-item" data-view="projects"><span>02</span>项目<i></i></button>
+        <button class="nav-item" data-view="templates"><span>03</span>模板<i></i></button>
+        <button class="nav-item" data-view="voice"><span>04</span>声音<i></i></button>
+        <button class="nav-item" data-view="assets"><span>05</span>素材<i></i></button>
+        <button class="nav-item" data-view="system"><span>06</span>系统<i></i></button>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="live"><i></i><span>本机运行中</span></div>
+        <div class="mono" id="side-port">127.0.0.1:4173</div>
+        <div class="mono muted" id="side-uptime">—</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar" id="topbar">
+        <div>
+          <div class="crumb">NutCut / 本地视频工作台</div>
+          <h1 id="view-title">总览</h1>
+        </div>
+        <div class="top-actions">
+          <label class="search"><span>⌕</span><input id="search" placeholder="搜索项目、标签、状态" /></label>
+          <button class="btn" id="refresh">刷新</button>
+        </div>
+      </header>
+
+      <section class="view" id="view-dashboard">
+        <div class="kpi-row" id="kpis"></div>
+        <div class="dashboard-grid">
+          <div class="left-stack">
+            <section class="panel project-panel">
+              <div class="panel-head">
+                <div><span class="panel-kicker">项目</span><h2>项目列表</h2></div>
+                <div class="filters" id="filters">
+                  <button class="filter active" data-filter="all">全部</button>
+                  <button class="filter" data-filter="film">成片</button>
+                  <button class="filter" data-filter="template">模板</button>
+                </div>
+              </div>
+              <div id="project-table"></div>
+            </section>
+            <section class="spotlight" id="spotlight"></section>
+          </div>
+          <div class="side-stack">
+            <section class="panel" id="voice-card"></section>
+            <section class="panel" id="pipeline-card"></section>
+            <section class="panel" id="activity-card"></section>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-projects" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <div><span class="panel-kicker">项目</span><h2>全部项目</h2></div>
+            <div class="filters" id="filters-projects">
+              <button class="filter active" data-filter="all">全部</button>
+              <button class="filter" data-filter="film">成片</button>
+              <button class="filter" data-filter="template">模板</button>
+            </div>
+          </div>
+          <div id="project-table-full"></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-templates" hidden>
+        <div class="panel">
+          <div class="panel-head"><div><span class="panel-kicker">模板</span><h2>内置视频模板</h2></div><span class="muted" id="template-count"></span></div>
+          <p class="library-note">点「预览 10 秒」可以直接看模板动效：4 段、3 次转场。模板只决定风格和配色，横竖屏、尺寸、帧率、时长在「用这个模板新建项目」时确认。带 <b>Remotion</b> 徽标的模板用真实 Player 实时预览，其余用 HTML 预览。风格参考来自 <a href="https://github.com/XiaoyeCodes/code-animation-prompts" target="_blank" rel="noreferrer">Code Animation Prompts</a>，只做方向参考。</p>
+          <div class="asset-chips" id="template-groups"></div>
+          <div class="asset-chips" id="template-filters"></div>
+          <div id="template-grid"></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-voice" hidden>
+        <div class="detail-grid" id="voice-view"></div>
+      </section>
+
+      <section class="view" id="view-assets" hidden>
+        <div id="assets-view"></div>
+      </section>
+
+      <section class="view" id="view-system" hidden>
+        <div class="detail-grid" id="system-view"></div>
+      </section>
+
+      <section class="view" id="view-project" hidden>
+        <div class="project-shell">
+          <header class="project-bar" id="project-bar"></header>
+          <nav class="project-tabs" id="project-tabs"></nav>
+          <div id="project-body"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <input type="file" id="import-input" multiple hidden />
+
+  <div class="dialog" id="template-dialog" hidden>
+    <div class="dialog-backdrop" data-dialog-close></div>
+    <form class="dialog-card" id="template-form">
+      <h3>用模板新建项目</h3>
+      <p class="muted" id="template-dialog-name"></p>
+      <p class="spec-note">模板只决定风格和配色。画幅、尺寸、帧率、时长要在这里确认。</p>
+      <label><span>标题</span><input name="title" required maxlength="80" /></label>
+      <label><span>项目 id</span><input name="id" required pattern="[a-z0-9][a-z0-9\-]{1,60}" placeholder="小写字母、数字、短横线" /></label>
+      <div class="spec-grid">
+        <label><span>画幅</span>
+          <select name="orientation">
+            <option value="">先选横屏 / 竖屏 / 方形</option>
+            <option value="portrait">竖屏 9:16</option>
+            <option value="landscape">横屏 16:9</option>
+            <option value="square">方形 1:1</option>
+          </select>
+        </label>
+        <label><span>分辨率</span>
+          <select name="quality">
+            <option value="1080p">1080p</option>
+            <option value="720p">720p</option>
+            <option value="4k">4K</option>
+          </select>
+        </label>
+        <label><span>帧率</span>
+          <select name="fps">
+            <option value="30">30 fps</option>
+            <option value="25">25 fps</option>
+            <option value="24">24 fps</option>
+            <option value="50">50 fps</option>
+            <option value="60">60 fps</option>
+          </select>
+        </label>
+        <label><span>时长（秒）</span><input name="duration" type="number" min="3" max="3600" step="0.1" value="30" /></label>
+        <label><span>平台</span><input name="platform" maxlength="40" placeholder="抖音 / 视频号 / B站 / 客户" /></label>
+        <label><span>声音</span>
+          <select name="audio">
+            <option value="source">保留原声</option>
+            <option value="clone">克隆配音</option>
+            <option value="none">无人声</option>
+            <option value="undecided">分析后再定</option>
+          </select>
+        </label>
+      </div>
+      <div class="dialog-error" id="template-spec-error" hidden></div>
+      <div class="dialog-actions"><button class="btn ghost" type="button" data-dialog-close>取消</button><button class="btn" type="submit">创建项目</button></div>
+    </form>
+  </div>
+
+  <div class="preview-dialog" id="template-preview" hidden>
+    <div class="preview-backdrop" data-preview-close></div>
+    <div class="preview-card">
+      <header class="preview-head">
+        <div><h3 id="preview-title"></h3><p id="preview-sub"></p></div>
+        <button class="preview-close" type="button" data-preview-close aria-label="关闭">×</button>
+      </header>
+      <div class="preview-frame"><iframe id="preview-frame" title="模板预览"></iframe><div id="preview-remotion" hidden></div></div>
+      <footer class="preview-foot">
+        <button class="btn" id="preview-play" type="button">暂停</button>
+        <button class="btn ghost" id="preview-restart" type="button">重播</button>
+        <input type="range" id="preview-seek" min="0" max="10" step="0.01" value="0" />
+        <span class="mono" id="preview-time">0.0 / 10.0 秒</span>
+        <span class="tag" id="preview-engine">HTML</span>
+        <span class="tag" id="preview-segment">第 1 段</span>
+      </footer>
+    </div>
+  </div>
+
+  <div class="lightbox" id="lightbox" hidden>
+    <div class="lightbox-backdrop" data-viewer-close></div>
+    <button class="lightbox-close" data-viewer-close aria-label="关闭">×</button>
+    <button class="lightbox-nav prev" id="lightbox-prev" aria-label="上一张">‹</button>
+    <figure class="lightbox-figure">
+      <img id="lightbox-image" alt="" />
+      <figcaption><span id="lightbox-caption"></span><a id="lightbox-open" href="#" target="_blank" rel="noreferrer">打开原图 ↗</a></figcaption>
+    </figure>
+    <button class="lightbox-nav next" id="lightbox-next" aria-label="下一张">›</button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="/ui/remotion-player.js?v=__UI_VERSION__"></script>
+  <script src="/ui/app.js?v=__UI_VERSION__"></script>
+</body>
+</html>

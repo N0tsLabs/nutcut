@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "口播分屏 · 参数合同",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "title": { "type": "string", "default": "一半是人，一半是内容" },
+    "lead": { "type": "string", "default": "口播画面只占一侧，另一侧负责把信息讲清楚。" }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "视频下三分之一 · 参数合同",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": { "title": { "type": "string" } }
+}

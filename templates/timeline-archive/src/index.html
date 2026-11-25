@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>时间线档案 · Timeline Archive</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #ded4c0; }
+  body { font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif; color: #1b1813; }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden;
+    background:
+      radial-gradient(760px 520px at 82% 12%, rgba(180,85,45,.1), transparent 62%),
+      radial-gradient(900px 640px at 6% 94%, rgba(74,90,69,.12), transparent 64%),
+      linear-gradient(172deg, #e6ddca 0%, #ded4c0 52%, #d3c8b2 100%); }
+  .fiber { position: absolute; inset: 0; opacity: .65; pointer-events: none;
+    background-image: repeating-linear-gradient(0deg, rgba(27,24,19,.035) 0 1px, transparent 1px 5px); }
+  .stain { position: absolute; border-radius: 50%; pointer-events: none; filter: blur(2px); }
+  .vig { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 46%, transparent 48%, rgba(90,74,50,.22) 100%); }
+
+  .scene { position: absolute; inset: 0; visibility: hidden; opacity: 0; z-index: 5; }
+  .kicker { display: flex; align-items: center; gap: 14px; font: 700 12px/1 "Consolas", monospace;
+    letter-spacing: .28em; color: #8f2f1f; text-transform: uppercase; }
+  .kicker i { width: 26px; height: 26px; border: 1px solid rgba(143,47,31,.5); display: grid; place-items: center;
+    font-style: normal; font-size: 11px; color: #8f2f1f; }
+  h1.title { font-size: 138px; line-height: 1.02; font-weight: 900; letter-spacing: -.045em; color: #17140f; }
+  h2.head { font-size: 62px; line-height: 1.12; font-weight: 900; letter-spacing: -.03em; color: #17140f; max-width: 1400px; }
+  .sub { font: 400 24px/1.6 "Consolas", "Microsoft YaHei", monospace; letter-spacing: .04em; color: #574c3d; }
+  .mono { font-family: "Consolas", monospace; }
+
+  /* photo frame */
+  .slot { position: absolute; background: #f5efe1; border: 1px solid rgba(27,24,19,.2);
+    box-shadow: 0 18px 40px rgba(70,55,35,.22), 0 2px 0 rgba(255,255,255,.5) inset; padding: 14px; }
+  .slot img { position: absolute; left: 14px; top: 14px; width: calc(100% - 28px); height: calc(100% - 28px);
+    object-fit: cover; opacity: 0; }
+  .slot.has-image img { opacity: 1; }
+  .slot.has-image .ph { opacity: 0; }
+  .slot .ph { position: absolute; left: 14px; top: 14px; right: 14px; bottom: 14px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 11px;
+    background: repeating-linear-gradient(135deg, rgba(27,24,19,.045) 0 2px, transparent 2px 12px), #e7dfcd; }
+  .slot .ph b { font-size: 24px; font-weight: 900; letter-spacing: .08em; color: #4a4234; }
+  .slot .ph em { font: 700 11px/1 "Consolas", monospace; font-style: normal; letter-spacing: .26em; color: #b4552d; }
+  .slot .ph s { text-decoration: none; font: 400 11px/1 "Consolas", monospace; letter-spacing: .18em; color: #7d7263; }
+  .tape { position: absolute; width: 132px; height: 34px; background: rgba(226,209,164,.72);
+    border-left: 1px solid rgba(255,255,255,.4); border-right: 1px solid rgba(120,100,60,.15);
+    box-shadow: 0 1px 3px rgba(80,60,30,.14); z-index: 3; }
+  .tape.a { left: -30px; top: -14px; transform: rotate(-38deg); }
+  .tape.b { right: -30px; bottom: -14px; transform: rotate(-38deg); }
+  .cap { position: absolute; font: 400 12px/1.6 "Consolas", monospace; letter-spacing: .12em; color: #6d6353; }
+  .cap b { color: #8f2f1f; }
+
+  /* timeline */
+  .axis { position: absolute; height: 2px; background: #1b1813; }
+  .axis::before, .axis::after { content: ""; position: absolute; top: -5px; width: 2px; height: 12px; background: #1b1813; }
+  .axis::before { left: 0; } .axis::after { right: 0; }
+  .tick { position: absolute; top: -9px; width: 2px; height: 20px; background: #1b1813; }
+  .tlabel { position: absolute; top: 22px; transform: translateX(-50%); font: 700 14px/1 "Consolas", monospace;
+    letter-spacing: .06em; color: #4a4234; white-space: nowrap; }
+  .tlabel.top { top: auto; bottom: 22px; }
+
+  /* scene 1 */
+  .s1 { position: absolute; left: 136px; top: 148px; width: 900px; }
+  .s1 h1 { margin-top: 28px; font-size: 108px; }
+  .s1 .sub { margin-top: 26px; max-width: 700px; }
+  .years { margin-top: 44px; display: flex; align-items: baseline; gap: 18px; font: 900 30px/1 "Consolas", monospace;
+    letter-spacing: .06em; color: #b4552d; }
+  .years span { font: 400 14px/1 "Consolas", monospace; letter-spacing: .22em; color: #6d6353; }
+  .s1axis { position: absolute; left: 136px; top: 806px; width: 1648px; }
+  .s1slot { left: 1112px; top: 168px; width: 680px; height: 512px; transform: rotate(1.4deg); }
+  .s1cap { left: 1120px; top: 706px; width: 660px; }
+  .reg { position: absolute; width: 26px; height: 26px; border: 1px solid rgba(27,24,19,.35); }
+  .reg.tl { left: 42px; top: 42px; border-right: 0; border-bottom: 0; }
+  .reg.tr { right: 42px; top: 42px; border-left: 0; border-bottom: 0; }
+  .reg.bl { left: 42px; bottom: 42px; border-right: 0; border-top: 0; }
+  .reg.br { right: 42px; bottom: 42px; border-left: 0; border-top: 0; }
+
+  /* scene 2 */
+  .s2head { position: absolute; left: 136px; top: 118px; width: 1500px; }
+  .s2head h2 { margin-top: 18px; }
+  .s2axis { position: absolute; left: 136px; top: 566px; width: 1648px; }
+  #events2 { position: absolute; left: 136px; top: 566px; width: 1648px; height: 0; }
+  #ticks1, #ticks6 { position: absolute; left: 136px; top: 806px; width: 1648px; height: 0; }
+  .ev { position: absolute; width: 246px; }
+  .ev .y { font: 900 30px/1 "Consolas", monospace; color: #b4552d; letter-spacing: .02em; }
+  .ev .t { margin-top: 10px; font-size: 21px; font-weight: 700; color: #17140f; }
+  .ev .d { margin-top: 8px; font: 400 15px/1.6 "Consolas", "Microsoft YaHei", monospace; color: #574c3d; }
+  .ev .bar { margin-top: 12px; height: 3px; width: 46px; background: #b4552d; }
+  .ev.up { bottom: 62px; } .ev.dn { top: 62px; }
+  .ev .stem { position: absolute; width: 1px; background: rgba(27,24,19,.45); }
+  .ev.up .stem { left: 0; bottom: -62px; height: 62px; }
+  .ev.dn .stem { left: 0; top: -62px; height: 62px; }
+  .ev.end .stem { left: auto; right: 0; }
+  .ev.end { text-align: right; }
+  .ev.end .bar { margin-left: auto; }
+  .marker { position: absolute; top: -13px; width: 28px; height: 28px; margin-left: -14px;
+    border: 2px solid #b4552d; background: #e6ddca; border-radius: 50%; }
+  .marker::after { content: ""; position: absolute; left: 7px; top: 7px; width: 10px; height: 10px; background: #b4552d; border-radius: 50%; }
+  .scanline { position: absolute; top: 536px; width: 1px; height: 60px; background: #8f2f1f; opacity: .5; }
+
+  /* scene 3 */
+  .s3head { position: absolute; left: 136px; top: 112px; width: 1200px; }
+  .s3head h2 { margin-top: 16px; }
+  .table3 { position: absolute; left: 136px; top: 328px; width: 1648px;
+    background: rgba(245,239,225,.72); border: 1px solid rgba(27,24,19,.16); padding: 26px 30px; }
+  table.tbl { width: 100%; border-collapse: collapse; }
+  table.tbl th { text-align: left; padding: 10px 14px 10px 0; font: 700 12px/1 "Consolas", monospace; letter-spacing: .18em;
+    color: #6d6353; border-bottom: 2px solid #1b1813; white-space: nowrap; }
+  table.tbl td { padding: 16px 14px 16px 0; font-size: 18px; font-weight: 400; color: #241f18;
+    border-bottom: 1px solid rgba(27,24,19,.16); }
+  table.tbl td.num { font-family: "Consolas", monospace; font-size: 18px; }
+  table.tbl td.yr { font-family: "Consolas", monospace; font-weight: 700; font-size: 19px; color: #b4552d; }
+  .stamp { display: inline-block; padding: 5px 10px; border: 1px solid rgba(143,47,31,.6); color: #8f2f1f;
+    font: 700 11px/1 "Consolas", monospace; letter-spacing: .16em; transform: rotate(-3deg); }
+  .stamp.ok { border-color: rgba(74,90,69,.6); color: #3f5741; }
+  .seal { position: absolute; left: 1580px; top: 128px; width: 196px; height: 196px; border: 3px double rgba(143,47,31,.5);
+    border-radius: 50%; display: grid; place-items: center; text-align: center; transform: rotate(-12deg); z-index: 4; }
+  .seal b { font: 900 22px/1.3 "Microsoft YaHei", sans-serif; color: rgba(143,47,31,.72); letter-spacing: .1em; }
+  .seal span { display: block; margin-top: 6px; font: 700 10px/1 "Consolas", monospace; letter-spacing: .22em; color: rgba(143,47,31,.6); }
+  .note3 { position: absolute; left: 136px; top: 880px; width: 1100px; font: 400 15px/1.7 "Consolas", "Microsoft YaHei", monospace; color: #574c3d; }
+  .note3 b { color: #8f2f1f; }
+
+  /* scene 4 */
+  .s4head { position: absolute; left: 136px; top: 112px; width: 1200px; }
+  .s4head h2 { margin-top: 16px; }
+  .chartwrap { position: absolute; left: 136px; top: 330px; width: 1040px; padding: 24px 26px 20px;
+    background: rgba(245,239,225,.6); border: 1px solid rgba(27,24,19,.14); }
+  .ch-head { display: flex; font: 700 11px/1 "Consolas", monospace; letter-spacing: .2em; color: #6d6353;
+    padding-bottom: 12px; border-bottom: 1px solid rgba(27,24,19,.35); }
+  .ch-head b { margin-left: auto; color: #b4552d; }
+  .bars { position: relative; height: 300px; margin-top: 22px; display: flex; align-items: flex-end; gap: 14px; }
+  .bg5 { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; position: relative; }
+  .bg5 i { position: relative; display: block; width: 100%; height: 0;
+    background: repeating-linear-gradient(135deg, rgba(27,24,19,.16) 0 3px, transparent 3px 8px), #b4552d; }
+  .bg5.dim i { background: repeating-linear-gradient(135deg, rgba(27,24,19,.2) 0 3px, transparent 3px 8px), #7f8b6f; }
+  .bg5 i b { position: absolute; left: 0; right: 0; bottom: 100%; margin-bottom: 7px; text-align: center;
+    font: 700 13px/1 "Consolas", monospace; color: #241f18; opacity: 0; }
+  .bg5 span { position: absolute; top: 100%; left: 0; right: 0; margin-top: 8px; text-align: center;
+    font: 700 11px/1 "Consolas", monospace; color: #6d6353; }
+  .s4slot { left: 1250px; top: 330px; width: 534px; height: 400px; transform: rotate(-2.2deg); }
+  .s4cap { left: 1250px; top: 748px; width: 534px; }
+  .s4note { position: absolute; left: 1250px; top: 830px; width: 534px; padding: 18px 20px; border-left: 3px solid #b4552d;
+    background: rgba(245,239,225,.6); font: 400 15px/1.7 "Consolas", "Microsoft YaHei", monospace; color: #4a4234; }
+
+  /* scene 5 */
+  .filecard { position: absolute; left: 136px; top: 300px; width: 1000px; padding: 34px 38px;
+    background: #f5efe1; border: 1px solid rgba(27,24,19,.2); box-shadow: 0 26px 60px rgba(70,55,35,.2); }
+  .filecard .fh { display: flex; align-items: baseline; font: 700 11px/1 "Consolas", monospace; letter-spacing: .22em; color: #6d6353;
+    padding-bottom: 12px; border-bottom: 2px solid #1b1813; }
+  .filecard .fh b { margin-left: auto; color: #8f2f1f; }
+  .filecard h3 { margin-top: 20px; font-size: 34px; font-weight: 900; letter-spacing: -.02em; }
+  .filecard p { margin-top: 12px; font: 400 16px/1.8 "Consolas", "Microsoft YaHei", monospace; color: #4a4234; }
+  .filecard .mtable { margin-top: 20px; }
+  .filecard .mtable td { padding: 11px 12px 11px 0; font-size: 16px; }
+  .s5stats { position: absolute; left: 1200px; top: 300px; width: 584px; }
+  .s5stat { padding: 22px 0 18px; border-bottom: 1px solid rgba(27,24,19,.2); }
+  .s5stat:first-child { border-top: 2px solid #1b1813; }
+  .s5stat b { font: 900 46px/1 "Consolas", monospace; color: #b4552d; letter-spacing: -.02em; }
+  .s5stat b em { font: 700 17px/1 "Consolas", monospace; font-style: normal; color: #6d6353; margin-left: 8px; }
+  .s5stat span { display: block; margin-top: 10px; font: 400 14px/1.5 "Consolas", "Microsoft YaHei", monospace; color: #574c3d; }
+  .micro { position: absolute; left: 1200px; top: 810px; width: 584px; font: 400 9px/1.5 "Consolas", monospace;
+    color: rgba(27,24,19,.32); letter-spacing: .04em; overflow: hidden; height: 120px; }
+
+  /* scene 6 */
+  .outro { position: absolute; left: 136px; top: 226px; width: 1648px; }
+  .outro h2 { margin-top: 26px; font-size: 130px; line-height: 1.04; font-weight: 900; letter-spacing: -.045em; }
+  .outro .oline { width: 0; height: 3px; background: #1b1813; margin-top: 44px; }
+  .outro .meta { margin-top: 30px; display: flex; gap: 60px; font: 700 12px/1 "Consolas", monospace; letter-spacing: .2em; color: #6d6353; }
+  .outro .meta b { display: block; margin-bottom: 8px; color: #b4552d; }
+  .out6axis { position: absolute; left: 136px; top: 806px; width: 1648px; }
+
+  #veil { position: absolute; inset: 0; z-index: 40; opacity: 0; pointer-events: none; overflow: hidden; }
+  #veil .strip { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: #1b1813;
+    transform: translateX(1920px); display: grid; place-items: center; }
+  #veil .strip::before, #veil .strip::after { content: ""; position: absolute; left: 0; right: 0; height: 46px;
+    background-image: repeating-linear-gradient(90deg, transparent 0 26px, #ded4c0 26px 36px, transparent 36px 62px);
+    background-size: 62px 22px; background-repeat: repeat-x; background-position: 0 center; opacity: .85; }
+  #veil .strip::before { top: 18px; } #veil .strip::after { bottom: 18px; }
+  #veil .strip b { font: 900 150px/1 "Consolas", monospace; color: #ded4c0; letter-spacing: -.04em; }
+  #veil .strip span { display: block; margin-top: 16px; text-align: center; font: 700 13px/1 "Consolas", monospace;
+    letter-spacing: .4em; color: #b4552d; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="fiber"></div>
+  <div class="stain" style="left: 1560px; top: 780px; width: 320px; height: 240px; background: rgba(140,110,60,.08)"></div>
+  <div class="stain" style="left: 60px; top: 120px; width: 260px; height: 200px; background: rgba(120,90,50,.06)"></div>
+  <div class="vig"></div>
+  <div class="reg tl"></div><div class="reg tr"></div><div class="reg bl"></div><div class="reg br"></div>
+
+  <section class="scene" id="sc1">
+    <div class="s1">
+      <div class="kicker"><i>01</i>卷宗 / ARCHIVE DOSSIER</div>
+      <h1 class="title" id="h1" data-title></h1>
+      <p class="sub" id="s1sub" data-sub></p>
+      <div class="years"><span>1987</span>—<span>2026</span><span style="margin-left:14px">39 YEARS ON FILE</span></div>
+    </div>
+    <div class="slot s1slot" data-image-slot="01">
+      <img alt="" />
+      <div class="ph"><b>图片位 01</b><em>IMAGE SLOT 01</em><s>档案照片 / ARCHIVE PHOTO</s></div>
+      <span class="tape a"></span><span class="tape b"></span>
+    </div>
+    <div class="cap s1cap"><b>FIG. 01</b> — 档案照片，建议使用 4:3 或横向构图。</div>
+    <div class="axis s1axis" id="axis1"></div>
+    <div id="ticks1"></div>
+  </section>
+
+  <section class="scene" id="sc2">
+    <div class="s2head">
+      <div class="kicker"><i>02</i>横向年表 / CHRONOLOGY</div>
+      <h2 class="head" id="h2"></h2>
+    </div>
+    <div class="axis s2axis" id="axis2"></div>
+    <div class="scanline" id="scan"></div>
+    <div id="events2"></div>
+  </section>
+
+  <section class="scene" id="sc3">
+    <div class="s3head">
+      <div class="kicker"><i>03</i>事件表 / EVENT LOG</div>
+      <h2 class="head" id="h3"></h2>
+    </div>
+    <div class="seal"><div><b>已 归 档</b><span>ARCHIVED · 2026</span></div></div>
+    <div class="table3">
+      <table class="tbl">
+        <thead><tr><th>年份</th><th>事件</th><th>地点</th><th>影响</th><th>档案编号</th><th>状态</th></tr></thead>
+        <tbody>
+          <tr><td class="yr">1987</td><td>第一批磁带入库</td><td>地下室</td><td class="num">1,200 盘</td><td class="num">A-1987-01</td><td><span class="stamp ok">已归档</span></td></tr>
+          <tr><td class="yr">1996</td><td>目录改为卡片索引</td><td>二层档案室</td><td class="num">8,400 张</td><td class="num">B-1996-14</td><td><span class="stamp ok">已归档</span></td></tr>
+          <tr><td class="yr">2004</td><td>开始数字化转录</td><td>技术科</td><td class="num">32 TB</td><td class="num">C-2004-07</td><td><span class="stamp ok">已归档</span></td></tr>
+          <tr><td class="yr">2012</td><td>影像资料独立建库</td><td>影像库</td><td class="num">6,120 条</td><td class="num">D-2012-22</td><td><span class="stamp ok">已归档</span></td></tr>
+          <tr><td class="yr">2019</td><td>开放线上检索</td><td>公共平台</td><td class="num">42 万次</td><td class="num">E-2019-03</td><td><span class="stamp">校对中</span></td></tr>
+          <tr><td class="yr">2026</td><td>时间线可视化上线</td><td>本片</td><td class="num">6 章节</td><td class="num">F-2026-06</td><td><span class="stamp">进行中</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note3"><b>注</b> 所有编号遵循「库-年份-序号」规则；状态为「校对中」的条目不计入总量统计。</div>
+  </section>
+
+  <section class="scene" id="sc4">
+    <div class="s4head">
+      <div class="kicker"><i>04</i>入库量 / INTAKE VOLUME</div>
+      <h2 class="head" id="h4"></h2>
+    </div>
+    <div class="chartwrap">
+      <div class="ch-head"><span>年度入库量 / ANNUAL INTAKE · 千件</span><b>2015 — 2026</b></div>
+      <div class="bars" id="bars4">
+        <div class="bg5 dim"><b>12</b><i data-h="12"></i><span>15</span></div>
+        <div class="bg5 dim"><b>16</b><i data-h="16"></i><span>16</span></div>
+        <div class="bg5 dim"><b>14</b><i data-h="14"></i><span>17</span></div>
+        <div class="bg5"><b>22</b><i data-h="22"></i><span>18</span></div>
+        <div class="bg5"><b>27</b><i data-h="27"></i><span>19</span></div>
+        <div class="bg5"><b>24</b><i data-h="24"></i><span>20</span></div>
+        <div class="bg5"><b>31</b><i data-h="31"></i><span>21</span></div>
+        <div class="bg5"><b>36</b><i data-h="36"></i><span>22</span></div>
+        <div class="bg5"><b>42</b><i data-h="42"></i><span>23</span></div>
+        <div class="bg5"><b>38</b><i data-h="38"></i><span>24</span></div>
+        <div class="bg5"><b>47</b><i data-h="47"></i><span>25</span></div>
+        <div class="bg5"><b>56</b><i data-h="56"></i><span>26</span></div>
+      </div>
+    </div>
+    <div class="slot s4slot" data-image-slot="02">
+      <img alt="" />
+      <div class="ph"><b>图片位 02</b><em>IMAGE SLOT 02</em><s>实物 / 场景图</s></div>
+      <span class="tape a"></span><span class="tape b"></span>
+    </div>
+    <div class="cap s4cap"><b>FIG. 02</b> — 与图表并置的实物照片，可替换为任意素材。</div>
+    <div class="s4note">2019 年开放线上检索后，入库量曲线明显抬升；此后每年新增约为前十年的 3.4 倍。</div>
+  </section>
+
+  <section class="scene" id="sc5">
+    <div class="s5head"></div>
+    <div class="filecard">
+      <div class="fh"><span>卷宗摘要 / DOSSIER SUMMARY</span><b>REF. F-2026-06</b></div>
+      <h3 id="h5"></h3>
+      <p>六段档案，三十秒。每一条记录都被编号、加盖日期，再放回它该在的位置。</p>
+      <table class="tbl mtable">
+        <thead><tr><th>项</th><th>内容</th><th>数量</th></tr></thead>
+        <tbody>
+          <tr><td>磁带</td><td class="num">1,200 盘</td><td class="num">1987</td></tr>
+          <tr><td>卡片</td><td class="num">8,400 张</td><td class="num">1996</td></tr>
+          <tr><td>数字文件</td><td class="num">32 TB</td><td class="num">2004</td></tr>
+          <tr><td>影像条目</td><td class="num">6,120 条</td><td class="num">2012</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="s5stats">
+      <div class="s5stat"><b>39<em>YEARS</em></b><span>从第一盘磁带，到这一次时间线。</span></div>
+      <div class="s5stat"><b>06<em>CHAPTERS</em></b><span>六个章节对应六个关键节点。</span></div>
+      <div class="s5stat"><b>100<em>%</em></b><span>每一条记录都有出处与编号。</span></div>
+    </div>
+    <div class="micro" id="micro"></div>
+  </section>
+
+  <section class="scene" id="sc6">
+    <div class="outro">
+      <div class="kicker"><i>06</i>结语 / END OF FILE</div>
+      <h2 id="h6" data-title></h2>
+      <div class="oline" id="oline"></div>
+      <div class="meta">
+        <div><b>ARCHIVE</b>NUTCUT / 006</div>
+        <div><b>RANGE</b>1987 — 2026</div>
+        <div><b>FORMAT</b>1920 × 1080 / 30FPS</div>
+        <div><b>LICENSE</b>CC0 1.0</div>
+      </div>
+    </div>
+    <div class="axis out6axis" id="axis6"></div>
+    <div id="ticks6"></div>
+  </section>
+
+  <div id="veil"><div class="strip"><div><b id="vnum">02</b><span>ARCHIVE / NEXT FILE</span></div></div></div>
+</div>
+<script>
+(function () {
+  'use strict';
+  var FPS = 30, DUR = 30, N = 6;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var C = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+  var S = function (v) { v = C(v); return v * v * (3 - 2 * v); };
+  var E = function (v) { return 1 - Math.pow(1 - C(v), 3); };
+  var EB = function (v) { v = C(v); var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(v - 1, 3) + c1 * Math.pow(v - 1, 2); };
+  var DEMO = [
+    { id: '01', text: '每一条记录，都值得被放回原位。', start: 0, end: 4.7 },
+    { id: '02', text: '时间被拉成一条线，事件才看得清。', start: 5, end: 9.7 },
+    { id: '03', text: '表格是档案最诚实的写法。', start: 10, end: 14.7 },
+    { id: '04', text: '数字在长高，纸张在变薄。', start: 15, end: 19.7 },
+    { id: '05', text: '一份卷宗，就是一段被压平的时间。', start: 20, end: 24.7 },
+    { id: '06', text: '合上档案，故事仍在继续。', start: 25, end: 29.7 }
+  ];
+  var YEARS = [1987, 1996, 2004, 2012, 2019, 2026];
+  var EVENTS = [
+    { y: '1987', t: '磁带入库', d: '第一批母带进入地下室，编号从 001 开始。' },
+    { y: '1996', t: '卡片索引', d: '手工抄写 8,400 张卡片，检索第一次有秩序。' },
+    { y: '2004', t: '数字转录', d: '模拟信号被采样，档案开始拥有副本。' },
+    { y: '2012', t: '影像建库', d: '照片与录像独立成库，不再依附文字。' },
+    { y: '2019', t: '线上开放', d: '检索走出档案室，任何人都能查。' },
+    { y: '2026', t: '时间线上线', d: '把三十九年压进一条可以播放的轴。' }
+  ];
+  var sceneEls = $$('.scene');
+  var plan = [];
+  var title = '被时间压平的档案';
+  var sub = 'TIMELINE ARCHIVE · 1987—2026 六段记录';
+
+  function buildPlan(inputs) {
+    var src = Array.isArray(inputs.lines) && inputs.lines.length ? inputs.lines.slice(0, 6) : DEMO;
+    var timed = src.length === 6 && src.every(function (l) {
+      return Number.isFinite(l.start) && Number.isFinite(l.end) && l.end > l.start;
+    });
+    plan = sceneEls.map(function (el, i) {
+      var line = src[i] || DEMO[i];
+      return {
+        start: timed ? src[i].start : i * 5,
+        end: timed ? src[i].end : (i + 1) * 5 + 0.35,
+        text: String(line.text == null ? DEMO[i].text : line.text)
+      };
+    });
+  }
+
+  function setText(el, v) { if (el && el.textContent !== v) el.textContent = v; }
+
+  function applyInputs(inputs) {
+    title = inputs.title || '被时间压平的档案';
+    sub = inputs.subtitle || 'TIMELINE ARCHIVE · 1987—2026 六段记录';
+    $$('[data-title]').forEach(function (el) { setText(el, title); });
+    $$('[data-sub]').forEach(function (el) { setText(el, sub); });
+  }
+
+  function applyImages(inputs) {
+    var list = Array.isArray(inputs.images) ? inputs.images : [];
+    $$('[data-image-slot]').forEach(function (el, i) {
+      var raw = list[i];
+      var url = typeof raw === 'string' ? raw : (raw && typeof raw.url === 'string' ? raw.url : '');
+      var img = el.querySelector('img');
+      if (url) {
+        if (img.getAttribute('src') !== url) img.setAttribute('src', url);
+        el.classList.add('has-image');
+      } else {
+        el.classList.remove('has-image');
+        img.removeAttribute('src');
+      }
+    });
+  }
+
+  function revealRows(rows, local, delay, stagger) {
+    rows.forEach(function (el, i) {
+      var p = E((local - delay - i * stagger) / 0.4);
+      el.style.opacity = p;
+      el.style.transform = 'translateY(' + ((1 - p) * 10) + 'px)';
+    });
+  }
+
+  /* ---- build timeline ticks ---- */
+  var ticks1 = $('#ticks1');
+  var ticks6 = $('#ticks6');
+  function buildTicks(host, top) {
+    for (var i = 0; i < 6; i += 1) {
+      var t = document.createElement('div');
+      t.className = 'tick';
+      t.style.left = (i / 5 * 100) + '%';
+      host.appendChild(t);
+      var l = document.createElement('div');
+      l.className = 'tlabel' + (top ? ' top' : '');
+      l.style.left = (i / 5 * 100) + '%';
+      l.textContent = String(YEARS[i]);
+      host.appendChild(l);
+    }
+  }
+  buildTicks(ticks1, false);
+  buildTicks(ticks6, true);
+
+  $$('.bg5').forEach(function (el) {
+    var b = el.querySelector('b'), i = el.querySelector('i');
+    if (b && i) i.appendChild(b);
+  });
+
+  /* ---- build scene 2 events ---- */
+  var evHost = $('#events2');
+  EVENTS.forEach(function (ev, i) {
+    var el = document.createElement('div');
+    el.className = 'ev ' + (i % 2 === 0 ? 'up' : 'dn') + (i === 5 ? ' end' : '');
+    el.style.left = 'calc(' + (i / 5 * 100) + '% - ' + (i === 5 ? 246 : 0) + 'px)';
+    el.innerHTML = '<span class="stem"></span><div class="y">' + ev.y + '</div><div class="t">' + ev.t + '</div><div class="d">' + ev.d + '</div><div class="bar"></div>';
+    evHost.appendChild(el);
+  });
+  var markers = [];
+  for (var mi = 0; mi < 6; mi += 1) {
+    var mk = document.createElement('div');
+    mk.className = 'marker';
+    mk.style.left = (mi / 5 * 100) + '%';
+    mk.style.top = '-13px';
+    mk.style.position = 'absolute';
+    evHost.appendChild(mk);
+    markers.push(mk);
+  }
+
+  /* microfiche text */
+  var micro = '';
+  for (var r = 0; r < 9; r += 1) {
+    micro += 'ARC-1987-' + String(r + 1).padStart(3, '0') + '  ███████ ██ ██████ 0' + (r + 3) + ':1' + (r % 6) + '  REEL ' + (r + 1) + '/9  OK<br>';
+  }
+  $('#micro').innerHTML = micro;
+
+  function upd1(local, t) {
+    var e = E((local - 0.05) / 0.7);
+    $('#h1').style.opacity = e;
+    $('#h1').style.transform = 'translateY(' + ((1 - e) * 28) + 'px)';
+    var s = E((local - 0.3) / 0.7);
+    $('#s1sub').style.opacity = s;
+    $('#s1sub').style.transform = 'translateY(' + ((1 - s) * 16) + 'px)';
+    var y = E((local - 0.45) / 0.6);
+    $('.years').style.opacity = y;
+    var slot = $('.s1slot');
+    var sp = EB((local - 0.15) / 0.9);
+    slot.style.opacity = S((local - 0.15) / 0.5);
+    slot.style.transform = 'rotate(' + (1.4 + (1 - sp) * 4) + 'deg) translateY(' + ((1 - sp) * 30) + 'px)';
+    $('.s1cap').style.opacity = S((local - 0.6) / 0.5);
+    $('.s1axis').style.width = (1648 * E((local - 0.5) / 1.1)) + 'px';
+    $('#ticks1').style.opacity = S((local - 0.7) / 0.6);
+  }
+
+  function upd2(local, t) {
+    setText($('#h2'), plan[1].text);
+    var e = E((local - 0.05) / 0.6);
+    $('#h2').style.opacity = e;
+    $('#h2').style.transform = 'translateY(' + ((1 - e) * 20) + 'px)';
+    $('.s2axis').style.width = (1648 * E((local - 0.15) / 0.9)) + 'px';
+    var p = E((local - 0.3) / 1.8);
+    $('#scan').style.left = (136 + p * 1648) + 'px';
+    $('#scan').style.background = '#8f2f1f';
+    $$('#sc2 .ev').forEach(function (el, i) {
+      var q = E((local - 0.35 - i * 0.09) / 0.6);
+      el.style.opacity = q;
+      el.style.transform = 'translateY(' + ((1 - q) * (i % 2 === 0 ? 16 : -16)) + 'px)';
+    });
+    markers.forEach(function (el, i) {
+      var q = EB((local - 0.3 - i * 0.09) / 0.6);
+      el.style.transform = 'scale(' + Math.max(0.001, q) + ')';
+      el.style.opacity = S((local - 0.25 - i * 0.09) / 0.3);
+    });
+  }
+
+  function upd3(local, t) {
+    setText($('#h3'), plan[2].text);
+    var e = E((local - 0.05) / 0.6);
+    $('#h3').style.opacity = e;
+    $('#h3').style.transform = 'translateY(' + ((1 - e) * 20) + 'px)';
+    var tb = $('.table3');
+    var q = E((local - 0.1) / 0.6);
+    tb.style.opacity = q;
+    tb.style.transform = 'translateY(' + ((1 - q) * 18) + 'px)';
+    revealRows($$('.table3 tbody tr'), local, 0.15, 0.06);
+    var se = EB((local - 0.7) / 0.7);
+    $('.seal').style.opacity = S((local - 0.7) / 0.4);
+    $('.seal').style.transform = 'rotate(-12deg) scale(' + (1.6 - 0.6 * se) + ')';
+    $('.note3').style.opacity = S((local - 0.55) / 0.5);
+  }
+
+  function upd4(local, t) {
+    setText($('#h4'), plan[3].text);
+    var e = E((local - 0.05) / 0.6);
+    $('#h4').style.opacity = e;
+    $('#h4').style.transform = 'translateY(' + ((1 - e) * 20) + 'px)';
+    $$('.bg5').forEach(function (el, i) {
+      var h = Number(el.querySelector('i').dataset.h);
+      var p = E((local - 0.2 - i * 0.045) / 0.85);
+      el.querySelector('i').style.height = (h * 4.6 * p) + 'px';
+      el.querySelector('b').style.opacity = S((p - 0.4) * 2);
+    });
+    var slot = $('.s4slot');
+    var sp = EB((local - 0.15) / 0.9);
+    slot.style.opacity = S((local - 0.15) / 0.5);
+    slot.style.transform = 'rotate(' + (-2.2 - (1 - sp) * 4) + 'deg) translateY(' + ((1 - sp) * 26) + 'px)';
+    $('.s4cap').style.opacity = S((local - 0.55) / 0.5);
+    $('.s4note').style.opacity = S((local - 0.7) / 0.5);
+  }
+
+  function upd5(local, t) {
+    setText($('#h5'), plan[4].text);
+    var e = E((local - 0.05) / 0.6);
+    $('.filecard').style.opacity = e;
+    $('.filecard').style.transform = 'translateY(' + ((1 - e) * 26) + 'px)';
+    revealRows($$('.filecard .mtable tbody tr'), local, 0.3, 0.07);
+    $$('.s5stat').forEach(function (el, i) {
+      var q = E((local - 0.25 - i * 0.1) / 0.6);
+      el.style.opacity = q;
+      el.style.transform = 'translateX(' + ((1 - q) * 24) + 'px)';
+    });
+    $('.micro').style.opacity = S((local - 0.6) / 0.5) * 0.9;
+    $('.micro').style.transform = 'translateY(' + ((1 - C((local - 0.6) / 0.6)) * 20) + 'px)';
+  }
+
+  function upd6(local, t) {
+    setText($('#h6'), title);
+    var e = E((local - 0.05) / 0.8);
+    $('#h6').style.opacity = S((local - 0.05) / 0.5);
+    $('#h6').style.transform = 'translateY(' + ((1 - e) * 26) + 'px)';
+    $('#oline').style.width = (720 * E((local - 0.5) / 0.8)) + 'px';
+    $$('.outro .meta div').forEach(function (el, i) {
+      var q = E((local - 0.6 - i * 0.08) / 0.6);
+      el.style.opacity = q;
+    });
+    $('#axis6').style.width = (1648 * E((local - 0.3) / 1.2)) + 'px';
+    $('#ticks6').style.opacity = S((local - 0.5) / 0.6);
+  }
+
+  var updaters = [upd1, upd2, upd3, upd4, upd5, upd6];
+
+  window.renderFrame = function (frame, inputs) {
+    inputs = inputs || {};
+    buildPlan(inputs);
+    applyInputs(inputs);
+    applyImages(inputs);
+    var t = frame / FPS;
+    var active = 0;
+    for (var i = 0; i < plan.length; i += 1) if (t >= plan[i].start - 0.001) active = i;
+    sceneEls.forEach(function (el, i) {
+      var p = plan[i];
+      var op = Math.min(S((t - p.start + 0.7) / 0.7), S((p.end - t) / 0.6));
+      el.style.visibility = op > 0.001 ? 'visible' : 'hidden';
+      el.style.opacity = op.toFixed(3);
+    });
+    var local = Math.max(0, t - plan[active].start) + (active === 0 ? 1.6 : 0.6);
+    updaters[active](local, t);
+
+    var vt = -1, vp = 0;
+    for (var k = 1; k < N; k += 1) {
+      var b = k * 5;
+      var q = (t - (b - 0.8)) / 0.8;
+      if (q > 0 && q <= 1) { vt = b; vp = q; }
+    }
+    if (vt >= 0) {
+      $('#veil').style.opacity = '1';
+      var strip = $('.strip');
+      strip.style.transform = 'translateX(' + (1920 - vp * 4200) + 'px)';
+      setText($('#vnum'), String(Math.max(1, Math.round(vt / 5))).padStart(2, '0'));
+    } else {
+      $('#veil').style.opacity = '0';
+    }
+  };
+
+  applyInputs({});
+  applyImages({});
+  window.renderFrame(0, {});
+  window.__ready = true;
+})();
+</script>
+</body>
+</html>

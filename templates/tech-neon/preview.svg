@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="科技霓虹模板预览">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#050b14"/>
+      <stop offset=".55" stop-color="#071625"/>
+      <stop offset="1" stop-color="#040a12"/>
+    </linearGradient>
+    <linearGradient id="title" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#e6f7ff"/>
+      <stop offset=".52" stop-color="#7dd3fc"/>
+      <stop offset="1" stop-color="#a78bfa"/>
+    </linearGradient>
+    <radialGradient id="core" cx=".38" cy=".32" r=".72">
+      <stop offset="0" stop-color="#e6f7ff"/>
+      <stop offset=".34" stop-color="#22d3ee" stop-opacity=".8"/>
+      <stop offset=".68" stop-color="#a78bfa" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#a78bfa" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="purple" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#a78bfa" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#a78bfa" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="96" height="96" patternUnits="userSpaceOnUse">
+      <path d="M96 0H0V96" fill="none" stroke="#22d3ee" stroke-opacity=".11"/>
+    </pattern>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="14" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#grid)" opacity=".5"/>
+  <circle cx="1560" cy="240" r="420" fill="url(#purple)"/>
+
+  <g stroke="#22d3ee" stroke-opacity=".16" fill="none">
+    <path d="M0 760H1920M0 800H1920M0 852H1920M0 918H1920M0 998H1920M0 1080H1920"/>
+    <path d="M960 760L600 1080M960 760L760 1080M960 760L920 1080M960 760L1000 1080M960 760L1160 1080M960 760L1320 1080"/>
+  </g>
+
+  <g transform="translate(1480 414)" fill="none">
+    <circle r="210" stroke="#22d3ee" stroke-opacity=".3"/>
+    <circle r="164" stroke="#a78bfa" stroke-opacity=".38" stroke-dasharray="4 12"/>
+    <circle r="120" stroke="#7dd3fc" stroke-opacity=".22"/>
+    <circle r="86" fill="url(#core)" filter="url(#glow)"/>
+    <circle cx="-148" cy="-108" r="4" fill="#a78bfa"/>
+    <circle cx="150" cy="-72" r="4" fill="#22d3ee"/>
+    <circle cx="128" cy="140" r="4" fill="#a78bfa"/>
+  </g>
+
+  <g font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, sans-serif">
+    <g transform="translate(112 292)">
+      <rect y="-22" width="34" height="2" fill="#22d3ee"/>
+      <text x="52" y="-14" font-size="15" font-weight="700" letter-spacing="6" fill="#7dd3fc">NOT MAGIC / SIGNAL LOCKED</text>
+    </g>
+    <text x="108" y="470" font-size="128" font-weight="900" letter-spacing="-6" fill="url(#title)" filter="url(#glow)">技术，正在发光</text>
+    <text x="112" y="604" font-size="30" font-weight="400" letter-spacing="4" fill="#e6f7ff" opacity=".6">TECHNOLOGY IN MOTION · 30S</text>
+    <rect x="112" y="660" width="420" height="2" fill="#22d3ee" opacity=".85"/>
+    <g font-family="Consolas, monospace" font-size="12" fill="#7dd3fc" opacity=".65" letter-spacing="3">
+      <text x="112" y="746">06</text><text x="112" y="770" fill="#e6f7ff" opacity=".4">SCENES</text>
+      <text x="222" y="746">30</text><text x="222" y="770" fill="#e6f7ff" opacity=".4">SECONDS</text>
+      <text x="338" y="746">4K</text><text x="338" y="770" fill="#e6f7ff" opacity=".4">READY</text>
+      <text x="1730" y="1028" text-anchor="end" fill="#e6f7ff" opacity=".35">TECH NEON / TEMPLATE 01</text>
+    </g>
+  </g>
+
+  <g stroke="#22d3ee" stroke-opacity=".5" stroke-width="2" fill="none">
+    <path d="M64 110V64H110"/><path d="M1810 64H1856V110"/>
+    <path d="M64 970V1016H110"/><path d="M1856 970V1016H1810" stroke="#a78bfa" stroke-opacity=".5"/>
+  </g>
+</svg>

@@ -1,0 +1,32 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "science-paper",
+  "name": "科普白板",
+  "version": "1.0.0",
+  "description": "米白纸感的手绘科普模板：马克笔线条、箭头圈选与便签卡片，适合知识解释、课程与原理拆解。",
+  "tags": [
+    "科普",
+    "白板",
+    "手绘",
+    "教育",
+    "浅色"
+  ],
+  "runtime": {
+    "profile": "html/1",
+    "entry": "src/index.html",
+    "network": false
+  },
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 30
+  },
+  "params": {
+    "schema": "params.schema.json",
+    "defaultPreset": "presets/default.json"
+  },
+  "license": "LICENSE",
+  "preview": "preview.svg"
+}

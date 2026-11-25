@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>口播画中画 · Talk Motion</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 720px; height: 1280px; overflow: hidden; background: #fbf4ee; }
+  :root {
+    --accent: #e86a5a;
+    --active: #e86a5a;
+    --ink: #2a1a22;
+    --muted: #8b7379;
+    --paper: #fffaf7;
+  }
+  body { font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", sans-serif; color: var(--ink); }
+  #stage { position: relative; width: 720px; height: 1280px; overflow: hidden;
+    background:
+      radial-gradient(circle at 88% 8%, #ffe0d2 0, rgba(255,224,210,0) 42%),
+      radial-gradient(circle at 4% 78%, #f6d3e2 0, rgba(246,211,226,0) 44%),
+      linear-gradient(180deg, #fdf8f3 0%, #fbf1ec 56%, #f7e9e4 100%);
+  }
+  .grain { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: .14;
+    background-image: radial-gradient(rgba(80,40,50,.55) .55px, transparent .55px);
+    background-size: 4px 4px; mix-blend-mode: multiply; }
+  .grid { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: .22;
+    background-image: linear-gradient(90deg, rgba(80,40,50,.06) 1px, transparent 1px),
+                      linear-gradient(0deg, rgba(80,40,50,.045) 1px, transparent 1px);
+    background-size: 40px 40px; }
+  .blob { position: absolute; border-radius: 50%; filter: blur(40px); z-index: 0; opacity: .58; }
+  .b1 { width: 400px; height: 400px; left: -130px; top: 100px; background: #ffcab8; }
+  .b2 { width: 320px; height: 320px; right: -100px; top: 430px; background: #efc5dc; }
+  .b3 { width: 280px; height: 280px; left: 230px; bottom: -110px; background: #ffd8ad; }
+
+  .title { position: absolute; left: 40px; top: 42px; z-index: 5; width: 500px; font-size: 46px; font-weight: 900; line-height: 1.12; letter-spacing: -.035em; }
+  .title em { font-style: normal; color: var(--accent); }
+  .subtitle { position: absolute; left: 41px; top: 112px; z-index: 5; font-size: 15px; font-weight: 600; letter-spacing: .04em; color: var(--muted); }
+  .chapter-pill { position: absolute; right: 40px; top: 46px; z-index: 6; max-width: 260px; display: flex; align-items: center; gap: 8px;
+    padding: 9px 14px; border-radius: 999px; background: var(--active); color: #fff;
+    box-shadow: 0 10px 24px rgba(78,38,44,.16); transform-origin: right center; }
+  .chapter-pill .no { font: 800 11px/1 "Consolas", monospace; opacity: .8; }
+  .chapter-pill .txt { font-size: 15px; font-weight: 800; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .chapter-dots { position: absolute; left: 40px; right: 40px; top: 918px; z-index: 5; display: flex; align-items: center; gap: 7px; }
+  .chapter-dots i { display: block; width: 7px; height: 7px; border-radius: 999px; background: rgba(42,26,34,.18); }
+  .chapter-dots i.active { width: 26px; background: var(--active); }
+
+  .video-placeholder { position: absolute; z-index: 3; border-radius: 16px; background: #23262e; border: 1px solid rgba(255,255,255,.16); box-shadow: 0 24px 60px rgba(78,38,44,.14); display: grid; place-items: center; color: rgba(255,255,255,.55); font: 700 14px/1 "Consolas", monospace; letter-spacing: .12em; }
+  .video-placeholder::before { content: ""; position: absolute; inset: 18px; border: 1px dashed rgba(255,255,255,.16); border-radius: 10px; }
+  .video-placeholder span { position: relative; }
+
+  .content-rail { position: absolute; z-index: 5; display: flex; flex-direction: column; gap: 9px; }
+  .content-rail.on-left { padding-right: 14px; border-right: 2px solid rgba(42,26,34,.10); align-items: flex-start; }
+  .content-rail.on-right { padding-left: 14px; border-left: 2px solid rgba(42,26,34,.10); align-items: flex-start; }
+  .rail-kicker { font: 800 10px/1 "Consolas", monospace; letter-spacing: .18em; color: var(--active); }
+  .rail-no { font: 900 78px/.8 "Consolas", monospace; letter-spacing: -.07em; color: var(--active); opacity: .20; margin-top: 2px; }
+  .rail-title { font-size: 26px; font-weight: 900; line-height: 1.2; letter-spacing: -.03em; }
+  .rail-words { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin-top: 2px; }
+  .rail-word { border: 0; background: transparent; padding: 0; color: var(--muted); font-weight: 900; line-height: 1.12; letter-spacing: -.03em; }
+  .rail-word:nth-child(1) { font-size: 42px; color: var(--active); }
+  .rail-word:nth-child(2) { font-size: 26px; color: var(--ink); opacity: .72; }
+  .rail-word:nth-child(3) { font-size: 18px; color: var(--muted); opacity: .9; }
+  .rail-note { margin-top: 8px; font-size: 13px; line-height: 1.65; font-weight: 500; color: var(--muted); max-width: 96%; }
+  .rail-steps { margin-top: auto; padding-top: 10px; border-top: 1px solid rgba(42,26,34,.12); display: grid; gap: 7px; width: 100%; }
+  .rail-step { display: flex; gap: 8px; align-items: baseline; font-size: 11px; font-weight: 600; color: var(--muted); opacity: .46; }
+  .rail-step b { width: 16px; font: 800 9px/1 "Consolas", monospace; }
+  .rail-step.active { opacity: 1; color: var(--ink); font-weight: 800; }
+  .rail-step.active b { color: var(--active); }
+
+  .caption-wrap { position: absolute; left: 40px; top: 952px; width: 640px; min-height: 122px; z-index: 6;
+    padding: 16px 18px 18px; border-radius: 16px; background: rgba(255,250,247,.92);
+    border: 1px solid rgba(255,255,255,.95); box-shadow: 0 18px 38px rgba(78,38,44,.09); }
+  .caption-bar { width: 36px; height: 4px; border-radius: 2px; background: var(--accent); margin-bottom: 10px; }
+  .caption { font-size: 32px; font-weight: 900; line-height: 1.4; letter-spacing: -.02em; color: var(--ink); word-break: break-word; }
+  .caption em { font-style: normal; color: var(--accent); }
+  .caption-empty { color: var(--muted); font-size: 18px; font-weight: 600; }
+
+  .progress { position: absolute; left: 40px; right: 40px; bottom: 40px; height: 4px; z-index: 6; background: rgba(42,26,34,.12); border-radius: 2px; overflow: hidden; }
+  .progress i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), #f0a58e); border-radius: 2px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="blob b1" id="b1"></div>
+  <div class="blob b2" id="b2"></div>
+  <div class="blob b3" id="b3"></div>
+  <div class="grid"></div>
+  <div class="grain"></div>
+
+  <div class="title" id="title">冬天护手计划</div>
+  <div class="subtitle" id="subtitle">一支护手霜的 6 个细节</div>
+  <div class="chapter-pill" id="chapterPill"><span class="no" id="chapterNo">01</span><span class="txt" id="chapterTitle">冬季护手</span></div>
+  <div class="chapter-dots" id="chapterDots"></div>
+  <div class="video-placeholder" id="videoPlaceholder"><span>视频占位</span></div>
+  <div class="content-rail" id="contentRail">
+    <div class="rail-kicker">本章关键词</div>
+    <div class="rail-no" id="railNo">01</div>
+    <div class="rail-title" id="railTitle">冬季护手</div>
+    <div class="rail-words" id="railWords"></div>
+    <div class="rail-note" id="railNote"></div>
+    <div class="rail-steps" id="railSteps"></div>
+  </div>
+
+  <div class="caption-wrap" id="captionWrap">
+    <div class="caption-bar"></div>
+    <div class="caption" id="caption"></div>
+  </div>
+  <div class="progress"><i id="progress"></i></div>
+</div>
+
+<script>
+(function () {
+  var FPS = 30;
+  var DUR = 36.55;
+  var $ = function (selector) { return document.querySelector(selector); };
+  var built = false;
+  var data = null;
+  var lastKey = '';
+  var dotEls = [];
+  var stepEls = [];
+  var lastRailIndex = -1;
+
+  function esc(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function setText(el, value) { if (el) el.textContent = String(value == null ? '' : value); }
+  function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+  function cubicBezier(x1, y1, x2, y2) {
+    var cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx;
+    var cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+    function fx(t) { return ((ax * t + bx) * t + cx) * t; }
+    function dfx(t) { return (3 * ax * t + 2 * bx) * t + cx; }
+    function fy(t) { return ((ay * t + by) * t + cy) * t; }
+    return function (value) {
+      var v = clamp(value, 0, 1);
+      var t = v;
+      for (var i = 0; i < 6; i += 1) {
+        var x = fx(t) - v;
+        if (Math.abs(x) < 1e-5) break;
+        var d = dfx(t);
+        if (Math.abs(d) < 1e-5) break;
+        t = clamp(t - x / d, 0, 1);
+      }
+      return fy(t);
+    };
+  }
+  var ease = cubicBezier(.16, 1, .3, 1);
+  function smooth(value) { return ease(value); }
+  function highlight(text, words) {
+    var safe = esc(text);
+    (words || []).forEach(function (word) {
+      var target = esc(word);
+      if (!target) return;
+      safe = safe.split(target).join('<em>' + target + '</em>');
+    });
+    return safe;
+  }
+
+  function build(inputs) {
+    data = inputs || {};
+    var accent = data.accent || '#e86a5a';
+    document.documentElement.style.setProperty('--accent', accent);
+    setText($('#title'), data.title || '冬天护手计划');
+    setText($('#subtitle'), data.subtitle || '一支护手霜的 6 个细节');
+    var cards = data.cards || [];
+    $('#chapterDots').innerHTML = cards.map(function () { return '<i></i>'; }).join('');
+    dotEls = Array.prototype.slice.call(document.querySelectorAll('#chapterDots i'));
+    $('#railSteps').innerHTML = cards.map(function (card, index) {
+      return '<div class="rail-step" data-index="' + index + '"><b>' + String(index + 1).padStart(2, '0') + '</b><span>' + esc(card.title) + '</span></div>';
+    }).join('');
+    stepEls = Array.prototype.slice.call(document.querySelectorAll('.rail-step'));
+    lastRailIndex = -1;
+    built = true;
+    DUR = Number(data.duration || data.end || 36.55) || 36.55;
+  }
+
+  function activeCard(time) {
+    var cards = (data && data.cards) || [];
+    var index = 0;
+    for (var i = 0; i < cards.length; i += 1) {
+      if (time >= Number(cards[i].start || 0) - 0.001) index = i;
+    }
+    return index;
+  }
+
+  window.renderFrame = function (frame, inputs) {
+    var key = JSON.stringify(inputs || {});
+    if (!built || key !== lastKey) {
+      build(inputs || {});
+      lastKey = key;
+    }
+    var t = Math.max(0, frame / FPS);
+    var cards = (data && data.cards) || [];
+    var active = activeCard(t);
+    var card = cards[active] || null;
+    var activeColor = card && card.color ? card.color : (data.accent || '#e86a5a');
+    document.documentElement.style.setProperty('--active', activeColor);
+
+    var stage = $('#stage');
+    stage.style.background = 'radial-gradient(circle at ' + (82 + Math.sin(t * .12) * 4) + '% 8%, #ffe0d2 0, rgba(255,224,210,0) 42%),' +
+      'radial-gradient(circle at ' + (6 + Math.cos(t * .1) * 3) + '% 78%, #f6d3e2 0, rgba(246,211,226,0) 44%),' +
+      'linear-gradient(180deg, #fdf8f3 0%, #fbf1ec 56%, #f7e9e4 100%)';
+    $('#b1').style.transform = 'translate(' + (Math.sin(t * .35) * 20) + 'px,' + (Math.cos(t * .3) * 16) + 'px)';
+    $('#b2').style.transform = 'translate(' + (Math.cos(t * .28) * 22) + 'px,' + (Math.sin(t * .36) * 18) + 'px)';
+    $('#b3').style.transform = 'translate(' + (Math.sin(t * .24) * 16) + 'px,' + (Math.cos(t * .32) * 14) + 'px)';
+
+    setText($('#chapterNo'), String(active + 1).padStart(2, '0'));
+    setText($('#chapterTitle'), card ? card.title : '');
+    var pill = $('#chapterPill');
+    var since = card ? t - Number(card.start || 0) : 0;
+    var pillIn = smooth(since / .35);
+    pill.style.opacity = pillIn.toFixed(3);
+    pill.style.transform = 'scale(' + (0.92 + pillIn * 0.08).toFixed(3) + ')';
+    pill.style.background = activeColor;
+
+    dotEls.forEach(function (dot, index) {
+      dot.classList.toggle('active', index === active);
+    });
+
+    var layouts = (data && data.layouts) || [];
+    var layout = layouts[active] || data.video || { x: 40, y: 170, width: 400, height: 710 };
+    var placeholder = $('#videoPlaceholder');
+    placeholder.style.left = Number(layout.x || 40) + 'px';
+    placeholder.style.top = Number(layout.y || 170) + 'px';
+    placeholder.style.width = Number(layout.width || 400) + 'px';
+    placeholder.style.height = Number(layout.height || 710) + 'px';
+    var rail = layout.rail;
+    if (!rail) {
+      var railWidth = 212;
+      if (Number(layout.x || 40) + Number(layout.width || 400) > 360) {
+        rail = { x: 40, width: Math.max(180, Number(layout.x || 40) - 60) };
+      } else {
+        rail = { x: Number(layout.x || 40) + Number(layout.width || 400) + 20, width: Math.max(180, 720 - (Number(layout.x || 40) + Number(layout.width || 400) + 20) - 40) };
+      }
+    }
+    var railEl = $('#contentRail');
+    railEl.style.left = Number(rail.x || 40) + 'px';
+    railEl.style.top = Number(layout.y || 170) + 'px';
+    railEl.style.width = Number(rail.width || 212) + 'px';
+    railEl.style.height = Number(layout.height || 710) + 'px';
+    railEl.classList.toggle('on-left', Number(rail.x || 40) < 360);
+    railEl.classList.toggle('on-right', Number(rail.x || 40) >= 360);
+    if (active !== lastRailIndex) {
+      lastRailIndex = active;
+      setText($('#railNo'), String(active + 1).padStart(2, '0'));
+      setText($('#railTitle'), card ? card.title : '');
+      var words = (card && card.words) || (card ? [card.title] : []);
+      $('#railWords').innerHTML = words.map(function (word) { return '<span class="rail-word">' + esc(word) + '</span>'; }).join('');
+      setText($('#railNote'), card && card.note ? card.note : '');
+      stepEls.forEach(function (step, index) { step.classList.toggle('active', index === active); });
+    }
+    var railIn = smooth(since / .35);
+    railEl.style.opacity = railIn.toFixed(3);
+    railEl.style.transform = 'translateY(' + ((1 - railIn) * 10).toFixed(2) + 'px)';
+
+    var caption = null;
+    var captions = (data && data.captions) || [];
+    for (var i = 0; i < captions.length; i += 1) {
+      if (t >= Number(captions[i].start || 0) && t < Number(captions[i].end || 0)) { caption = captions[i]; break; }
+    }
+    var capEl = $('#caption');
+    if (caption) {
+      capEl.innerHTML = highlight(caption.text, caption.highlight);
+      var fade = Math.min(smooth((t - Number(caption.start || 0)) / .18), smooth((Number(caption.end || 0) - t) / .18));
+      $('#captionWrap').style.opacity = fade.toFixed(3);
+    } else {
+      capEl.innerHTML = '<span class="caption-empty">—</span>';
+      $('#captionWrap').style.opacity = '.35';
+    }
+    $('#progress').style.width = (clamp(t / DUR, 0, 1) * 100).toFixed(3) + '%';
+
+    var intro = smooth((t - .12) / .55);
+    $('#title').style.opacity = intro.toFixed(3);
+    $('#title').style.transform = 'translateY(' + ((1 - intro) * 16).toFixed(2) + 'px)';
+    $('#subtitle').style.opacity = smooth((t - .35) / .55).toFixed(3);
+  };
+
+  build({});
+  window.renderFrame(0, {});
+  window.__ready = true;
+})();
+</script>
+</body>
+</html>

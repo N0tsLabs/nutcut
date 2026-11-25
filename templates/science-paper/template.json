@@ -1,0 +1,43 @@
+{
+  "id": "science-paper",
+  "name": "科普白板",
+  "category": "科普",
+  "description": "米白纸感的手绘科普模板：马克笔线条、箭头圈选与便签卡片，适合知识解释、课程与原理拆解。",
+  "tags": [
+    "科普",
+    "白板",
+    "手绘",
+    "教育",
+    "浅色"
+  ],
+  "palette": {
+    "background": "#f7f3e8",
+    "surface": "#fffdf7",
+    "primary": "#2563eb",
+    "accent": "#0d9488",
+    "text": "#1f2d2a",
+    "muted": "#6b7f78"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 400,
+    "titleSize": 98
+  },
+  "motion": {
+    "transition": "draw",
+    "speed": "medium"
+  },
+  "duration": 30,
+  "sceneCount": 6,
+  "stylePrompt": "米白纸张质感讲义，手绘蓝色马克笔线条与绿色批注，箭头、圈选和下划线，黑板报式科普插图，干净留白，温和自然光",
+  "preview": "preview.svg",
+  "features": [
+    "image-slot"
+  ],
+  "styleRefs": [
+    "M1",
+    "K10",
+    "M18"
+  ],
+  "group": "信息数据"
+}

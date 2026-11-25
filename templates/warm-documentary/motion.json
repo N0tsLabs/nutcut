@@ -1,0 +1,32 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "warm-documentary",
+  "name": "温暖纪实",
+  "version": "1.0.0",
+  "description": "慢节奏人文纪实模板：暖棕奶油色调、胶片颗粒、柔和叠化与字幕条，适合人物故事与品牌纪实。",
+  "tags": [
+    "纪实",
+    "温暖",
+    "胶片",
+    "叙事",
+    "人文"
+  ],
+  "runtime": {
+    "profile": "html/1",
+    "entry": "src/index.html",
+    "network": false
+  },
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 30
+  },
+  "params": {
+    "schema": "params.schema.json",
+    "defaultPreset": "presets/default.json"
+  },
+  "license": "LICENSE",
+  "preview": "preview.svg"
+}

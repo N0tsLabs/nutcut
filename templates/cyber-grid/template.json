@@ -1,0 +1,43 @@
+{
+  "id": "cyber-grid",
+  "name": "赛博网格",
+  "category": "科技",
+  "description": "深蓝黑终端界面的赛博模板：荧光绿透视网格、数据框与等宽标注，适合数据、网络安全与未来议题。",
+  "tags": [
+    "赛博",
+    "网格",
+    "数据",
+    "深色",
+    "未来"
+  ],
+  "palette": {
+    "background": "#020806",
+    "surface": "#04120f",
+    "primary": "#39ff88",
+    "accent": "#22d3ee",
+    "text": "#d7ffe8",
+    "muted": "#4ade80"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 400,
+    "titleSize": 92
+  },
+  "motion": {
+    "transition": "grid",
+    "speed": "fast"
+  },
+  "duration": 30,
+  "sceneCount": 6,
+  "stylePrompt": "深蓝黑终端界面，荧光绿透视网格与数据框，细密等宽字标注，扫描线与故障条纹，黑客控制台氛围，冷峻高对比",
+  "preview": "preview.svg",
+  "features": [
+    "image-slot"
+  ],
+  "styleRefs": [
+    "K34",
+    "F2",
+    "A4"
+  ],
+  "group": "风格片头"
+}

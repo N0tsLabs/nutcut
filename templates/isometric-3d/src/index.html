@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>等距 3D · Isometric 3D</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #eceff5; }
+  body { font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", system-ui, sans-serif; color: #101420; }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background:
+    radial-gradient(1100px 700px at 78% 8%, rgba(43,89,255,.12), transparent 62%),
+    radial-gradient(900px 600px at 8% 96%, rgba(255,122,26,.09), transparent 60%),
+    linear-gradient(165deg, #f5f7fb 0%, #e9edf5 58%, #e2e7f1 100%); }
+  .grid { position: absolute; inset: -22%; opacity: .55;
+    background-image:
+      repeating-linear-gradient(60deg, rgba(16,20,32,.075) 0 1px, transparent 1px 46px),
+      repeating-linear-gradient(-60deg, rgba(16,20,32,.075) 0 1px, transparent 1px 46px); }
+  .fade { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 42%, transparent 40%, rgba(233,237,245,.85) 100%); }
+
+  .scene { position: absolute; inset: 0; visibility: hidden; opacity: 0; z-index: 5; }
+  .eyebrow { display: flex; align-items: center; gap: 12px; font: 700 13px/1 "Consolas", monospace;
+    letter-spacing: .24em; color: #2b59ff; text-transform: uppercase; }
+  .eyebrow i { width: 30px; height: 2px; background: #2b59ff; }
+  .eyebrow.o { color: #ff7a1a; } .eyebrow.o i { background: #ff7a1a; }
+  .big { font-size: 112px; line-height: 1.06; font-weight: 900; letter-spacing: -.05em; color: #0d1119; }
+  .h2 { font-size: 62px; line-height: 1.14; font-weight: 900; letter-spacing: -.035em; color: #0d1119; max-width: 1500px; }
+  .sub { font-size: 26px; font-weight: 400; letter-spacing: .03em; color: #5c6577; }
+  .mono { font-family: "Consolas", monospace; }
+
+  .slot { position: absolute; overflow: hidden; background:
+      linear-gradient(150deg, #ffffff, #e7ecf7); border: 1px solid rgba(43,89,255,.28);
+    box-shadow: 0 34px 70px rgba(20,30,70,.18); }
+  .slot::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.7); }
+  .slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+  .slot.has-image img { opacity: 1; }
+  .slot.has-image .ph { opacity: 0; }
+  .slot .ph { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+  .slot .ph b { font-size: 28px; font-weight: 900; color: #2c3648; letter-spacing: .04em; }
+  .slot .ph em { font: 700 12px/1 "Consolas", monospace; font-style: normal; letter-spacing: .26em; color: #2b59ff; }
+  .slot .ph s { text-decoration: none; font: 600 12px/1 "Consolas", monospace; letter-spacing: .16em; color: #8b94a6; }
+  .slot .ph::before { content: ""; position: absolute; inset: 18px; border: 1px dashed rgba(43,89,255,.28); }
+  .slot .ph::after { content: ""; position: absolute; left: 50%; top: 50%; width: 160px; height: 160px; margin: -80px 0 0 -80px;
+    border: 1px solid rgba(43,89,255,.16); transform: rotate(45deg) scaleY(.5); }
+  .slot .tagx { position: absolute; left: 18px; top: 16px; z-index: 2; padding: 7px 12px; background: #101420; color: #fff;
+    font: 700 11px/1 "Consolas", monospace; letter-spacing: .2em; }
+
+  .plate-shadow { position: absolute; background: rgba(28,40,80,.14); filter: blur(22px); transform: rotate(-32deg) skewX(18deg); }
+
+  /* scene 1 */
+  .s1 { position: absolute; left: 136px; top: 176px; width: 980px; }
+  .s1 .big { margin-top: 30px; font-size: 124px; }
+  .s1 .sub { margin-top: 30px; max-width: 620px; line-height: 1.6; }
+  .s1 .chips { display: flex; gap: 16px; margin-top: 52px; }
+  .chip { padding: 18px 24px; background: rgba(255,255,255,.86); border: 1px solid rgba(16,20,32,.1);
+    box-shadow: 0 10px 26px rgba(20,30,70,.07); }
+  .chip b { display: block; font: 900 30px/1 "Consolas", monospace; color: #2b59ff; }
+  .chip span { display: block; margin-top: 8px; font: 600 11px/1 "Consolas", monospace; letter-spacing: .18em; color: #7b8496; }
+  .s1slot { left: 1216px; top: 196px; width: 608px; height: 440px; transform: perspective(1200px) rotateY(-9deg) rotateX(4deg); }
+  .s1shadow { left: 1250px; top: 700px; width: 520px; height: 150px; }
+  .wire { position: absolute; left: 0; top: 430px; width: 780px; height: 340px; }
+
+  /* scene 2 */
+  .s2head { position: absolute; left: 136px; top: 118px; width: 1400px; }
+  .s2head .h2 { margin-top: 18px; }
+  .iso-stage { position: absolute; left: 150px; top: 300px; width: 700px; height: 640px; perspective: 1700px; }
+  .iso { position: absolute; inset: 0; transform-style: preserve-3d; transform: rotateX(58deg) rotateZ(-42deg); }
+  .plate { position: absolute; left: 50%; top: 50%; width: 380px; height: 380px; margin: -190px 0 0 -190px;
+    border: 1px solid rgba(16,20,32,.14); box-shadow: 0 26px 60px rgba(20,30,70,.18);
+    background: linear-gradient(145deg, #ffffff, #eaf0ff); will-change: transform; }
+  .plate.p1 { background: linear-gradient(145deg, #ffffff, #dfe6f4); }
+  .plate.p2 { background: linear-gradient(145deg, #dfe8ff, #c3d3ff); border-color: rgba(43,89,255,.4); }
+  .plate.p3 { background: linear-gradient(145deg, #2b59ff, #1b41cc); border-color: rgba(43,89,255,.8); }
+  .plate.p4 { background: linear-gradient(145deg, #ffb27a, #ff7a1a); border-color: rgba(255,122,26,.7); }
+  .plate .num { position: absolute; right: 14px; bottom: 10px; font: 900 46px/1 "Consolas", monospace; color: rgba(255,255,255,.4); }
+  .iso .float { position: absolute; width: 74px; height: 74px; background: #fff; border: 1px solid rgba(16,20,32,.14);
+    box-shadow: 0 14px 30px rgba(20,30,70,.16); }
+  .iso .float.o { background: #ff7a1a; border-color: #ff7a1a; }
+  .iso .float.b { background: #2b59ff; border-color: #2b59ff; }
+  .layers { position: absolute; left: 900px; top: 330px; width: 400px; }
+  .layer { display: flex; align-items: center; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(16,20,32,.12); }
+  .layer i { width: 14px; height: 14px; background: #fff; border: 1px solid rgba(16,20,32,.3); }
+  .layer.l2 i { background: #c3d3ff; } .layer.l3 i { background: #2b59ff; } .layer.l4 i { background: #ff7a1a; }
+  .layer b { font-size: 20px; font-weight: 700; }
+  .layer span { margin-left: auto; font: 700 15px/1 "Consolas", monospace; color: #6c7588; }
+  .s2side { position: absolute; left: 1350px; top: 300px; width: 474px; padding: 28px 30px; background: rgba(255,255,255,.9);
+    border: 1px solid rgba(16,20,32,.1); box-shadow: 0 24px 60px rgba(20,30,70,.1); }
+  .s2side h4 { font-size: 16px; font-weight: 700; letter-spacing: .04em; color: #101420; }
+  .s2side .row { margin-top: 24px; }
+  .s2side .row .t { display: flex; font-size: 16px; color: #4c5568; }
+  .s2side .row .t b { margin-left: auto; font: 700 16px/1 "Consolas", monospace; color: #101420; }
+  .s2side .t2 { margin-top: 9px; height: 8px; background: rgba(16,20,32,.1); }
+  .s2side .t2 i { display: block; height: 100%; width: 0; background: #2b59ff; }
+  .s2side .t2 i.o { background: #ff7a1a; }
+
+  /* scene 3 */
+  .s3head { position: absolute; left: 136px; top: 112px; width: 1500px; }
+  .s3head .h2 { margin-top: 16px; }
+  .sheet { position: absolute; left: 136px; top: 300px; width: 1180px; height: 610px; padding: 30px 34px;
+    background: rgba(255,255,255,.94); border: 1px solid rgba(16,20,32,.1);
+    box-shadow: 0 30px 70px rgba(20,30,70,.12); }
+  .sh-head { display: flex; align-items: center; font: 700 12px/1 "Consolas", monospace; letter-spacing: .2em; color: #8b94a6; }
+  .sh-head b { margin-left: auto; color: #2b59ff; }
+  table.tbl { width: 100%; border-collapse: collapse; margin-top: 22px; }
+  table.tbl th { text-align: left; padding: 12px 14px; font: 700 14px/1 "Consolas", monospace; letter-spacing: .12em;
+    color: #7b8496; border-bottom: 2px solid #101420; white-space: nowrap; }
+  table.tbl td { padding: 19px 14px; font-size: 19px; font-weight: 400; color: #1b2130;
+    border-bottom: 1px solid rgba(16,20,32,.09); }
+  table.tbl tbody tr:nth-child(odd) { background: rgba(43,89,255,.035); }
+  table.tbl td.num { font-family: "Consolas", monospace; font-size: 19px; }
+  table.tbl td.tag { font: 700 14px/1 "Consolas", monospace; color: #2b59ff; letter-spacing: .08em; }
+  table.tbl td.tag.o { color: #ff7a1a; }
+  .specs { position: absolute; left: 1360px; top: 300px; width: 464px; }
+  .spec { padding: 24px 26px; margin-bottom: 18px; background: #101420; color: #fff; }
+  .spec:nth-child(2) { background: #2b59ff; }
+  .spec:nth-child(3) { background: #fff; color: #101420; border: 1px solid rgba(16,20,32,.1); }
+  .spec span { font: 600 11px/1 "Consolas", monospace; letter-spacing: .22em; opacity: .62; }
+  .spec b { display: block; margin-top: 12px; font-size: 30px; font-weight: 900; letter-spacing: -.02em; }
+  .spec p { margin-top: 8px; font-size: 15px; line-height: 1.55; opacity: .7; }
+
+  /* scene 4 */
+  .s4 { position: absolute; left: 136px; top: 128px; width: 900px; }
+  .s4 .h2 { margin-top: 18px; }
+  .s4slot { left: 136px; top: 396px; width: 700px; height: 440px; transform: perspective(1300px) rotateY(7deg); }
+  .s4shadow { left: 190px; top: 820px; width: 600px; height: 90px; }
+  .s4right { position: absolute; left: 960px; top: 396px; width: 600px; }
+  .kv { display: flex; align-items: baseline; padding: 15px 0; border-bottom: 1px solid rgba(16,20,32,.12); }
+  .kv span { font-size: 17px; color: #59627a; }
+  .kv b { margin-left: auto; font: 900 22px/1 "Consolas", monospace; color: #101420; }
+  .kv b em { font: 600 13px/1 "Consolas", monospace; font-style: normal; color: #8b94a6; margin-left: 5px; }
+  .spark { margin-top: 26px; width: 600px; height: 150px; }
+  .callout { display: none; }
+  .fig2 { position: absolute; left: 136px; top: 864px; display: flex; gap: 12px;
+    font: 600 12px/1 "Consolas", monospace; letter-spacing: .2em; color: #8b94a6; }
+  .fig2 b { color: #ff7a1a; }
+
+  /* scene 5 */
+  .s5head { position: absolute; left: 136px; top: 112px; width: 1000px; }
+  .s5head .h2 { margin-top: 16px; font-size: 56px; }
+  .isochart { position: absolute; left: 106px; top: 300px; width: 880px; height: 620px; }
+  .s5table { position: absolute; left: 1010px; top: 336px; width: 814px; padding: 26px 30px; background: rgba(255,255,255,.94);
+    border: 1px solid rgba(16,20,32,.1); box-shadow: 0 24px 60px rgba(20,30,70,.1); }
+  .s5table table.tbl { margin-top: 12px; }
+  .s5table table.tbl td { padding: 15px 12px; font-size: 17px; }
+  .s5table table.tbl th { padding: 10px 12px; }
+  .legend5 { position: absolute; left: 1010px; top: 830px; width: 814px; display: flex; gap: 28px;
+    font: 600 14px/1 "Consolas", monospace; letter-spacing: .1em; color: #6c7588; }
+  .legend5 span { display: flex; align-items: center; gap: 8px; }
+  .legend5 i { width: 12px; height: 12px; display: block; }
+
+  /* scene 6 */
+  .outro { position: absolute; left: 50%; top: 46%; width: 1520px; transform: translate(-50%, -50%); text-align: center; }
+  .out-title { margin-top: 28px; font-size: 138px; line-height: 1.04; font-weight: 900; letter-spacing: -.055em; color: #0d1119; }
+  .out-sub { margin-top: 26px; font: 600 22px/1 "Consolas", monospace; letter-spacing: .3em; color: #6c7588; }
+  .out-chips { margin-top: 54px; display: flex; justify-content: center; gap: 14px; }
+  .out-chips div { padding: 14px 22px; border: 1px solid rgba(16,20,32,.16); background: rgba(255,255,255,.7);
+    font: 700 12px/1 "Consolas", monospace; letter-spacing: .18em; color: #3d4557; }
+
+  .hud { position: absolute; left: 136px; right: 96px; bottom: 40px; z-index: 30; display: flex; align-items: center; gap: 22px;
+    font: 700 11px/1 "Consolas", monospace; letter-spacing: .2em; color: #7b8496; }
+  .hud .track { flex: 1; height: 1px; background: rgba(16,20,32,.16); }
+  .hud .track i { display: block; height: 100%; width: 0; background: #2b59ff; }
+  .hud .idx { color: #2b59ff; }
+
+  #veil { position: absolute; inset: 0; z-index: 40; opacity: 0; pointer-events: none; overflow: hidden; }
+  #veil i { position: absolute; left: 0; width: 1920px; height: 216px; display: block; transform: translateX(-2100px); }
+  #veil i:nth-child(1) { top: 0; background: #2b59ff; }
+  #veil i:nth-child(2) { top: 216px; background: #101420; }
+  #veil i:nth-child(3) { top: 432px; background: #dfe7ff; }
+  #veil i:nth-child(4) { top: 648px; background: #ff7a1a; }
+  #veil i:nth-child(5) { top: 864px; background: #f5f7fb; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="grid"></div>
+  <div class="fade"></div>
+
+  <section class="scene" id="sc1">
+    <div class="s1">
+      <div class="eyebrow"><i></i>01 / 等距视图 · ISOMETRIC VIEW</div>
+      <h1 class="big" id="h1" data-title></h1>
+      <p class="sub" id="s1sub" data-sub></p>
+      <div class="chips">
+        <div class="chip"><b>38.4%</b><span>VOLUME / 结构体积</span></div>
+        <div class="chip"><b>6</b><span>LAYERS / 层级</span></div>
+        <div class="chip"><b>1:1</b><span>SCALE / 比例</span></div>
+      </div>
+      <svg class="wire" viewBox="0 0 780 340" fill="none">
+        <g stroke="#2b59ff" stroke-width="1.6" stroke-opacity=".55">
+          <path d="M420 60 L520 110 L420 160 L320 110 Z"/>
+          <path d="M320 110 L320 220 M520 110 L520 220 M420 160 L420 270"/>
+          <path d="M320 220 L420 270 L520 220"/>
+          <path d="M320 220 L320 110" stroke-opacity=".2"/>
+        </g>
+        <g stroke="#ff7a1a" stroke-width="1.4" stroke-opacity=".8">
+          <path d="M420 160 L420 270"/>
+        </g>
+        <g stroke="#101420" stroke-opacity=".28">
+          <path d="M120 300 H700"/>
+          <path d="M120 292 V308 M700 292 V308 M410 294 V306"/>
+        </g>
+        <g font-family="Consolas, monospace" fill="#8b94a6">
+          <text x="410" y="286" text-anchor="middle" font-size="13" letter-spacing="3">1920 × 1080 / 16:9</text>
+          <text x="736" y="304" text-anchor="end" font-size="12" letter-spacing="2">AXONOMETRIC 30°</text>
+          <text x="440" y="226" font-size="12" letter-spacing="2" fill="#ff7a1a" fill-opacity=".85">H = 1080</text>
+        </g>
+      </svg>
+    </div>
+    <div class="slot s1slot" data-image-slot="01">
+      <img alt="" />
+      <div class="tagx">SLOT 01</div>
+      <div class="ph"><b>图片位 01</b><em>IMAGE SLOT 01</em><s>产品 / 模型 / 实物</s></div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc2">
+    <div class="s2head">
+      <div class="eyebrow"><i></i>02 / 层叠结构 · STACKED LAYERS</div>
+      <h2 class="h2" id="h2"></h2>
+    </div>
+    <div class="iso-stage">
+      <div class="iso">
+        <div class="plate p1" data-z="0"><span class="num">01</span></div>
+        <div class="plate p2" data-z="58" style="width:330px;height:330px;margin:-165px 0 0 -165px"><span class="num">02</span></div>
+        <div class="plate p3" data-z="118" style="width:280px;height:280px;margin:-140px 0 0 -140px"><span class="num">03</span></div>
+        <div class="plate p4" data-z="176" style="width:220px;height:220px;margin:-110px 0 0 -110px"><span class="num">04</span></div>
+        <div class="float b" data-z="210" style="left:-14px;top:120px"></div>
+        <div class="float o" data-z="150" style="right:-8px;bottom:60px"></div>
+        <div class="float" data-z="96" style="right:120px;top:-10px"></div>
+      </div>
+    </div>
+    <div class="layers">
+      <div class="layer"><i></i><b>接入层</b><span>INGEST</span></div>
+      <div class="layer l2"><i></i><b>聚合层</b><span>MERGE</span></div>
+      <div class="layer l3"><i></i><b>计算层</b><span>COMPUTE</span></div>
+      <div class="layer l4"><i></i><b>呈现层</b><span>RENDER</span></div>
+      <div class="layer"><i></i><b>归档层</b><span>ARCHIVE</span></div>
+    </div>
+    <div class="s2side">
+      <h4>层间占比 / LAYER SHARE</h4>
+      <div class="row"><div class="t"><span>数据接入</span><b>32%</b></div><div class="t2"><i data-w="32"></i></div></div>
+      <div class="row"><div class="t"><span>结构聚合</span><b>26%</b></div><div class="t2"><i data-w="26"></i></div></div>
+      <div class="row"><div class="t"><span>实时计算</span><b>23%</b></div><div class="t2"><i class="o" data-w="23"></i></div></div>
+      <div class="row"><div class="t"><span>画面呈现</span><b>19%</b></div><div class="t2"><i data-w="19"></i></div></div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc3">
+    <div class="s3head">
+      <div class="eyebrow"><i></i>03 / 参数表 · SPEC SHEET</div>
+      <h2 class="h2" id="h3"></h2>
+    </div>
+    <div class="sheet">
+      <div class="sh-head"><span>等距结构参数 / ISOMETRIC SPEC</span><b>REV. 3.1</b></div>
+      <table class="tbl">
+        <thead><tr><th>参数</th><th>数值</th><th>单位</th><th>允差</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>平台尺寸</td><td class="num">1920 × 1080</td><td class="num">px</td><td class="num">±0</td><td>16:9 画幅</td></tr>
+          <tr><td>层间距</td><td class="num">64</td><td class="num">mm</td><td class="num">±1.5</td><td>等距投影</td></tr>
+          <tr><td>结构体积</td><td class="num">38.4</td><td class="num">%</td><td class="num">±2.0</td><td>轻量优先</td></tr>
+          <tr><td>承载重量</td><td class="num">12.6</td><td class="num">kg</td><td class="num">±0.4</td><td>稳态负载</td></tr>
+          <tr><td>单帧耗时</td><td class="num">8.2</td><td class="num">s</td><td class="num">±0.6</td><td>本地渲染</td></tr>
+        </tbody>
+      </table>
+      <div class="sh-foot" style="position:absolute;left:34px;right:34px;bottom:24px;display:flex;font:600 12px/1 'Consolas',monospace;letter-spacing:.16em;color:#8b94a6;border-top:1px dashed rgba(16,20,32,.16);padding-top:14px">
+        <span>所有尺寸为设计值，实际以渲染结果为准</span><span style="margin-left:auto">SHEET 03 / 06</span>
+      </div>
+    </div>
+    <div class="specs">
+      <div class="spec"><span>DEPTH / 深度</span><b>04 层</b><p>每层独立坐标，互不挤压。</p></div>
+      <div class="spec"><span>WEIGHT / 视觉重量</span><b>38.4%</b><p>留白承担结构，而不是填满。</p></div>
+      <div class="spec"><span>TOLERANCE / 允差</span><b>± 1.5 mm</b><p>参数之间有咬合关系。</p></div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc4">
+    <div class="s4">
+      <div class="eyebrow o"><i></i>04 / 实物角度 · PRODUCT ANGLE</div>
+      <h2 class="h2" id="h4"></h2>
+    </div>
+    <div class="slot s4slot" data-image-slot="02">
+      <img alt="" />
+      <div class="tagx">SLOT 02</div>
+      <div class="ph"><b>图片位 02</b><em>IMAGE SLOT 02</em><s>产品图 / 场景图</s></div>
+    </div>
+    <div class="callout c1"><i></i>TOP FACE / 顶面</div>
+    <div class="callout c2"><i></i>SIDE FACE / 侧面</div>
+    <div class="fig2"><b>FIG. 02</b><span>实物角度 / PRODUCT ANGLE — 30° ISO</span></div>
+    <div class="s4right">
+      <div class="kv"><span>投影角度</span><b>30°<em>ISO</em></b></div>
+      <div class="kv"><span>观察高度</span><b>35.26°<em>AXON</em></b></div>
+      <div class="kv"><span>边缘缩放</span><b>1.000<em>X</em></b></div>
+      <div class="kv"><span>阴影柔度</span><b>24<em>PX</em></b></div>
+      <svg class="spark" viewBox="0 0 600 150" preserveAspectRatio="none">
+        <defs><clipPath id="spclip"><rect id="sp-clip" x="0" y="0" width="0" height="150"/></clipPath></defs>
+        <g stroke="rgba(16,20,32,.12)"><line x1="0" y1="36" x2="600" y2="36"/><line x1="0" y1="92" x2="600" y2="92"/></g>
+        <g clip-path="url(#spclip)">
+          <path d="M0 118 L60 104 L120 112 L180 84 L240 92 L300 60 L360 70 L420 44 L480 54 L540 26 L600 34 L600 150 L0 150 Z"
+            fill="rgba(43,89,255,.1)"/>
+          <path d="M0 118 L60 104 L120 112 L180 84 L240 92 L300 60 L360 70 L420 44 L480 54 L540 26 L600 34"
+            fill="none" stroke="#2b59ff" stroke-width="3"/>
+        </g>
+      </svg>
+      <div style="margin-top:8px;font:600 12px/1 'Consolas',monospace;letter-spacing:.18em;color:#8b94a6">STRUCTURAL CONFIDENCE / 结构信心</div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc5">
+    <div class="s5head">
+      <div class="eyebrow"><i></i>05 / 体积对比 · VOLUME</div>
+      <h2 class="h2" id="h5"></h2>
+    </div>
+    <svg class="isochart" id="isochart" viewBox="0 0 880 620">
+      <g id="iso-base" stroke="rgba(16,20,32,.1)" fill="none"></g>
+      <g id="iso-bars"></g>
+      <g id="iso-labels" font-family="Consolas, monospace" font-size="15" fill="#6c7588" text-anchor="middle"></g>
+    </svg>
+    <div class="s5table">
+      <div class="sh-head"><span>区块体积明细 / BLOCK VOLUME</span><b>5 ROWS</b></div>
+      <table class="tbl">
+        <thead><tr><th>区块</th><th>面积</th><th>高度</th><th>体积</th></tr></thead>
+        <tbody>
+          <tr><td>A-01 接入</td><td class="num">2,480</td><td class="num">180</td><td class="num">44.6</td></tr>
+          <tr><td>A-02 聚合</td><td class="num">1,960</td><td class="num">240</td><td class="num">47.0</td></tr>
+          <tr><td>A-03 计算</td><td class="num">1,420</td><td class="num">150</td><td class="num">21.3</td></tr>
+          <tr><td>A-04 呈现</td><td class="num">2,780</td><td class="num">290</td><td class="num">80.6</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="legend5">
+      <span><i style="background:#2b59ff"></i>基准体积</span>
+      <span><i style="background:#ff7a1a"></i>峰值区块</span>
+      <span style="margin-left:auto">单位：千立方米 / K m³</span>
+    </div>
+  </section>
+
+  <section class="scene" id="sc6">
+    <div class="outro">
+      <div class="eyebrow" style="justify-content:center"><i></i>06 / 视角结束 · END OF ANGLE<i></i></div>
+      <h2 class="out-title" id="h6" data-title></h2>
+      <p class="out-sub" id="s6sub" data-sub></p>
+      <div class="out-chips">
+        <div>ISOMETRIC</div><div>NO PERSPECTIVE</div><div>DETERMINISTIC</div><div>1920 × 1080</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="hud">
+    <span data-brand>NUTCUT / ISO</span>
+    <span class="track"><i id="hud-bar"></i></span>
+    <span class="idx" id="hud-idx">01 / 06</span>
+    <span id="hud-time">00:00</span>
+  </div>
+  <div id="veil"><i></i><i></i><i></i><i></i><i></i></div>
+</div>
+<script>
+(function () {
+  'use strict';
+  var FPS = 30, DUR = 30, N = 6;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var C = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+  var S = function (v) { v = C(v); return v * v * (3 - 2 * v); };
+  var E = function (v) { return 1 - Math.pow(1 - C(v), 3); };
+  var EB = function (v) { v = C(v); var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(v - 1, 3) + c1 * Math.pow(v - 1, 2); };
+  var DEMO = [
+    { id: '01', text: '把复杂的东西，摆成一个平面。', start: 0, end: 4.7 },
+    { id: '02', text: '每一层，都有自己的重量与位置。', start: 5, end: 9.7 },
+    { id: '03', text: '参数不是堆砌，是彼此咬合的结构。', start: 10, end: 14.7 },
+    { id: '04', text: '从任何角度看，它都站得住。', start: 15, end: 19.7 },
+    { id: '05', text: '增长看得见，因为高度不会说谎。', start: 20, end: 24.7 },
+    { id: '06', text: '等距视角，让结构自己说话。', start: 25, end: 29.7 }
+  ];
+  var sceneEls = $$('.scene');
+  var plan = [];
+  var title = '结构，站得住';
+  var sub = 'ISOMETRIC 3D · 30S / 等距 3D 演示';
+
+  function buildPlan(inputs) {
+    var src = Array.isArray(inputs.lines) && inputs.lines.length ? inputs.lines.slice(0, 6) : DEMO;
+    var timed = src.length === 6 && src.every(function (l) {
+      return Number.isFinite(l.start) && Number.isFinite(l.end) && l.end > l.start;
+    });
+    plan = sceneEls.map(function (el, i) {
+      var line = src[i] || DEMO[i];
+      return {
+        start: timed ? src[i].start : i * 5,
+        end: timed ? src[i].end : (i + 1) * 5 + 0.35,
+        text: String(line.text == null ? DEMO[i].text : line.text)
+      };
+    });
+  }
+
+  function setText(el, v) { if (el && el.textContent !== v) el.textContent = v; }
+
+  function applyInputs(inputs) {
+    title = inputs.title || '结构，站得住';
+    sub = inputs.subtitle || 'ISOMETRIC 3D · 30S / 等距 3D 演示';
+    $$('[data-title]').forEach(function (el) { setText(el, title); });
+    $$('[data-sub]').forEach(function (el) { setText(el, sub); });
+    $$('[data-brand]').forEach(function (el) { setText(el, inputs.brand || 'NUTCUT / ISO'); });
+  }
+
+  function applyImages(inputs) {
+    var list = Array.isArray(inputs.images) ? inputs.images : [];
+    $$('[data-image-slot]').forEach(function (el, i) {
+      var raw = list[i];
+      var url = typeof raw === 'string' ? raw : (raw && typeof raw.url === 'string' ? raw.url : '');
+      var img = el.querySelector('img');
+      if (url) {
+        if (img.getAttribute('src') !== url) img.setAttribute('src', url);
+        el.classList.add('has-image');
+      } else {
+        el.classList.remove('has-image');
+        img.removeAttribute('src');
+      }
+    });
+  }
+
+  function revealRows(rows, local, delay, stagger) {
+    rows.forEach(function (el, i) {
+      var p = E((local - delay - i * stagger) / 0.45);
+      el.style.opacity = p;
+      el.style.transform = 'translateY(' + ((1 - p) * 12) + 'px)';
+    });
+  }
+
+  /* ---------- isometric bar chart ---------- */
+  var BAR_DATA = [180, 240, 150, 290, 210];
+  var isoBars = $('#iso-bars');
+  var isoLabels = $('#iso-labels');
+  var isoBase = $('#iso-base');
+  var built = false;
+
+  function poly(points) {
+    var p = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    p.setAttribute('points', points);
+    return p;
+  }
+
+  function buildIso() {
+    if (built) return;
+    built = true;
+    for (var i = 0; i < 6; i += 1) {
+      var line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      var y = 470 + i * 34;
+      line.setAttribute('d', 'M40 ' + y + ' L' + (40 + (5 - i) * 160) + ' ' + (y - (5 - i) * 80) + ' M40 ' + y + ' L' + (40 + (5 - i) * 160) + ' ' + (y + (5 - i) * 80));
+      isoBase.appendChild(line);
+    }
+    for (var k = 0; k < 5; k += 1) {
+      var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.setAttribute('data-bar', String(k));
+      ['l', 'r', 't'].forEach(function (face) { g.appendChild(poly('')); });
+      isoBars.appendChild(g);
+      var label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      label.setAttribute('x', String(120 + k * 150));
+      label.setAttribute('y', String(402 + k * 22));
+      label.textContent = 'B-0' + (k + 1);
+      isoLabels.appendChild(label);
+    }
+  }
+
+  function drawIso(prog) {
+    var centers = [120, 270, 420, 570, 720];
+    var baseY = [360, 382, 404, 426, 448];
+    var halfW = 46;
+    for (var i = 0; i < 5; i += 1) {
+      var g = isoBars.children[i];
+      if (!g) return;
+      var h = BAR_DATA[i] * prog;
+      var cx = centers[i], cy = baseY[i], w = halfW;
+      var top = (cx - w) + ',' + (cy - h) + ' ' + cx + ',' + (cy - w * 0.5 - h) + ' ' + (cx + w) + ',' + (cy - h) + ' ' + cx + ',' + (cy + w * 0.5 - h);
+      var left = (cx - w) + ',' + cy + ' ' + cx + ',' + (cy + w * 0.5) + ' ' + cx + ',' + (cy + w * 0.5 - h) + ' ' + (cx - w) + ',' + (cy - h);
+      var right = cx + ',' + (cy + w * 0.5) + ' ' + (cx + w) + ',' + cy + ' ' + (cx + w) + ',' + (cy - h) + ' ' + cx + ',' + (cy + w * 0.5 - h);
+      var hot = i === 3;
+      g.children[0].setAttribute('points', left);
+      g.children[0].setAttribute('fill', hot ? '#d95f00' : '#1b3fd1');
+      g.children[1].setAttribute('points', right);
+      g.children[1].setAttribute('fill', hot ? '#ff9440' : '#2f60ff');
+      g.children[2].setAttribute('points', top);
+      g.children[2].setAttribute('fill', hot ? '#ff7a1a' : '#4f7bff');
+    }
+  }
+
+  function upd1(local, t) {
+    var e = E((local - 0.05) / 0.7);
+    $('#h1').style.opacity = e;
+    $('#h1').style.transform = 'translateY(' + ((1 - e) * 34) + 'px)';
+    var s = E((local - 0.35) / 0.7);
+    $('#s1sub').style.opacity = s;
+    $('#s1sub').style.transform = 'translateY(' + ((1 - s) * 18) + 'px)';
+    $$('.chip').forEach(function (el, i) {
+      var q = E((local - 0.5 - i * 0.1) / 0.6);
+      el.style.opacity = q;
+      el.style.transform = 'translateY(' + ((1 - q) * 26) + 'px)';
+    });
+    var slot = $('.s1slot');
+    var sp = EB((local - 0.15) / 0.9);
+    slot.style.opacity = S((local - 0.15) / 0.55);
+    slot.style.transform = 'perspective(1200px) rotateY(' + (-9 + (1 - sp) * 12) + 'deg) rotateX(4deg) translateY(' + ((1 - sp) * 40) + 'px)';
+    var w = E((local - 0.6) / 1.1);
+    $('.wire').style.opacity = w;
+    $('.wire').style.transform = 'translateY(' + ((1 - w) * 26) + 'px)';
+  }
+
+  function upd2(local, t) {
+    setText($('#h2'), plan[1].text);
+    var e = E((local - 0.05) / 0.6);
+    $('#h2').style.opacity = e;
+    $('#h2').style.transform = 'translateY(' + ((1 - e) * 26) + 'px)';
+    $$('.plate').forEach(function (el, i) {
+      var z = Number(el.dataset.z);
+      var q = E((local - 0.15 - i * 0.12) / 1.0);
+      var lift = z + (1 - q) * 90;
+      el.style.transform = 'translateZ(' + lift + 'px) rotateZ(' + (i * 1.5) + 'deg)';
+      el.style.opacity = S((local - 0.1 - i * 0.1) / 0.5);
+    });
+    $$('.iso .float').forEach(function (el, i) {
+      var z = Number(el.dataset.z);
+      var q = EB((local - 0.55 - i * 0.1) / 0.9);
+      el.style.transform = 'translateZ(' + (z + (1 - q) * 120) + 'px) rotateZ(45deg)';
+      el.style.opacity = S((local - 0.5 - i * 0.1) / 0.5);
+    });
+    $$('.layer').forEach(function (el, i) {
+      var q = E((local - 0.25 - i * 0.08) / 0.55);
+      el.style.opacity = q;
+      el.style.transform = 'translateX(' + ((1 - q) * 26) + 'px)';
+    });
+    $$('.s2side .t2 i').forEach(function (el, i) {
+      var w = Number(el.dataset.w);
+      el.style.width = (w * 3 * E((local - 0.35 - i * 0.08) / 0.9)) + '%';
+    });
+    var sd = E((local - 0.2) / 0.7);
+    $('.s2side').style.opacity = sd;
+    $('.s2side').style.transform = 'translateY(' + ((1 - sd) * 24) + 'px)';
+  }
+
+  function upd3(local, t) {
+    setText($('#h3'), plan[2].text);
+    var e = E((local - 0.05) / 0.6);
+    $('#h3').style.opacity = e;
+    $('#h3').style.transform = 'translateY(' + ((1 - e) * 24) + 'px)';
+    var sheet = $('.sheet');
+    var sp = E((local - 0.1) / 0.8);
+    sheet.style.opacity = sp;
+    sheet.style.transform = 'translateY(' + ((1 - sp) * 40) + 'px)';
+    revealRows($$('.sheet tbody tr'), local, 0.25, 0.07);
+    $$('.spec').forEach(function (el, i) {
+      var q = E((local - 0.2 - i * 0.12) / 0.65);
+      el.style.opacity = q;
+      el.style.transform = 'translateX(' + ((1 - q) * 40) + 'px)';
+    });
+  }
+
+  function upd4(local, t) {
+    setText($('#h4'), plan[3].text);
+    var e = E((local - 0.05) / 0.6);
+    $('#h4').style.opacity = e;
+    $('#h4').style.transform = 'translateY(' + ((1 - e) * 24) + 'px)';
+    var slot = $('.s4slot');
+    var sp = EB((local - 0.1) / 0.9);
+    slot.style.opacity = S((local - 0.1) / 0.5);
+    slot.style.transform = 'perspective(1300px) rotateY(' + (7 - (1 - sp) * 10) + 'deg) translateY(' + ((1 - sp) * 36) + 'px)';
+    $$('.kv').forEach(function (el, i) {
+      var q = E((local - 0.25 - i * 0.08) / 0.55);
+      el.style.opacity = q;
+      el.style.transform = 'translateX(' + ((1 - q) * 24) + 'px)';
+    });
+    $$('.callout').forEach(function (el, i) {
+      var q = E((local - 0.5 - i * 0.15) / 0.6);
+      el.style.opacity = q;
+      el.style.transform = 'translateX(' + ((1 - q) * -18) + 'px)';
+    });
+    $('#sp-clip').setAttribute('width', String(600 * E((local - 0.35) / 1.4)));
+  }
+
+  function upd5(local, t) {
+    setText($('#h5'), plan[4].text);
+    var e = E((local - 0.05) / 0.6);
+    $('#h5').style.opacity = e;
+    $('#h5').style.transform = 'translateY(' + ((1 - e) * 24) + 'px)';
+    buildIso();
+    drawIso(E((local - 0.15) / 1.5));
+    var q = E((local - 0.2) / 0.7);
+    $('.s5table').style.opacity = q;
+    $('.s5table').style.transform = 'translateY(' + ((1 - q) * 30) + 'px)';
+    revealRows($$('.s5table tbody tr'), local, 0.3, 0.07);
+    $('.legend5').style.opacity = S((local - 0.6) / 0.5);
+  }
+
+  function upd6(local, t) {
+    setText($('#h6'), title);
+    var e = EB((local - 0.05) / 0.9);
+    $('#h6').style.opacity = S((local - 0.05) / 0.5);
+    $('#h6').style.transform = 'translateY(' + ((1 - e) * 40) + 'px) scale(' + (0.96 + 0.04 * e) + ')';
+    var s = E((local - 0.5) / 0.7);
+    $('#s6sub').style.opacity = s;
+    $('#s6sub').style.letterSpacing = (0.3 + (1 - s) * 0.14) + 'em';
+    $$('.out-chips div').forEach(function (el, i) {
+      var q = E((local - 0.7 - i * 0.08) / 0.6);
+      el.style.opacity = q;
+      el.style.transform = 'translateY(' + ((1 - q) * 20) + 'px)';
+    });
+  }
+
+  var updaters = [upd1, upd2, upd3, upd4, upd5, upd6];
+
+  window.renderFrame = function (frame, inputs) {
+    inputs = inputs || {};
+    buildPlan(inputs);
+    applyInputs(inputs);
+    applyImages(inputs);
+    var t = frame / FPS;
+    var active = 0;
+    for (var i = 0; i < plan.length; i += 1) if (t >= plan[i].start - 0.001) active = i;
+    sceneEls.forEach(function (el, i) {
+      var p = plan[i];
+      var op = Math.min(S((t - p.start + 0.7) / 0.7), S((p.end - t) / 0.6));
+      el.style.visibility = op > 0.001 ? 'visible' : 'hidden';
+      el.style.opacity = op.toFixed(3);
+    });
+    var local = Math.max(0, t - plan[active].start) + (active === 0 ? 1.6 : 0.6);
+    updaters[active](local, t);
+
+    $('#hud-bar').style.width = (C(t / DUR) * 100) + '%';
+    $('#hud-idx').textContent = String(active + 1).padStart(2, '0') + ' / 06';
+    $('#hud-time').textContent = '00:' + String(Math.floor(t)).padStart(2, '0');
+
+    var vt = -1, vp = 0;
+    for (var k = 1; k < N; k += 1) {
+      var b = k * 5;
+      var q = (t - (b - 0.72)) / 0.72;
+      if (q > 0 && q <= 1) { vt = b; vp = q; }
+    }
+    var bands = $$('#veil i');
+    if (vt >= 0) {
+      $('#veil').style.opacity = '1';
+      bands.forEach(function (el, i) {
+        var pk = C((vp - i * 0.03) / 0.88);
+        el.style.transform = 'translateX(' + (-2000 + pk * 4000) + 'px)';
+      });
+    } else {
+      $('#veil').style.opacity = '0';
+      bands.forEach(function (el) { el.style.transform = 'translateX(-2100px)'; });
+    }
+  };
+
+  applyInputs({});
+  applyImages({});
+  window.renderFrame(0, {});
+  window.__ready = true;
+})();
+</script>
+</body>
+</html>

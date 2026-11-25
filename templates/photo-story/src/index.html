@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>图片故事 · Photo Story</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { width:1080px; height:1920px; overflow:hidden; background:#0d0f12; }
+  body { font-family:"Microsoft YaHei","PingFang SC","Segoe UI",sans-serif; color:#fff; }
+  #stage { position:relative; width:1080px; height:1920px; overflow:hidden; background:#0d0f12; }
+  .scene { position:absolute; inset:0; visibility:hidden; opacity:0; }
+  .photo { position:absolute; inset:-4%; background-size:cover; background-position:center; transform:scale(1.02); }
+  .photo::before { content:attr(data-label); position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:1; font:800 16px/1 "Consolas",monospace; letter-spacing:.14em; color:rgba(255,255,255,.6); }
+  .photo::after { content:""; position:absolute; inset:0; z-index:2; background:linear-gradient(180deg,rgba(8,10,14,.15) 0%,rgba(8,10,14,.06) 35%,rgba(8,10,14,.82) 100%); }
+  .photo.has-image::before { display:none; }
+  .p1 { background-color:#b9a99b; }
+  .p2 { background-color:#7f9e99; }
+  .p3 { background-color:#b58b9c; }
+  .p4 { background-color:#8f95bd; }
+  .grain { position:absolute; inset:0; z-index:3; opacity:.15; background-image:radial-gradient(rgba(255,255,255,.7) .6px,transparent .6px); background-size:5px 5px; mix-blend-mode:overlay; }
+  .copy { position:absolute; left:82px; right:82px; bottom:150px; z-index:5; }
+  .kicker { font:800 18px/1 "Consolas",monospace; letter-spacing:.2em; color:#ffb08f; margin-bottom:18px; }
+  h1 { font-size:98px; line-height:1.02; font-weight:900; letter-spacing:-.055em; }
+  h1 em { font-style:normal; color:#ffb08f; }
+  .lead { margin-top:26px; font-size:30px; line-height:1.6; color:rgba(255,255,255,.72); max-width:760px; }
+  .s2 .copy { bottom:auto; top:220px; left:82px; right:440px; }
+  .s2 .card { position:absolute; right:82px; bottom:190px; width:330px; height:420px; border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,.3); box-shadow:0 30px 80px rgba(0,0,0,.35); }
+  .s2 .card .photo { inset:0; transform:none; }
+  .s3 .copy { left:82px; right:82px; bottom:150px; }
+  .s3 h1 { font-size:82px; }
+  .s4 .copy { top:170px; bottom:auto; }
+  .s4 .strip { position:absolute; left:82px; right:82px; bottom:210px; display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .s4 .thumb { height:420px; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,.22); position:relative; }
+  .s4 .thumb .photo { inset:0; transform:none; }
+  .hud { position:absolute; left:82px; right:82px; bottom:64px; z-index:8; display:flex; align-items:center; gap:20px; font:800 15px/1 "Consolas",monospace; letter-spacing:.14em; color:rgba(255,255,255,.55); }
+  .hud .bar { flex:1; height:3px; border-radius:2px; background:rgba(255,255,255,.16); overflow:hidden; }
+  .hud .bar i { display:block; height:100%; width:0; background:#ffb08f; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <section class="scene s1"><div class="photo p1" data-label="图片占位 01"></div><div class="grain"></div><div class="copy"><div class="kicker">PHOTO STORY / 01</div><h1>把照片<br>讲成<em>故事</em></h1><div class="lead">一张图不是背景，它应该承担一句话、一个情绪或一个转折。</div></div></section>
+  <section class="scene s2"><div class="photo p2" data-label="图片占位 02"></div><div class="grain"></div><div class="copy"><div class="kicker">PHOTO STORY / 02</div><h1>给图片<br><em>留一个位置</em></h1><div class="lead">标题、正文、图片各自有明确区域，不要互相压住。</div></div><div class="card"><div class="photo p3" data-label="图片占位 03"></div></div></section>
+  <section class="scene s3"><div class="photo p3" data-label="图片占位 03"></div><div class="grain"></div><div class="copy"><div class="kicker">PHOTO STORY / 03</div><h1>慢一点<br><em>让画面呼吸</em></h1><div class="lead">推近、停留、再切走。图片需要时间被看见。</div></div></section>
+  <section class="scene s4"><div class="photo p4" data-label="图片占位 04"></div><div class="grain"></div><div class="copy"><div class="kicker">PHOTO STORY / 04</div><h1>最后用图片<br><em>收住情绪</em></h1></div><div class="strip"><div class="thumb"><div class="photo p1" data-label="图片占位 01"></div></div><div class="thumb"><div class="photo p2" data-label="图片占位 02"></div></div><div class="thumb"><div class="photo p3" data-label="图片占位 03"></div></div></div></section>
+  <div class="hud"><span id="idx">01 / 04</span><div class="bar"><i id="bar"></i></div><span>10 SEC</span></div>
+</div>
+<script>
+(function(){
+  var FPS=30,DUR=10,$=function(s){return document.querySelector(s)};
+  var scenes=[].slice.call(document.querySelectorAll('.scene'));
+  function clamp(v){return Math.max(0,Math.min(1,v))}
+  function cubicBezier(x1,y1,x2,y2){
+    var cx=3*x1,bx=3*(x2-x1)-cx,ax=1-cx-bx,cy=3*y1,by=3*(y2-y1)-cy,ay=1-cy-by;
+    function fx(t){return ((ax*t+bx)*t+cx)*t}
+    function dfx(t){return (3*ax*t+2*bx)*t+cx}
+    function fy(t){return ((ay*t+by)*t+cy)*t}
+    return function(v){v=clamp(v);var t=v;for(var i=0;i<6;i++){var x=fx(t)-v;if(Math.abs(x)<1e-5)break;var d=dfx(t);if(Math.abs(d)<1e-5)break;t=clamp(t-x/d)}return fy(t)}
+  }
+  var ease=cubicBezier(.16,1,.3,1);
+  function smooth(v){return ease(v)}
+  window.renderFrame=function(frame,inputs){
+    inputs=inputs||{};
+    var t=Math.max(0,frame/FPS), active=Math.min(3,Math.floor(t/2.5));
+    scenes.forEach(function(el,i){
+      var start=i*2.5, op=Math.min(smooth((t-start)/.35),smooth((start+2.5-t)/.35));
+      el.style.visibility=op>.001?'visible':'hidden'; el.style.opacity=op.toFixed(3);
+      var local=Math.max(0,t-start);
+      var photo=el.querySelector('.photo');
+      if(photo){ photo.classList.toggle('has-image', Boolean(photo.style.backgroundImage)); photo.style.transform='scale('+(1.02+Math.min(1,local/2.5)*.08).toFixed(3)+')'; }
+    });
+    var images=inputs.images||[];
+    if(images.length===4){
+      scenes.forEach(function(el,i){
+        var photo=el.querySelector('.photo');
+        var image=images[i];
+        var url=image && (typeof image==='string'?image:image.url);
+        if(photo&&url){photo.style.backgroundImage='url("'+url+'")';photo.classList.add('has-image');}
+      });
+    }
+    $('#idx').textContent=String(active+1).padStart(2,'0')+' / 04';
+    $('#bar').style.width=(t/DUR*100).toFixed(2)+'%';
+  };
+  window.renderFrame(0,{}); window.__ready=true;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "comic-pop",
+  "name": "漫画分镜",
+  "version": "1.0.0",
+  "description": "高饱和美式漫画分镜模板：粗黑描边、网点阴影、速度线与爆炸对话框，适合潮流、娱乐和观点短片。",
+  "tags": [
+    "漫画",
+    "高饱和",
+    "分镜",
+    "潮流",
+    "粗描边"
+  ],
+  "runtime": {
+    "profile": "html/1",
+    "entry": "src/index.html",
+    "network": false
+  },
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 30
+  },
+  "params": {
+    "schema": "params.schema.json",
+    "defaultPreset": "presets/default.json"
+  },
+  "license": "LICENSE",
+  "preview": "preview.svg"
+}

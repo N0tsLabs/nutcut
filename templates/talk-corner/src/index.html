@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>头像角标 · Talk Corner</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { width:1080px; height:1920px; overflow:hidden; background:#101316; }
+  body { font-family:"Microsoft YaHei","PingFang SC","Segoe UI",sans-serif; color:#f8f4ee; }
+  #stage { position:relative; width:1080px; height:1920px; overflow:hidden;
+    background:
+      radial-gradient(circle at 82% 12%, rgba(255,110,78,.22), transparent 34%),
+      radial-gradient(circle at 8% 76%, rgba(78,150,255,.16), transparent 38%),
+      linear-gradient(160deg,#14181d 0%,#0e1115 68%,#15100e 100%);
+  }
+  .grid { position:absolute; inset:0; opacity:.22; background-image:linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(0deg,rgba(255,255,255,.05) 1px,transparent 1px); background-size:72px 72px; }
+  .noise { position:absolute; inset:0; opacity:.15; background-image:radial-gradient(rgba(255,255,255,.6) .6px,transparent .6px); background-size:5px 5px; mix-blend-mode:screen; }
+  .scene { position:absolute; inset:0; visibility:hidden; opacity:0; z-index:4; }
+  .kicker { font:800 18px/1 "Consolas",monospace; letter-spacing:.22em; color:#ff8e73; text-transform:uppercase; }
+  .muted { color:rgba(248,244,238,.52); }
+  .s1 .kicker { position:absolute; left:90px; top:110px; }
+  .s1 h1 { position:absolute; left:90px; top:330px; width:820px; font-size:122px; line-height:1.02; font-weight:900; letter-spacing:-.06em; }
+  .s1 h1 em { font-style:normal; color:#ff6e4e; }
+  .s1 .sub { position:absolute; left:94px; top:760px; width:620px; font-size:38px; line-height:1.55; color:rgba(248,244,238,.66); }
+  .s1 .tag { position:absolute; left:94px; bottom:180px; display:flex; gap:10px; }
+  .tag span { border:1px solid rgba(255,255,255,.18); border-radius:999px; padding:10px 18px; font-size:20px; color:rgba(248,244,238,.7); }
+  .s2 h2 { position:absolute; left:90px; top:150px; width:800px; font-size:74px; font-weight:900; line-height:1.08; letter-spacing:-.05em; }
+  .s2 .cards { position:absolute; left:90px; top:450px; display:grid; grid-template-columns:1fr 1fr; gap:20px; width:850px; }
+  .s2 .card { border:1px solid rgba(255,255,255,.13); background:rgba(255,255,255,.045); border-radius:16px; padding:26px 24px; min-height:210px; }
+  .s2 .card b { display:block; font:900 46px/1 "Consolas",monospace; color:#ff8e73; margin-bottom:16px; }
+  .s2 .card h3 { font-size:30px; font-weight:800; margin-bottom:10px; }
+  .s2 .card p { font-size:21px; line-height:1.55; color:rgba(248,244,238,.55); }
+  .s3 .quote { position:absolute; left:90px; top:420px; width:760px; font-size:92px; line-height:1.12; font-weight:900; letter-spacing:-.05em; }
+  .s3 .quote em { font-style:normal; color:#ff6e4e; }
+  .s3 .by { position:absolute; left:94px; top:1120px; font-size:24px; color:rgba(248,244,238,.45); }
+  .s4 .kicker { position:absolute; left:90px; top:110px; }
+  .s4 h2 { position:absolute; left:90px; top:360px; width:820px; font-size:112px; line-height:1.02; font-weight:900; letter-spacing:-.06em; }
+  .s4 h2 em { font-style:normal; color:#ff6e4e; }
+  .s4 .sub { position:absolute; left:94px; top:900px; width:560px; font-size:32px; line-height:1.6; color:rgba(248,244,238,.58); }
+  .s4 .btn { position:absolute; left:94px; bottom:190px; display:inline-flex; align-items:center; gap:14px; border-radius:999px; background:#ff6e4e; color:#fff; padding:22px 34px; font-size:26px; font-weight:800; }
+  .s4 .btn i { font-style:normal; font-size:30px; }
+  .avatar { position:absolute; z-index:6; border-radius:50%; background:#323a4a; border:9px solid rgba(255,255,255,.92); box-shadow:0 32px 80px rgba(0,0,0,.42); overflow:hidden; display:grid; place-items:center; }
+  .avatar::after { content:"头像占位"; font:800 20px/1 "Microsoft YaHei",sans-serif; color:rgba(255,255,255,.72); letter-spacing:.08em; }
+  .avatar .ring { position:absolute; inset:-20px; border:1px solid rgba(255,142,115,.45); border-radius:50%; }
+  .hud { position:absolute; left:90px; right:90px; bottom:64px; z-index:8; display:flex; align-items:center; gap:20px; font:800 16px/1 "Consolas",monospace; letter-spacing:.12em; color:rgba(248,244,238,.48); }
+  .hud .bar { flex:1; height:3px; background:rgba(255,255,255,.14); border-radius:2px; overflow:hidden; }
+  .hud .bar i { display:block; height:100%; width:0; background:#ff6e4e; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="grid"></div><div class="noise"></div>
+  <section class="scene s1">
+    <div class="kicker">TALK / 01</div>
+    <h1>把镜头<br>交给<em>内容</em></h1>
+    <div class="sub">口播只是画面的一个角，信息和节奏才是主体。</div>
+    <div class="tag"><span>口播</span><span>头像</span><span>近景</span></div>
+  </section>
+  <section class="scene s2">
+    <h2>三个细节<br>撑住一条片</h2>
+    <div class="cards">
+      <div class="card"><b>01</b><h3>先讲清楚</h3><p>一句话只做一件事，字幕和画面同步。</p></div>
+      <div class="card"><b>02</b><h3>再留呼吸</h3><p>关键点停半拍，让观众跟上。</p></div>
+      <div class="card"><b>03</b><h3>最后收束</h3><p>用一句能记住的话结束。</p></div>
+      <div class="card"><b>04</b><h3>头像常驻</h3><p>角落里的表情，负责亲切感。</p></div>
+    </div>
+  </section>
+  <section class="scene s3">
+    <div class="quote">“头像不是主角，<br><em>内容</em>才是。”</div>
+    <div class="by">TALK CORNER / 2026</div>
+  </section>
+  <section class="scene s4">
+    <div class="kicker">TALK / 04</div>
+    <h2>让头像<br><em>跟着内容</em>走</h2>
+    <div class="sub">右下、近景、再回到右下。位置变化要有过渡，不要硬闪。</div>
+    <div class="btn">开始制作 <i>→</i></div>
+  </section>
+  <div class="avatar" id="avatar"><span class="ring"></span></div>
+  <div class="hud"><span id="hudIndex">01 / 04</span><div class="bar"><i id="hudBar"></i></div><span>10 SEC</span></div>
+</div>
+<script>
+(function(){
+  var FPS=30,DUR=10;
+  var $=function(s){return document.querySelector(s)};
+  var scenes=[].slice.call(document.querySelectorAll('.scene'));
+  var avatar=$('#avatar');
+  var positions=[
+    {x:730,y:1370,w:268},
+    {x:730,y:1370,w:268},
+    {x:690,y:670,w:334},
+    {x:742,y:1370,w:258}
+  ];
+  var built=false;
+  function clamp(v){return Math.max(0,Math.min(1,v))}
+  function cubicBezier(x1,y1,x2,y2){
+    var cx=3*x1,bx=3*(x2-x1)-cx,ax=1-cx-bx,cy=3*y1,by=3*(y2-y1)-cy,ay=1-cy-by;
+    function fx(t){return ((ax*t+bx)*t+cx)*t}
+    function dfx(t){return (3*ax*t+2*bx)*t+cx}
+    function fy(t){return ((ay*t+by)*t+cy)*t}
+    return function(v){v=clamp(v);var t=v;for(var i=0;i<6;i++){var x=fx(t)-v;if(Math.abs(x)<1e-5)break;var d=dfx(t);if(Math.abs(d)<1e-5)break;t=clamp(t-x/d)}return fy(t)}
+  }
+  var ease=cubicBezier(.16,1,.3,1);
+  function smooth(v){return ease(v)}
+  function lerp(a,b,t){return a+(b-a)*t}
+  window.renderFrame=function(frame,inputs){
+    inputs=inputs||{};
+    if(!built){built=true}
+    var t=Math.max(0,frame/FPS);
+    var active=Math.min(3,Math.floor(t/2.5));
+    scenes.forEach(function(el,i){
+      var start=i*2.5;
+      var op=Math.min(smooth((t-start)/.35),smooth((start+2.5-t)/.35));
+      el.style.visibility=op>.001?'visible':'hidden';
+      el.style.opacity=op.toFixed(3);
+    });
+    var prev=positions[Math.max(0,active-1)], cur=positions[active];
+    var local=t-active*2.5;
+    var e=smooth(local/.7);
+    var x=lerp(prev.x,cur.x,e), y=lerp(prev.y,cur.y,e), w=lerp(prev.w,cur.w,e);
+    avatar.style.left=x+'px'; avatar.style.top=y+'px'; avatar.style.width=w+'px'; avatar.style.height=w+'px';
+    avatar.style.transform='rotate('+((1-e)*4)+'deg)';
+    $('#hudIndex').textContent=String(active+1).padStart(2,'0')+' / 04';
+    $('#hudBar').style.width=(t/DUR*100).toFixed(2)+'%';
+  };
+  window.renderFrame(0,{}); window.__ready=true;
+})();
+</script>
+</body>
+</html>

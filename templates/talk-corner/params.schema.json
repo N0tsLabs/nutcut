@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "头像角标 · 参数合同",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "title": { "type": "string", "default": "把镜头交给内容" },
+    "subtitle": { "type": "string", "default": "口播只是画面的一个角，信息和节奏才是主体。" },
+    "avatar": { "type": "string", "default": "" }
+  }
+}

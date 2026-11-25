@@ -1,0 +1,32 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "pixel-arcade",
+  "name": "像素街机",
+  "version": "1.0.0",
+  "description": "8-bit 像素街机风格：像素星空、街机标题、分数排行榜与方块柱状图，双 CRT 图片位。",
+  "tags": [
+    "像素",
+    "街机",
+    "8-bit",
+    "游戏",
+    "复古"
+  ],
+  "runtime": {
+    "profile": "html/1",
+    "entry": "src/index.html",
+    "network": false
+  },
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 30
+  },
+  "params": {
+    "schema": "params.schema.json",
+    "defaultPreset": "presets/default.json"
+  },
+  "license": "LICENSE",
+  "preview": "preview.svg"
+}

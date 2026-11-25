@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "视频双屏 · 参数合同",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": { "title": { "type": "string" } }
+}

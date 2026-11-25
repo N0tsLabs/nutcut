@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>视频画中画 · Video PIP</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { width:1920px; height:1080px; overflow:hidden; background:#0b0d10; }
+  body { font-family:"Microsoft YaHei","PingFang SC","Segoe UI",sans-serif; color:#fff; }
+  #stage { position:relative; width:1920px; height:1080px; overflow:hidden; background:#0b0d10; }
+  .scene { position:absolute; inset:0; visibility:hidden; opacity:0; }
+  .scene .bg { position:absolute; inset:-4%; background-size:cover; transform:scale(1.03); }
+  .b1 { background-color:#23424a; }
+  .b2 { background-color:#45375a; }
+  .b3 { background-color:#503348; }
+  .b4 { background-color:#343a58; }
+  .scene .bg::before { content:attr(data-label); position:absolute; left:50%; top:48%; transform:translate(-50%,-50%); color:rgba(255,255,255,.34); font:800 16px/1 "Consolas",monospace; letter-spacing:.14em; }
+  .scene::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(7,9,12,.18),rgba(7,9,12,.12) 40%,rgba(7,9,12,.86)); }
+  .top { position:absolute; left:110px; top:78px; z-index:5; font:800 15px/1 "Consolas",monospace; letter-spacing:.18em; color:rgba(255,255,255,.62); }
+  .top b { color:#ffb08f; }
+  .copy { position:absolute; left:110px; bottom:160px; z-index:5; width:1200px; }
+  .kicker { font:800 15px/1 "Consolas",monospace; letter-spacing:.2em; color:#ffb08f; margin-bottom:14px; }
+  .copy h1 { font-size:86px; line-height:1.04; font-weight:900; letter-spacing:-.05em; }
+  .copy h1 em { font-style:normal; color:#ffb08f; }
+  .copy p { margin-top:20px; font-size:27px; line-height:1.6; color:rgba(255,255,255,.7); max-width:1000px; }
+  .inset { position:absolute; z-index:8; width:500px; height:282px; border-radius:14px; overflow:hidden; border:5px solid #fff; box-shadow:0 30px 80px rgba(0,0,0,.4); background:#3b4352; }
+  .inset::before { content:"视频占位"; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:1; color:rgba(255,255,255,.4); font:800 14px/1 "Consolas",monospace; letter-spacing:.12em; }
+  .inset::after { content:""; position:absolute; inset:0; z-index:2; background:repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 1px,transparent 1px 6px); mix-blend-mode:screen; }
+  .inset .tag { position:absolute; left:12px; top:12px; z-index:2; background:rgba(10,12,18,.55); border:1px solid rgba(255,255,255,.28); border-radius:999px; padding:6px 10px; color:#fff; font:800 11px/1 "Consolas",monospace; letter-spacing:.12em; }
+  .inset .play { position:absolute; right:12px; bottom:10px; z-index:2; font:800 11px/1 "Consolas",monospace; color:rgba(255,255,255,.75); letter-spacing:.1em; }
+  .hud { position:absolute; left:110px; right:110px; bottom:54px; z-index:9; display:flex; align-items:center; gap:20px; font:800 13px/1 "Consolas",monospace; letter-spacing:.14em; color:rgba(255,255,255,.45); }
+  .hud .bar { flex:1; height:3px; border-radius:2px; background:rgba(255,255,255,.14); overflow:hidden; }
+  .hud .bar i { display:block; height:100%; width:0; background:#ffb08f; }
+  .grain { position:absolute; inset:0; z-index:7; opacity:.12; background-image:radial-gradient(rgba(255,255,255,.7) .6px,transparent .6px); background-size:5px 5px; mix-blend-mode:overlay; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <section class="scene s1"><div class="bg b1" data-label="视频占位 01"></div><div class="top">VIDEO PIP / <b>01</b></div><div class="copy"><div class="kicker">PIP / 01</div><h1>主画面负责<br><em>讲故事</em></h1><p>画中画只补充信息，不要抢主画面的注意力。</p></div></section>
+  <section class="scene s2"><div class="bg b2" data-label="视频占位 02"></div><div class="top">VIDEO PIP / <b>02</b></div><div class="copy"><div class="kicker">PIP / 02</div><h1>小窗需要<br><em>平滑移动</em></h1><p>角落之间切换时，用连续位移，不要直接换位置。</p></div></section>
+  <section class="scene s3"><div class="bg b3" data-label="视频占位 03"></div><div class="top">VIDEO PIP / <b>03</b></div><div class="copy"><div class="kicker">PIP / 03</div><h1>大小变化<br><em>也是叙事</em></h1><p>放大是强调，缩小是让位。尺寸变化要和内容同步。</p></div></section>
+  <section class="scene s4"><div class="bg b4" data-label="视频占位 04"></div><div class="top">VIDEO PIP / <b>04</b></div><div class="copy"><div class="kicker">PIP / 04</div><h1>最后回到<br><em>主画面</em></h1><p>小窗退场，让观众把注意力留在最后一句。</p></div></section>
+  <div class="inset" id="inset"><div class="tag">B-ROLL / 细节</div><div class="play">PIP</div></div>
+  <div class="hud"><span id="idx">01 / 04</span><div class="bar"><i id="bar"></i></div><span>10 SEC</span></div>
+  <div class="grain"></div>
+</div>
+<script>
+(function(){
+  var FPS=30,DUR=10,$=function(s){return document.querySelector(s)};
+  var scenes=[].slice.call(document.querySelectorAll('.scene')), inset=$('#inset');
+  var pos=[
+    {x:1330,y:100,w:470,h:264},
+    {x:110,y:760,w:430,h:242},
+    {x:110,y:760,w:430,h:242},
+    {x:1330,y:100,w:470,h:264}
+  ];
+  function clamp(v){return Math.max(0,Math.min(1,v))}
+  function cubicBezier(x1,y1,x2,y2){
+    var cx=3*x1,bx=3*(x2-x1)-cx,ax=1-cx-bx,cy=3*y1,by=3*(y2-y1)-cy,ay=1-cy-by;
+    function fx(t){return ((ax*t+bx)*t+cx)*t}
+    function dfx(t){return (3*ax*t+2*bx)*t+cx}
+    function fy(t){return ((ay*t+by)*t+cy)*t}
+    return function(v){v=clamp(v);var t=v;for(var i=0;i<6;i++){var x=fx(t)-v;if(Math.abs(x)<1e-5)break;var d=dfx(t);if(Math.abs(d)<1e-5)break;t=clamp(t-x/d)}return fy(t)}
+  }
+  var ease=cubicBezier(.16,1,.3,1);
+  function smooth(v){return ease(v)}
+  function lerp(a,b,t){return a+(b-a)*t}
+  window.renderFrame=function(frame,inputs){
+    var t=Math.max(0,frame/FPS), active=Math.min(3,Math.floor(t/2.5));
+    scenes.forEach(function(el,i){
+      var start=i*2.5, op=Math.min(smooth((t-start)/.35),smooth((start+2.5-t)/.35));
+      el.style.visibility=op>.001?'visible':'hidden'; el.style.opacity=op.toFixed(3);
+      var local=Math.max(0,t-start), bg=el.querySelector('.bg');
+      bg.style.transform='scale('+(1.03+Math.min(1,local/2.5)*.06).toFixed(3)+') translateX('+((1-smooth(local/.6))*20).toFixed(1)+'px)';
+    });
+    var from=pos[active], prev=pos[Math.max(0,active-1)], local=t-active*2.5, e=smooth(local/.75);
+    inset.style.left=lerp(prev.x,from.x,e).toFixed(1)+'px';
+    inset.style.top=lerp(prev.y,from.y,e).toFixed(1)+'px';
+    inset.style.width=lerp(prev.w,from.w,e).toFixed(1)+'px';
+    inset.style.height=lerp(prev.h,from.h,e).toFixed(1)+'px';
+    $('#idx').textContent=String(active+1).padStart(2,'0')+' / 04';
+    $('#bar').style.width=(t/DUR*100).toFixed(2)+'%';
+  };
+  window.renderFrame(0,{}); window.__ready=true;
+})();
+</script>
+</body>
+</html>

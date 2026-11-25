@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "图片故事 · 参数合同",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "title": { "type": "string", "default": "把照片讲成故事" },
+    "images": { "type": "array", "items": { "type": "string" } }
+  }
+}

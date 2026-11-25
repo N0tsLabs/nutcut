@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "图片拼贴 · 参数合同",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "title": { "type": "string", "default": "四张图讲一件事" },
+    "images": { "type": "array", "items": { "type": "string" } }
+  }
+}

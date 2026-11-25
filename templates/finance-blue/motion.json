@@ -1,0 +1,32 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "finance-blue",
+  "name": "金融蓝",
+  "version": "1.0.0",
+  "description": "深蓝商务金融模板：K 线、柱状图、数据卡片与等宽数字，稳重可信，适合财报、投资与商业分析。",
+  "tags": [
+    "金融",
+    "商务",
+    "数据",
+    "深蓝",
+    "可信"
+  ],
+  "runtime": {
+    "profile": "html/1",
+    "entry": "src/index.html",
+    "network": false
+  },
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 30
+  },
+  "params": {
+    "schema": "params.schema.json",
+    "defaultPreset": "presets/default.json"
+  },
+  "license": "LICENSE",
+  "preview": "preview.svg"
+}

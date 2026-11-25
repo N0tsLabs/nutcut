@@ -1,0 +1,41 @@
+{
+  "id": "video-split",
+  "name": "视频双屏",
+  "group": "视频素材",
+  "category": "视频",
+  "description": "左右双屏同时播放两个视角，当前画面高亮，适合对话、对比和反应镜头。",
+  "tags": [
+    "视频",
+    "双屏",
+    "对比",
+    "反应"
+  ],
+  "palette": {
+    "background": "#0c0f13",
+    "surface": "#1b222c",
+    "primary": "#ffffff",
+    "accent": "#8fd0ff",
+    "text": "#ffffff",
+    "muted": "#a2a8b2"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 500,
+    "titleSize": 64
+  },
+  "motion": {
+    "transition": "split-focus",
+    "speed": "smooth"
+  },
+  "duration": 10,
+  "sceneCount": 4,
+  "stylePrompt": "视频双屏，左右两个画面同时播放，高亮一侧，底部大字说明，深色背景，适合对话和对比。",
+  "preview": "preview.png",
+  "features": [
+    "image-slot"
+  ],
+  "styleRefs": [
+    "H1",
+    "K34"
+  ]
+}

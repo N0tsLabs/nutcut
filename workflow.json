@@ -1,0 +1,269 @@
+{
+  "version": 2,
+  "name": "NutCut 视频工作流",
+  "description": "先确认视频规格（横竖屏、尺寸、帧率、时长），再从素材、文案到声音、画面、混音、审阅的完整本地工作流。Agent 按阶段读取输入、产出文件，并优先读取项目问题记录。",
+  "stages": [
+    {
+      "id": "spec",
+      "label": "规格确认",
+      "goal": "在写文案之前确认视频怎么用：横竖屏、尺寸、帧率、时长、平台、声音来源和交付格式。模板只决定风格和配色。",
+      "inputs": [
+        "用户需求",
+        "templates/<id>/template.json"
+      ],
+      "outputs": [
+        "projects/<id>/project.json 的 spec",
+        "projects/<id>/brief.json 的 spec"
+      ],
+      "commands": [
+        "node bin/new-project.mjs --id <id> --title <标题> --template <模板 id> --orientation <portrait|landscape|square> --quality 1080p --fps 30 --duration 30 --audio <source|clone|none>"
+      ],
+      "checks": [
+        "spec.orientation 是 landscape / portrait / square 之一",
+        "spec.width、spec.height、spec.fps、spec.duration 都已确认",
+        "spec.audio 已确认，或明确标为 undecided",
+        "spec.confirmed 为 true 后才进入选题"
+      ],
+      "agentRules": [
+        "用户没明确说横屏/竖屏/方形时，必须先问，不要默认 16:9 或 9:16",
+        "尺寸、帧率、时长没给时逐项问清楚，可以合并成几个问题一次问",
+        "模板只决定风格和配色，不要用模板原生尺寸推断用户要横屏还是竖屏",
+        "规格写进 project.json 和 brief.json 的 spec 后，再继续 brief"
+      ]
+    },
+    {
+      "id": "intake",
+      "label": "素材接收",
+      "goal": "接手用户提供的图片、视频、音频、文档，保存到项目目录并分析内容。",
+      "inputs": [
+        "用户提供的文件",
+        "用户口头需求"
+      ],
+      "outputs": [
+        "projects/<id>/assets/imported/",
+        "projects/<id>/imports.json"
+      ],
+      "commands": [
+        "node bin/import.mjs --project projects/<id> --file <path>",
+        "node bin/status.mjs --project projects/<id>"
+      ],
+      "checks": [
+        "每个导入文件都有 imports.json 记录",
+        "图片/视频/音频已人工或由 Agent 分析内容",
+        "分析结论写入 imports.json 的 analysis 字段"
+      ],
+      "agentRules": [
+        "有用户素材时，必须先分析素材，再写 brief.json 和 script.json",
+        "不要擅自删除或覆盖用户素材"
+      ]
+    },
+    {
+      "id": "idea",
+      "label": "选题与可行性",
+      "goal": "确定主题、受众、角度、形式，完成可行性评估和图片计划。",
+      "inputs": [
+        "imports.json",
+        "用户需求",
+        "templates/*/template.json"
+      ],
+      "outputs": [
+        "projects/<id>/brief.json"
+      ],
+      "commands": [
+        "node bin/status.mjs --project projects/<id>"
+      ],
+      "checks": [
+        "project.spec 已确认（横竖屏、尺寸、帧率、时长）",
+        "brief.topic / audience / angle 不为空",
+        "feasibility.score 为 0–10",
+        "feasibility.risks 至少 2 条",
+        "feasibility.decision 为 go / pause / drop",
+        "选择模板后 project.template 指向 templates/<id>"
+      ],
+      "agentRules": [
+        "先给用户确认选题和可行性，再写文案",
+        "不要跳过 brief.json 直接生成文案"
+      ]
+    },
+    {
+      "id": "script",
+      "label": "文案",
+      "goal": "写逐句文案，按语义拆句，等待用户确认。",
+      "inputs": [
+        "brief.json",
+        "模板风格",
+        "用户素材分析"
+      ],
+      "outputs": [
+        "projects/<id>/script.json"
+      ],
+      "commands": [
+        "node bin/status.mjs --project projects/<id>"
+      ],
+      "checks": [
+        "每句一个语义单元",
+        "句子长度适合 TTS，不出现长难句",
+        "总时长与目标时长匹配",
+        "用户已确认文案"
+      ],
+      "agentRules": [
+        "文案确认前不要生成声音",
+        "用户问题记录里与文案相关的条目必须先处理"
+      ]
+    },
+    {
+      "id": "voice",
+      "label": "声音",
+      "goal": "用 MiniMax 克隆声音逐句合成，复用已有 voice_id。",
+      "inputs": [
+        "script.json",
+        "voices/me/profile.json"
+      ],
+      "outputs": [
+        "out/<id>/vo/",
+        "out/<id>/vo/vo.json"
+      ],
+      "commands": [
+        "node bin/voice.mjs --project projects/<id>",
+        "node bin/voice.mjs --project projects/<id> --test"
+      ],
+      "checks": [
+        "voice_id 已存在时不要重复克隆",
+        "逐句时长写入 vo.json",
+        "试听无明显吞字、断句错误"
+      ]
+    },
+    {
+      "id": "timeline",
+      "label": "时间线",
+      "goal": "按真实语音时长计算场景起止。",
+      "inputs": [
+        "out/<id>/vo/vo.json",
+        "script.json"
+      ],
+      "outputs": [
+        "out/<id>/timing.json",
+        "projects/<id>/src/timings.js"
+      ],
+      "commands": [
+        "node bin/timeline.mjs --project projects/<id>"
+      ],
+      "checks": [
+        "每句 voiceStart/voiceEnd 不重叠",
+        "场景总时长与音频一致",
+        "不要手改 timings.js"
+      ]
+    },
+    {
+      "id": "visual",
+      "label": "画面",
+      "goal": "按模板风格生成图片，先看关键帧，再渲全片。",
+      "inputs": [
+        "brief.json 的 imagePlan",
+        "模板 template.json",
+        "timings.js"
+      ],
+      "outputs": [
+        "projects/<id>/assets/generated/",
+        "out/<id>/film-silent.mp4"
+      ],
+      "commands": [
+        "node bin/image-plan.mjs --project projects/<id> --dry-run",
+        "node bin/image-plan.mjs --project projects/<id>",
+        "node bin/image.mjs --project projects/<id> --name <name> --prompt <prompt>",
+        "node bin/render.mjs --template projects/<id> --frames 60,360,630 --out out/check.png",
+        "node bin/render.mjs --template projects/<id> --out out/<id>/film-silent.mp4"
+      ],
+      "checks": [
+        "关键帧无文字溢出、对比度足够",
+        "模板 network:false 时不请求网络",
+        "生成图片记录 sidecar json"
+      ]
+    },
+    {
+      "id": "mix",
+      "label": "混音",
+      "goal": "选择 BGM 和音效，做人声 ducking，输出 -16 LUFS。",
+      "inputs": [
+        "timing.json",
+        "out/<id>/vo/",
+        "library/music/",
+        "library/sfx/",
+        "edit.json"
+      ],
+      "outputs": [
+        "out/<id>/bgm.mp3",
+        "out/<id>/sfx/",
+        "out/<id>/mix.wav"
+      ],
+      "commands": [
+        "node bin/music.mjs --project projects/<id> --random --tag ambient",
+        "node bin/sfx.mjs --project projects/<id> --set default",
+        "node bin/audio-mix.mjs --project projects/<id>"
+      ],
+      "checks": [
+        "人声出现时 BGM 平滑降低",
+        "转场音效不盖辅音",
+        "响度约 -16 LUFS"
+      ]
+    },
+    {
+      "id": "render",
+      "label": "合成与导出",
+      "goal": "合成 MP4、封面，更新 project.json。",
+      "inputs": [
+        "film-silent.mp4",
+        "mix.wav"
+      ],
+      "outputs": [
+        "out/<id>/film.mp4",
+        "out/<id>/poster.png",
+        "projects/<id>/project.json"
+      ],
+      "commands": [
+        "node bin/produce.mjs --project projects/<id>"
+      ],
+      "checks": [
+        "首帧/尾帧/转场无空白",
+        "音画同步",
+        "project.json 资产路径有效"
+      ]
+    },
+    {
+      "id": "review",
+      "label": "审阅与决策",
+      "goal": "读取详情页的问题记录，修改或确认。",
+      "inputs": [
+        "projects/<id>/issues.json",
+        "film.mp4"
+      ],
+      "outputs": [
+        "issues.json 更新",
+        "新版本成片"
+      ],
+      "commands": [
+        "node bin/status.mjs --project projects/<id>"
+      ],
+      "checks": [
+        "问题记录逐条处理",
+        "用户确认后再进入下一阶段"
+      ],
+      "agentRules": [
+        "每轮先读 issues.json",
+        "处理完保留未解决项，不要丢掉用户原话",
+        "需要用户决策时，引导用户到详情页右侧的问题记录"
+      ]
+    }
+  ],
+  "artifacts": {
+    "spec": "projects/<id>/project.json#spec",
+    "brief": "projects/<id>/brief.json",
+    "script": "projects/<id>/script.json",
+    "project": "projects/<id>/project.json",
+    "comments": "projects/<id>/comments.json",
+    "imports": "projects/<id>/imports.json",
+    "edit": "projects/<id>/edit.json",
+    "template": "templates/<template-id>/template.json",
+    "issues": "projects/<id>/issues.json"
+  }
+}

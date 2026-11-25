@@ -1,0 +1,32 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "timeline-archive",
+  "name": "时间线档案",
+  "version": "1.0.0",
+  "description": "牛皮纸档案质感的时间线模板：横向年表、事件表、年度入库柱图与档案照片位，适合品牌史、项目复盘与纪录短片。",
+  "tags": [
+    "时间线",
+    "档案",
+    "纪实",
+    "年表",
+    "复古"
+  ],
+  "runtime": {
+    "profile": "html/1",
+    "entry": "src/index.html",
+    "network": false
+  },
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 30
+  },
+  "params": {
+    "schema": "params.schema.json",
+    "defaultPreset": "presets/default.json"
+  },
+  "license": "LICENSE",
+  "preview": "preview.svg"
+}

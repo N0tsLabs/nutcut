@@ -1,0 +1,32 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "kids-crayon",
+  "name": "儿童蜡笔",
+  "version": "1.0.0",
+  "description": "明亮黄粉蓝的儿童蜡笔模板：粗糙笔触、圆润大字与弹跳动效，适合亲子、幼教与童趣内容。",
+  "tags": [
+    "儿童",
+    "蜡笔",
+    "明亮",
+    "手绘",
+    "活泼"
+  ],
+  "runtime": {
+    "profile": "html/1",
+    "entry": "src/index.html",
+    "network": false
+  },
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 30
+  },
+  "params": {
+    "schema": "params.schema.json",
+    "defaultPreset": "presets/default.json"
+  },
+  "license": "LICENSE",
+  "preview": "preview.svg"
+}

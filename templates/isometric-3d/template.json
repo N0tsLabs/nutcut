@@ -1,0 +1,45 @@
+{
+  "id": "isometric-3d",
+  "name": "等距 3D",
+  "category": "科技",
+  "description": "浅色等距 3D 模板：CSS 3D 层叠卡片、立方体积柱、参数表与产品图片位，适合产品结构、硬件与方案说明。",
+  "tags": [
+    "等距",
+    "3D",
+    "浅色",
+    "产品",
+    "结构"
+  ],
+  "palette": {
+    "background": "#eceff5",
+    "surface": "#ffffff",
+    "primary": "#2b59ff",
+    "accent": "#ff7a1a",
+    "text": "#101420",
+    "muted": "#6c7588"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 400,
+    "titleSize": 124
+  },
+  "motion": {
+    "transition": "slab-slide",
+    "speed": "medium"
+  },
+  "duration": 30,
+  "sceneCount": 6,
+  "features": [
+    "table",
+    "chart",
+    "image-slot"
+  ],
+  "stylePrompt": "浅灰蓝背景上的等距 3D 结构，钴蓝与橙色块面，悬浮层叠卡片与长投影，工程感几何网格，干净明亮的产品视觉，正交投影，无透视畸变",
+  "preview": "preview.svg",
+  "styleRefs": [
+    "K27",
+    "K25",
+    "F1"
+  ],
+  "group": "风格片头"
+}

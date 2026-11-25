@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>科普白板 · Science Paper</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #f7f3e8; }
+  body { font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", system-ui, sans-serif; color: #1f2d2a; }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden;
+    background:
+      radial-gradient(900px 600px at 12% 8%, rgba(255,255,255,.9), transparent 70%),
+      radial-gradient(760px 520px at 88% 92%, rgba(37,99,235,.055), transparent 70%),
+      #f7f3e8; }
+  .paper-lines { position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(180deg, transparent 0 47px, rgba(31,45,42,.055) 47px 48px); }
+  .margin-line { position: absolute; left: 156px; top: 0; bottom: 0; width: 1px; background: rgba(220,90,80,.32); }
+  .margin-line::after { content: ""; position: absolute; left: -4px; top: 0; bottom: 0; width: 9px;
+    background: repeating-linear-gradient(180deg, transparent 0 120px, rgba(220,90,80,.18) 120px 121px, transparent 121px 240px); }
+  .holes { position: absolute; left: 58px; top: 0; bottom: 0; width: 22px; display: flex; flex-direction: column; justify-content: space-around; padding: 120px 0; }
+  .holes i { width: 18px; height: 18px; border-radius: 50%; background: #e7e0cf; box-shadow: inset 0 2px 4px rgba(31,45,42,.18); }
+  .grain { position: absolute; inset: 0; pointer-events: none; opacity: .5; z-index: 9;
+    background-image: radial-gradient(rgba(31,45,42,.14) .6px, transparent .7px); background-size: 3px 3px; }
+  .scene { position: absolute; inset: 0; visibility: hidden; opacity: 0; z-index: 5; }
+  .inner { position: absolute; left: 218px; right: 112px; }
+  .tag { display: flex; align-items: center; gap: 12px; font: 700 13px/1 "Consolas", monospace; letter-spacing: .26em; color: #6b7f78; text-transform: uppercase; }
+  .tag b { color: #2563eb; font-weight: 700; }
+  .tag i { width: 30px; height: 2px; background: #0d9488; }
+  h1, h2 { font-weight: 900; color: #1f2d2a; }
+  .hand { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; transform: rotate(-1.5deg); }
+  .ch { display: inline-block; }
+  em { font-style: normal; color: #2563eb; }
+  .mark { position: absolute; left: 0; bottom: -8px; height: 12px; background: rgba(13,148,136,.24); transform: skewX(-8deg); }
+  .draw { stroke-dasharray: 1; stroke-dashoffset: 1; }
+
+  .s1 { top: 196px; }
+  .s1 .tag { margin-bottom: 30px; }
+  .s1 h1 { width: 1440px; font-size: 116px; line-height: 1.14; letter-spacing: -.045em; }
+  .s1 .sub { margin-top: 34px; font-size: 27px; font-weight: 400; letter-spacing: .05em; color: #52655f; }
+  .s1 .scribble { margin-top: 20px; width: 760px; height: 26px; overflow: visible; }
+  .s1 .arrow-note { position: absolute; right: 74px; top: 420px; width: 380px; }
+  .s1 .arrow-note p { margin-top: 4px; font-size: 23px; line-height: 1.6; color: #0d9488; transform: rotate(-2deg); }
+  .s1 .arrow-note svg { display: block; }
+  .s1 .stamp { position: absolute; right: 96px; bottom: 86px; border: 2px solid rgba(37,99,235,.5); color: #2563eb;
+    font: 700 12px/1.5 "Consolas", monospace; letter-spacing: .2em; padding: 12px 18px; transform: rotate(-4deg); }
+
+  .s2 { top: 150px; }
+  .s2 h2 { margin-top: 24px; width: 1360px; font-size: 78px; line-height: 1.16; letter-spacing: -.035em; }
+  .diagram { margin-top: 64px; display: flex; align-items: center; gap: 8px; }
+  .step { position: relative; width: 356px; height: 316px; background: rgba(255,253,247,.86); border: 2px solid #1f2d2a;
+    border-radius: 18px 14px 20px 12px; padding: 30px 28px; box-shadow: 5px 7px 0 rgba(31,45,42,.09); }
+  .step:nth-child(3) { transform: rotate(-1.2deg); }
+  .step:nth-child(5) { transform: rotate(1.4deg); }
+  .step .no { font: 700 12px/1 "Consolas", monospace; letter-spacing: .2em; color: #0d9488; }
+  .step h3 { margin-top: 22px; font-size: 40px; font-weight: 900; letter-spacing: -.02em; }
+  .step p { margin-top: 12px; font-size: 19px; line-height: 1.6; color: #52655f; }
+  .step .sketch { position: absolute; right: 24px; bottom: 22px; width: 84px; height: 84px; }
+  .arrow { width: 122px; height: 70px; flex: 0 0 auto; }
+  .s2 .side-note { position: absolute; right: 40px; top: 40px; width: 300px; padding: 18px 20px; background: rgba(255,253,247,.8);
+    border-left: 4px solid #0d9488; font-size: 19px; line-height: 1.65; color: #52655f; transform: rotate(1.4deg); }
+
+  .s3 { top: 146px; }
+  .s3 h2 { margin-top: 22px; width: 1400px; font-size: 80px; line-height: 1.14; letter-spacing: -.04em; }
+  .notes { margin-top: 62px; display: flex; gap: 54px; align-items: flex-start; padding-left: 8px; }
+  .sticky { position: relative; width: 432px; min-height: 430px; padding: 34px 34px 26px; background: #fff6c9;
+    box-shadow: 8px 12px 26px rgba(31,45,42,.12); }
+  .sticky:nth-child(2) { background: #dff0ea; }
+  .sticky:nth-child(3) { background: #e3ecff; }
+  .sticky .no { font: 900 64px/1 "Consolas", monospace; color: rgba(31,45,42,.22); letter-spacing: -.04em; }
+  .sticky h3 { margin-top: 20px; font-size: 46px; font-weight: 900; letter-spacing: -.02em; }
+  .sticky p { margin-top: 16px; font-size: 20px; line-height: 1.7; color: #4b5d57; }
+  .sticky .tape { position: absolute; left: 50%; top: -14px; width: 130px; height: 28px; margin-left: -65px;
+    background: rgba(233,226,205,.85); box-shadow: 0 1px 3px rgba(31,45,42,.12); transform: rotate(-2deg); }
+
+  .s4 { top: 160px; }
+  .s4 h2 { margin-top: 24px; width: 1380px; font-size: 84px; line-height: 1.14; letter-spacing: -.04em; }
+  .wrong { position: relative; margin-top: 46px; width: 1180px; padding: 26px 34px; border: 2px solid rgba(220,90,80,.55);
+    background: rgba(255,253,247,.7); }
+  .wrong .lbl { font: 700 12px/1 "Consolas", monospace; letter-spacing: .24em; color: #c0392b; }
+  .wrong p { margin-top: 12px; font-size: 32px; color: #6c5a56; }
+  .wrong svg { position: absolute; inset: -6px; width: calc(100% + 12px); height: calc(100% + 12px); overflow: visible; }
+  .right { margin-top: 40px; width: 1240px; padding: 30px 36px; background: rgba(223,240,234,.75); border-left: 6px solid #0d9488; }
+  .right .lbl { font: 700 12px/1 "Consolas", monospace; letter-spacing: .24em; color: #0d9488; }
+  .right p { margin-top: 12px; font-size: 30px; line-height: 1.5; color: #1f2d2a; }
+  .s4 .foot { margin-top: 34px; font: 400 18px/1.6 "Consolas", monospace; letter-spacing: .04em; color: #7a8c86; }
+
+  .s5 { top: 150px; }
+  .s5 h2 { margin-top: 22px; width: 1320px; font-size: 80px; line-height: 1.16; letter-spacing: -.04em; }
+  .s5-row { margin-top: 54px; display: flex; align-items: flex-end; gap: 90px; }
+  .big-num { position: relative; font: 900 300px/.84 "Consolas", monospace; letter-spacing: -.09em; color: #2563eb; }
+  .big-num .pct { font-size: 96px; }
+  .big-num .underline { position: absolute; left: 8px; right: 16px; bottom: -6px; height: 10px; background: rgba(13,148,136,.4); transform: rotate(-1deg); }
+  .chart { width: 700px; }
+  .chart .bars { display: flex; align-items: flex-end; gap: 26px; height: 240px; border-bottom: 2px solid #1f2d2a; padding: 0 10px; }
+  .chart .bars i { flex: 1; background: repeating-linear-gradient(45deg, rgba(37,99,235,.75) 0 8px, rgba(37,99,235,.45) 8px 12px);
+    border: 2px solid #2563eb; border-bottom: 0; height: 0; }
+  .chart .scale { display: flex; justify-content: space-between; margin-top: 10px; font: 700 11px/1 "Consolas", monospace; letter-spacing: .16em; color: #8a9a94; }
+  .s5 .caption { position: absolute; left: 760px; bottom: 120px; width: 560px; font-size: 22px; line-height: 1.7; color: #52655f; }
+
+  .s6 { top: 170px; }
+  .s6 .head { display: flex; gap: 60px; align-items: flex-start; }
+  .s6 .head .left { width: 1140px; }
+  .s6 .tag { margin-bottom: 28px; }
+  .s6 h2 { font-size: 96px; width: 1080px; line-height: 1.1; letter-spacing: -.045em; }
+  .s6 .sub { margin-top: 26px; font-size: 24px; letter-spacing: .04em; color: #52655f; }
+  .checklist { margin-top: 48px; width: 760px; }
+  .checklist .item { display: flex; align-items: center; gap: 18px; padding: 14px 0; border-bottom: 1px dashed rgba(31,45,42,.2);
+    font-size: 23px; color: #3c4f49; }
+  .checklist .item svg { flex: 0 0 auto; }
+  .wreath { position: absolute; right: 40px; top: 40px; width: 480px; height: 480px; opacity: .9; }
+  .s6 .quote { position: absolute; right: 70px; bottom: 74px; width: 520px; font-size: 28px; line-height: 1.6; color: #0d9488; transform: rotate(-1.4deg); }
+  .s6 .quote::before { content: "“"; font: 900 80px/1 Georgia, serif; color: rgba(13,148,136,.35); display: block; height: 44px; }
+
+  .hud { position: absolute; left: 218px; right: 112px; bottom: 46px; z-index: 20; display: flex; align-items: center; gap: 22px;
+    font: 700 11px/1 "Consolas", monospace; letter-spacing: .2em; color: #8a9a94; }
+  .hud .track { flex: 1; height: 2px; background: rgba(31,45,42,.12); }
+  .hud .track i { display: block; height: 100%; width: 0; background: #2563eb; }
+  .hud .idx { color: #2563eb; }
+  @media (max-width: 900px) { body { zoom: .5; } }
+
+  .nutcut-image-slot { position: absolute; right: 112px; bottom: 112px; width: 280px; height: 158px; border: 1px dashed #8a93a1; opacity: .62; display: grid; place-items: center; font: 700 11px/1 "Consolas", monospace; letter-spacing: .2em; z-index: 9; pointer-events: none; color: #8a93a1; }
+  .nutcut-image-slot::before { content: ""; position: absolute; inset: 12px; border: 1px solid currentColor; opacity: .22; }
+  .nutcut-image-slot span { position: relative; }
+  .nutcut-image-slot.has-image { opacity: .9; border-style: solid; background-size: cover; background-position: center; }
+  .nutcut-image-slot.has-image span { display: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="paper-lines"></div>
+  <div class="margin-line"></div>
+  <div class="holes"><i></i><i></i><i></i></div>
+  <div class="grain" id="grain"></div>
+
+  <section class="scene" id="sc1">
+    <div class="inner s1">
+      <div class="tag"><i></i><b>NOTE 01</b><span id="s1-kicker"></span></div>
+      <h1 id="s1-title" data-title></h1>
+      <svg class="scribble" viewBox="0 0 760 26" aria-hidden="true">
+        <path class="draw" id="s1-mark" d="M4 18C90 8 170 8 250 14S420 20 510 10 660 6 756 14" fill="none" stroke="#0d9488" stroke-width="7" stroke-linecap="round" pathLength="1"/>
+      </svg>
+      <p class="sub" id="s1-sub" data-sub></p>
+      <div class="arrow-note">
+        <svg width="250" height="110" viewBox="0 0 250 110" aria-hidden="true">
+          <path class="draw" id="s1-arrow" d="M6 18C60 10 120 24 150 58S190 96 226 92" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round" pathLength="1"/>
+          <path class="draw" id="s1-arrow2" d="M206 76L232 92 204 104" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round" pathLength="1"/>
+        </svg>
+        <p class="hand">先看结论，再拆过程。</p>
+      </div>
+      <div class="stamp">FIG. 01 / START HERE</div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc2">
+    <div class="inner s2">
+      <div class="tag"><i></i><b>NOTE 02</b><span>STEP BY STEP</span></div>
+      <h2 id="s2-title"></h2>
+      <div class="diagram">
+        <article class="step">
+          <div class="no">STEP A</div><h3>拆开</h3><p>把一个复杂问题，拆成能被观察的小块。</p>
+          <svg class="sketch" viewBox="0 0 84 84"><rect x="8" y="8" width="30" height="30" fill="none" stroke="#2563eb" stroke-width="2"/><rect x="46" y="8" width="30" height="30" fill="none" stroke="#0d9488" stroke-width="2"/><rect x="8" y="46" width="68" height="30" fill="none" stroke="#1f2d2a" stroke-width="2" stroke-dasharray="5 4"/></svg>
+        </article>
+        <svg class="arrow" viewBox="0 0 122 70" aria-hidden="true">
+          <path class="draw ar" d="M6 38C34 18 74 16 106 34" fill="none" stroke="#1f2d2a" stroke-width="3" stroke-linecap="round" pathLength="1"/>
+          <path class="draw ar" d="M88 18L108 35 84 44" fill="none" stroke="#1f2d2a" stroke-width="3" stroke-linecap="round" pathLength="1"/>
+        </svg>
+        <article class="step">
+          <div class="no">STEP B</div><h3>对齐</h3><p>把碎片放回同一个坐标系，看它们如何互相影响。</p>
+          <svg class="sketch" viewBox="0 0 84 84"><circle cx="42" cy="42" r="30" fill="none" stroke="#2563eb" stroke-width="2"/><path d="M12 42H72M42 12V72" stroke="#0d9488" stroke-width="2"/><circle cx="52" cy="32" r="5" fill="#2563eb"/></svg>
+        </article>
+        <svg class="arrow" viewBox="0 0 122 70" aria-hidden="true">
+          <path class="draw ar" d="M6 34C34 52 74 54 106 38" fill="none" stroke="#1f2d2a" stroke-width="3" stroke-linecap="round" pathLength="1"/>
+          <path class="draw ar" d="M88 54L108 38 84 28" fill="none" stroke="#1f2d2a" stroke-width="3" stroke-linecap="round" pathLength="1"/>
+        </svg>
+        <article class="step">
+          <div class="no">STEP C</div><h3>验证</h3><p>用一个反例检验结论，站得住才写下来。</p>
+          <svg class="sketch" viewBox="0 0 84 84"><path d="M14 44L34 64 70 18" fill="none" stroke="#0d9488" stroke-width="5" stroke-linecap="round"/><circle cx="42" cy="42" r="34" fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="6 5"/></svg>
+        </article>
+      </div>
+      <div class="side-note hand">小提示：能画出来的关系，通常也能被讲清楚。</div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc3">
+    <div class="inner s3">
+      <div class="tag"><i></i><b>NOTE 03</b><span>THREE ANGLES</span></div>
+      <h2 id="s3-title"></h2>
+      <div class="notes">
+        <article class="sticky" data-note="0">
+          <div class="tape"></div><div class="no">01</div><h3>看现象</h3>
+          <p>先描述发生了什么，不急着解释为什么。事实越干净，推理越稳。</p>
+        </article>
+        <article class="sticky" data-note="1">
+          <div class="tape"></div><div class="no">02</div><h3>找结构</h3>
+          <p>把变量排成一排，找出谁在推动谁。结构比结论更耐得住追问。</p>
+        </article>
+        <article class="sticky" data-note="2">
+          <div class="tape"></div><div class="no">03</div><h3>做验证</h3>
+          <p>用最小的实验，换一个确定的答案。错一次，比猜十次更值。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc4">
+    <div class="inner s4">
+      <div class="tag"><i></i><b>NOTE 04</b><span>COMMON MISTAKE</span></div>
+      <h2 id="s4-title"></h2>
+      <div class="wrong">
+        <div class="lbl">MYTH / 误解</div>
+        <p>“只要数据足够多，答案就会自己出现。”</p>
+        <svg viewBox="0 0 1180 120" preserveAspectRatio="none" aria-hidden="true">
+          <path class="draw" id="s4-x1" d="M18 96C210 46 420 120 600 62S960 34 1160 78" fill="none" stroke="#d9534f" stroke-width="6" stroke-linecap="round" pathLength="1"/>
+          <path class="draw" id="s4-x2" d="M26 62C240 104 470 28 690 84S1020 108 1156 44" fill="none" stroke="#d9534f" stroke-width="4" stroke-linecap="round" pathLength="1"/>
+        </svg>
+      </div>
+      <div class="right">
+        <div class="lbl">ACTUALLY / 其实</div>
+        <p>数据只提供线索。提出问题、选择模型、解释结果，仍然需要人。</p>
+      </div>
+      <div class="foot">— 把“相关性”当成“因果”，是最常见的一步跨错。</div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc5">
+    <div class="inner s5">
+      <div class="tag"><i></i><b>NOTE 05</b><span>MEASURE IT</span></div>
+      <h2 id="s5-title"></h2>
+      <div class="s5-row">
+        <div class="big-num"><span id="s5-num">0</span><span class="pct">%</span><div class="underline"></div></div>
+        <div class="chart">
+          <div class="bars"><i data-bar="0"></i><i data-bar="1"></i><i data-bar="2"></i><i data-bar="3"></i><i data-bar="4"></i><i data-bar="5"></i></div>
+          <div class="scale"><span>Q1</span><span>Q2</span><span>Q3</span><span>Q4</span><span>Q5</span><span>Q6</span></div>
+        </div>
+      </div>
+      <div class="caption">把同样的解释讲给三个人听，如果都能复述，说明真的讲明白了。</div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc6">
+    <div class="inner s6">
+      <div class="head">
+        <div class="left">
+          <div class="tag"><i></i><b>NOTE 06</b><span>RECAP</span></div>
+          <h2 id="s6-title" data-title></h2>
+          <p class="sub" id="s6-sub" data-sub></p>
+          <div class="checklist">
+            <div class="item"><svg width="34" height="26" viewBox="0 0 34 26"><path class="draw" d="M3 14L12 22 31 3" fill="none" stroke="#0d9488" stroke-width="4" stroke-linecap="round" pathLength="1"/></svg><span>先描述，再解释</span></div>
+            <div class="item"><svg width="34" height="26" viewBox="0 0 34 26"><path class="draw" d="M3 14L12 22 31 3" fill="none" stroke="#0d9488" stroke-width="4" stroke-linecap="round" pathLength="1"/></svg><span>找到最关键的那个变量</span></div>
+            <div class="item"><svg width="34" height="26" viewBox="0 0 34 26"><path class="draw" d="M3 14L12 22 31 3" fill="none" stroke="#0d9488" stroke-width="4" stroke-linecap="round" pathLength="1"/></svg><span>用一个反例检验它</span></div>
+          </div>
+        </div>
+        <svg class="wreath" viewBox="0 0 480 480" aria-hidden="true">
+          <path class="draw" d="M240 34C130 34 44 122 44 236s82 202 196 202 196-88 196-202S350 34 240 34Z" fill="none" stroke="#1f2d2a" stroke-width="2" stroke-dasharray="7 6" pathLength="1"/>
+          <path class="draw" d="M240 72c-78 0-142 64-142 144s60 142 142 142 142-62 142-142S318 72 240 72Z" fill="none" stroke="#2563eb" stroke-width="1.5" pathLength="1"/>
+          <path d="M240 122v212M164 190h152" stroke="#0d9488" stroke-width="1.5" stroke-dasharray="3 7"/>
+          <circle cx="240" cy="342" r="8" fill="#d9534f"/>
+          <text x="240" y="230" text-anchor="middle" font-family="Consolas, monospace" font-size="15" letter-spacing="4" fill="#52655f">THE BIG</text>
+          <text x="240" y="262" text-anchor="middle" font-family="Consolas, monospace" font-size="15" letter-spacing="4" fill="#52655f">PICTURE</text>
+        </svg>
+      </div>
+      <div class="quote hand" id="s6-note"></div>
+    </div>
+    <div class="nutcut-image-slot" data-image-slot><span>图片位 01</span></div>
+  </section>
+
+  <div class="hud">
+    <span data-brand>NUTCUT / NOTES</span>
+    <span class="track"><i id="hud-bar"></i></span>
+    <span class="idx" id="hud-idx">01 / 06</span>
+    <span id="hud-time">00:00</span>
+  </div>
+</div>
+<script>
+(function () {
+  const FPS = 30, DUR = 30;
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+  const C = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
+  const S = (v) => { v = C(v); return v * v * (3 - 2 * v); };
+  const E = (v) => 1 - Math.pow(1 - C(v), 3);
+  const EI = (v) => { v = C(v); return v < .5 ? 2 * v * v : 1 - Math.pow(-2 * v + 2, 2) / 2; };
+  const EB = (v) => { v = C(v); const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(v - 1, 3) + c1 * Math.pow(v - 1, 2); };
+  const R = (i, s) => { const x = Math.sin(i * 127.1 + (s || 0) * 311.7) * 43758.5453; return x - Math.floor(x); };
+  const DEFAULT_TITLE = '三分钟，讲明白一件事';
+  const DEFAULT_SUB = 'A WHITEBOARD EXPLAINER';
+  const DEMO = [
+    { id: '01', text: '先问一个问题：它到底怎么工作？', start: 0, end: 4.7 },
+    { id: '02', text: '第一步，把复杂的东西拆小。', start: 5, end: 9.7 },
+    { id: '03', text: '第二步，找到最关键的那根线。', start: 10, end: 14.7 },
+    { id: '04', text: '注意，这里最常见的误解是——', start: 15, end: 19.7 },
+    { id: '05', text: '当变量对齐，答案就浮出来了。', start: 20, end: 24.7 },
+    { id: '06', text: '看懂之后，世界会清楚一点。', start: 25, end: 30.6 }
+  ];
+  const scenes = $$('.scene');
+  let plan = [];
+
+  function buildPlan(inputs) {
+    const src = Array.isArray(inputs.lines) && inputs.lines.length ? inputs.lines.slice(0, 6) : DEMO;
+    const timed = src.length === 6 && src.every((l) => Number.isFinite(l.start) && Number.isFinite(l.end) && l.end > l.start);
+    plan = scenes.map((el, i) => {
+      const line = src[i] || DEMO[i];
+      return {
+        start: timed ? src[i].start : i * 5,
+        end: timed ? src[i].end : (i + 1) * 5 + .35,
+        text: String(line.text == null ? DEMO[i].text : line.text),
+        id: String(line.id == null ? DEMO[i].id : line.id)
+      };
+    });
+  }
+
+  function setText(el, value) { if (el && el.textContent !== value) el.textContent = value; }
+  function draw(el, p) { if (el) el.style.strokeDashoffset = (1 - C(p)).toFixed(3); }
+
+  function setChars(el, value) {
+    if (!el) return [];
+    if (el.dataset.text !== value) {
+      el.dataset.text = value; el.textContent = '';
+      for (const ch of Array.from(value)) {
+        const s = document.createElement('span'); s.className = 'ch'; s.textContent = ch; el.appendChild(s);
+      }
+    }
+    return Array.from(el.children);
+  }
+
+  function revealChars(list, local, delay, stagger, y) {
+    list.forEach((node, i) => {
+      const p = E((local - delay - i * stagger) / .5);
+      node.style.opacity = p;
+      node.style.transform = 'translateY(' + ((1 - p) * y) + '%)';
+    });
+  }
+
+  function applyInputs(inputs) {
+    if (inputs.accent) document.documentElement.style.setProperty('--accent', inputs.accent);
+    const brand = inputs.brand || 'NUTCUT / NOTES';
+    $$('[data-brand]').forEach((el) => setText(el, brand));
+    const title = inputs.title || DEFAULT_TITLE;
+    const sub = inputs.subtitle || DEFAULT_SUB;
+    $$('[data-title]').forEach((el) => setText(el, title));
+    $$('[data-sub]').forEach((el) => setText(el, sub));
+  }
+
+  function updateScene1(local, t, p) {
+    setText($('#s1-kicker'), p.text);
+    const chars = setChars($('#s1-title'), $('#s1-title').dataset.text || DEFAULT_TITLE);
+    revealChars(chars, local, .1, .04, 115);
+    draw($('#s1-mark'), (local - .9) / .9);
+    draw($('#s1-arrow'), (local - 1.15) / .8);
+    draw($('#s1-arrow2'), (local - 1.6) / .4);
+    const sub = $('#s1-sub');
+    sub.style.opacity = S((local - 1.0) / .7);
+    sub.style.transform = 'translateY(' + ((1 - E((local - 1.0) / .7)) * 16) + 'px)';
+    $('.arrow-note').style.opacity = S((local - 1.2) / .7);
+    $('.stamp').style.opacity = S((local - 1.6) / .6);
+    $('.stamp').style.transform = 'rotate(-4deg) scale(' + (.8 + .2 * EB((local - 1.6) / .5)) + ')';
+  }
+
+  function updateScene2(local, t, p) {
+    setText($('#s2-title'), p.text);
+    $$('.step').forEach((el, i) => {
+      const e = E((local - .15 - i * .2) / .6);
+      el.style.opacity = e;
+      el.style.transform = 'translateY(' + ((1 - e) * 38) + 'px) rotate(' + [0, -1.2, 1.4][i] + 'deg)';
+    });
+    $$('.s2 .ar').forEach((el, i) => draw(el, (local - .75 - i * .35) / .45));
+    $('.side-note').style.opacity = S((local - 1.3) / .7);
+    $('.side-note').style.transform = 'rotate(1.4deg) translateY(' + ((1 - E((local - 1.3) / .7)) * 18) + 'px)';
+  }
+
+  function updateScene3(local, t, p) {
+    setText($('#s3-title'), p.text);
+    $$('.sticky').forEach((el, i) => {
+      const e = EB((local - .15 - i * .16) / .6);
+      el.style.opacity = S((local - .15 - i * .16) / .3);
+      el.style.transform = 'translateY(' + ((1 - e) * 70) + 'px) rotate(' + [-2.4, 1.8, -1.2][i] + 'deg)';
+    });
+  }
+
+  function updateScene4(local, t, p) {
+    setText($('#s4-title'), p.text);
+    const e = E((local - .1) / .55);
+    $('.s4 h2').style.opacity = e;
+    $('.s4 h2').style.transform = 'translateX(' + ((1 - e) * -24) + 'px)';
+    $('.wrong').style.opacity = S((local - .5) / .5);
+    $('.wrong').style.transform = 'translateY(' + ((1 - E((local - .5) / .5)) * 20) + 'px)';
+    draw($('#s4-x1'), (local - 1.0) / .5);
+    draw($('#s4-x2'), (local - 1.25) / .5);
+    $('.right').style.opacity = S((local - 1.6) / .6);
+    $('.right').style.transform = 'translateY(' + ((1 - E((local - 1.6) / .6)) * 18) + 'px)';
+    $('.s4 .foot').style.opacity = S((local - 2.1) / .6);
+  }
+
+  function updateScene5(local, t, p) {
+    setText($('#s5-title'), p.text);
+    setText($('#s5-num'), String(Math.round(92 * E((local - .3) / 1.8))));
+    const hs = [38, 58, 44, 74, 66, 92];
+    $$('.chart .bars i').forEach((bar, i) => {
+      bar.style.height = (hs[i] * E((local - .6 - i * .09) / .8)) + '%';
+    });
+    $('.caption').style.opacity = S((local - 1.3) / .7);
+    $('.caption').style.transform = 'translateY(' + ((1 - E((local - 1.3) / .7)) * 16) + 'px)';
+  }
+
+  function updateScene6(local, t, p) {
+    const chars = setChars($('#s6-title'), $('#s6-title').dataset.text || DEFAULT_TITLE);
+    revealChars(chars, local, .1, .045, 110);
+    $$('.checklist .draw').forEach((el, i) => draw(el, (local - .9 - i * .18) / .4));
+    $$('.checklist .item').forEach((el, i) => {
+      const e = E((local - .7 - i * .18) / .5);
+      el.style.opacity = e;
+      el.style.transform = 'translateX(' + ((1 - e) * -18) + 'px)';
+    });
+    setText($('#s6-note'), p.text);
+    $('.quote').style.opacity = S((local - 1.4) / .7);
+    $('.quote').style.transform = 'rotate(-1.4deg) translateY(' + ((1 - E((local - 1.4) / .7)) * 18) + 'px)';
+    $('.wreath').style.opacity = .9 * C((local - .5) / .8);
+    $$('.wreath .draw').forEach((el, i) => draw(el, (local - .5 - i * .2) / .9));
+  }
+
+  const updates = [updateScene1, updateScene2, updateScene3, updateScene4, updateScene5, updateScene6];
+
+  window.renderFrame = function (frame, inputs) {
+    inputs = inputs || {};
+    buildPlan(inputs);
+    applyInputs(inputs);
+    const t = frame / FPS;
+    let active = 0;
+    for (let i = 0; i < plan.length; i += 1) if (t >= plan[i].start - .001) active = i;
+    scenes.forEach((el, i) => {
+      const p = plan[i];
+      const op = Math.min(S((t - p.start + .7) / .7), S((p.end - t) / .6));
+      el.style.visibility = op > .001 ? 'visible' : 'hidden';
+      el.style.opacity = op.toFixed(3);
+    });
+    updates[active](Math.max(0, t - plan[active].start) + (active === 0 ? 1.4 : 0), t, plan[active]);
+    $('#grain').style.backgroundPosition = Math.round(t * 13) % 3 + 'px ' + Math.round(t * 7) % 3 + 'px';
+    $('#hud-bar').style.width = (C(t / DUR) * 100) + '%';
+    setText($('#hud-idx'), String(active + 1).padStart(2, '0') + ' / 06');
+    setText($('#hud-time'), '00:' + String(Math.floor(t)).padStart(2, '0'));
+  };
+
+  applyInputs({});
+  window.renderFrame(0, {});
+  window.__ready = true;
+})();
+</script>
+<script>
+  (function () {
+    var slot = document.querySelector('[data-image-slot]');
+    if (!slot) return;
+    var original = window.renderFrame;
+    window.renderFrame = function (frame, inputs) {
+      var image = inputs && inputs.images && inputs.images[0];
+      var url = image && (typeof image === 'string' ? image : image.url);
+      if (url) { slot.style.backgroundImage = 'url("' + url + '")'; slot.classList.add('has-image'); }
+      else { slot.style.backgroundImage = ''; slot.classList.remove('has-image'); }
+      return original(frame, inputs);
+    };
+  })();
+</script>
+</body>
+</html>

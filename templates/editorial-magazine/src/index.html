@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>杂志跨页 · Editorial Magazine</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #f7f2e8; }
+  body { font-family: Georgia, "Songti SC", "SimSun", "Noto Serif SC", serif; color: #17130e; }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden;
+    background: linear-gradient(178deg, #faf6ee 0%, #f5f0e5 46%, #efe8da 100%); }
+  .grain { position: absolute; inset: 0; opacity: .5; pointer-events: none; background-image:
+    repeating-linear-gradient(0deg, rgba(23,19,14,.028) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(23,19,14,.022) 0 1px, transparent 1px 4px); }
+  .edge { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(23,19,14,.1); }
+  .edge.l { left: 96px; } .edge.r { right: 96px; }
+
+  .chrome { position: absolute; left: 136px; right: 136px; z-index: 20; }
+  .chrome.top { top: 62px; display: flex; align-items: baseline; font: 700 11px/1 "Consolas", monospace;
+    letter-spacing: .28em; color: #7b7264; padding-bottom: 14px; border-bottom: 1px solid rgba(23,19,14,.35); }
+  .chrome.top b { color: #9a1b12; }
+  .chrome.top span:nth-child(2) { margin-left: 90px; }
+  .chrome.top span:last-child { margin-left: auto; }
+  .chrome.bot { bottom: 44px; display: flex; align-items: baseline; font: 700 11px/1 "Consolas", monospace;
+    letter-spacing: .26em; color: #7b7264; padding-top: 14px; border-top: 1px solid rgba(23,19,14,.18); }
+  .chrome.bot .folio { margin-left: auto; font: 700 42px/.8 Georgia, serif; letter-spacing: 0; color: #17130e; }
+  .chrome.bot .folio em { font: 400 13px/1 Georgia, serif; font-style: italic; color: #9a1b12; margin-left: 10px; }
+
+  .scene { position: absolute; inset: 0; visibility: hidden; opacity: 0; z-index: 5; }
+  .page { position: absolute; left: 136px; top: 120px; width: 1648px; height: 900px; }
+  .kicker { display: flex; align-items: center; gap: 14px; font: 700 12px/1 "Consolas", monospace;
+    letter-spacing: .3em; color: #9a1b12; text-transform: uppercase; }
+  .kicker::before { content: ""; width: 46px; height: 1px; background: #9a1b12; }
+  .kicker span { color: #7b7264; letter-spacing: .24em; }
+  .serif-title { font-family: Georgia, "Songti SC", "SimSun", serif; font-weight: 700; letter-spacing: -.02em; }
+  h1.title { margin-top: 34px; font-size: 152px; line-height: 1.02; font-weight: 700; letter-spacing: -.035em; color: #17130e; }
+  h2.head { margin-top: 26px; font-size: 88px; line-height: 1.1; font-weight: 700; letter-spacing: -.03em; color: #17130e; max-width: 1320px; }
+  h2.head.sm { font-size: 66px; }
+  .deck { margin-top: 22px; font: 400 24px/1.65 Georgia, "Songti SC", serif; color: #574f42; max-width: 880px; }
+  .rule { height: 1px; background: rgba(23,19,14,.45); margin-top: 26px; }
+  .rule.thick { height: 3px; background: #17130e; }
+  .small { font: 400 13px/1.6 "Consolas", monospace; letter-spacing: .1em; color: #7b7264; }
+  em { font-style: italic; }
+  .red { color: #9a1b12; }
+
+  /* image slot */
+  .slot { position: absolute; overflow: hidden; background: #eae3d4; border: 1px solid rgba(23,19,14,.28); }
+  .slot::before { content: ""; position: absolute; inset: 9px; border: 1px solid rgba(23,19,14,.13); z-index: 1; pointer-events: none; }
+  .slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; z-index: 2; }
+  .slot.has-image img { opacity: 1; }
+  .slot.has-image .ph { opacity: 0; }
+  .slot .ph { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 12px; color: #6f6657; }
+  .slot .ph b { font-size: 26px; font-weight: 700; letter-spacing: .1em; }
+  .slot .ph em { font: italic 400 14px/1 Georgia, serif; letter-spacing: .24em; color: #9a1b12; }
+  .slot .ph s { text-decoration: none; font: 400 11px/1 "Consolas", monospace; letter-spacing: .22em; }
+  .slot .ph::after { content: ""; width: 108px; height: 1px; background: rgba(23,19,14,.25); }
+  .cap { position: absolute; font: 400 13px/1.5 "Consolas", monospace; letter-spacing: .1em; color: #7b7264; }
+  .cap b { color: #9a1b12; }
+
+  /* scene 1 */
+  .s1slot { left: 1024px; top: 118px; width: 624px; height: 560px; }
+  .s1cap { left: 1024px; top: 700px; width: 624px; }
+  .s1meta { position: absolute; left: 0; top: 620px; width: 860px; display: flex; gap: 0;
+    border-top: 3px solid #17130e; }
+  .s1meta div { flex: 1; padding: 18px 22px 0 0; }
+  .s1meta b { display: block; font: 700 32px/1 Georgia, serif; color: #9a1b12; }
+  .s1meta span { display: block; margin-top: 8px; font: 700 10px/1 "Consolas", monospace; letter-spacing: .2em; color: #7b7264; }
+  .lede { position: absolute; left: 0; top: 420px; width: 720px; font: 400 21px/1.9 Georgia, "Songti SC", serif; color: #2b251c; }
+  .abstract { position: absolute; left: 0; top: 744px; width: 780px; font: italic 400 19px/1.6 Georgia, serif; color: #574f42;
+    padding-top: 16px; border-top: 1px solid rgba(23,19,14,.3); }
+
+  /* scene 2 */
+  .col2 { position: absolute; top: 352px; width: 760px; }
+  .col2.a { left: 0; } .col2.b { left: 888px; }
+  .body { font: 400 20px/1.95 Georgia, "Songti SC", serif; color: #2b251c; }
+  .body + .body { margin-top: 20px; }
+  .body .drop { float: left; margin: 4px 14px 0 0; font: 700 96px/.82 Georgia, serif; color: #9a1b12; }
+  .pull { margin: 6px 0 26px; padding: 22px 0 22px 26px; border-left: 3px solid #9a1b12;
+    font: italic 400 34px/1.5 Georgia, serif; color: #17130e; }
+  .pull span { display: block; margin-top: 16px; font: 700 10px/1 "Consolas", monospace; letter-spacing: .24em; color: #9a1b12; }
+  .mini { position: absolute; left: 888px; top: 636px; width: 760px; }
+  .mini .mh { display: flex; font: 700 10px/1 "Consolas", monospace; letter-spacing: .22em; color: #7b7264;
+    padding-bottom: 10px; border-bottom: 1px solid rgba(23,19,14,.4); }
+  .mini .mh b { margin-left: auto; color: #9a1b12; }
+  .mbars { position: relative; height: 160px; margin-top: 18px; display: flex; align-items: flex-end; gap: 26px; }
+  .mb { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; position: relative; }
+  .mb i { display: block; width: 100%; height: 0; background: #1f4d3f; }
+  .mb.hi i { background: #9a1b12; }
+  .mb span { position: absolute; top: 100%; margin-top: 8px; font: 700 11px/1 "Consolas", monospace; color: #7b7264; }
+  .mb b { position: absolute; bottom: 100%; margin-bottom: 6px; font: 700 13px/1 "Consolas", monospace; color: #17130e; opacity: 0; }
+
+  /* scene 3 */
+  table.tbl { width: 100%; border-collapse: collapse; }
+  table.tbl th { text-align: left; padding: 12px 16px 12px 0; font: 700 11px/1 "Consolas", monospace; letter-spacing: .22em;
+    color: #7b7264; border-bottom: 2px solid #17130e; white-space: nowrap; }
+  table.tbl td { padding: 20px 16px 20px 0; font: 400 19px/1.4 Georgia, "Songti SC", serif; color: #1f1a13;
+    border-bottom: 1px solid rgba(23,19,14,.18); }
+  table.tbl td.num { font-family: "Consolas", monospace; font-size: 19px; letter-spacing: .02em; }
+  table.tbl td.mut { color: #7b7264; font-size: 17px; }
+  table.tbl td em { font-style: italic; color: #9a1b12; }
+  .t3 { position: absolute; left: 0; top: 210px; width: 1648px; }
+  .tcap { position: absolute; left: 0; top: 700px; width: 1000px; font: 400 13px/1.6 "Consolas", monospace; letter-spacing: .08em; color: #7b7264; }
+  .tcap b { color: #9a1b12; }
+  .notes3 { position: absolute; left: 0; top: 760px; width: 1648px; display: flex; gap: 40px; }
+  .notes3 div { flex: 1; padding-top: 12px; border-top: 1px solid rgba(23,19,14,.3);
+    font: 400 14px/1.7 Georgia, "Songti SC", serif; color: #574f42; }
+  .notes3 b { display: block; margin-bottom: 6px; font: 700 10px/1 "Consolas", monospace; letter-spacing: .2em; color: #9a1b12; }
+
+  /* scene 4 */
+  .s4slot { left: 0; top: 180px; width: 600px; height: 400px; }
+  .s4cap { left: 0; top: 590px; width: 600px; }
+  .s4body { position: absolute; left: 0; top: 640px; width: 600px; font: italic 400 18px/1.6 Georgia, serif; color: #574f42; }
+  .chart4 { position: absolute; left: 700px; top: 180px; width: 948px; height: 420px; }
+  .chart4 .ch-head { display: flex; font: 700 10px/1 "Consolas", monospace; letter-spacing: .22em; color: #7b7264; }
+  .chart4 .ch-head b { margin-left: auto; color: #9a1b12; }
+  .stats4 { position: absolute; left: 700px; top: 610px; width: 948px; display: flex; border-top: 3px solid #17130e; }
+  .stats4 div { flex: 1; padding: 16px 18px 0 0; }
+  .stats4 b { display: block; font: 700 40px/1 Georgia, serif; color: #17130e; }
+  .stats4 b em { font-size: 17px; font-style: normal; color: #7b7264; letter-spacing: .06em; }
+  .stats4 span { display: block; margin-top: 8px; font: 700 10px/1 "Consolas", monospace; letter-spacing: .18em; color: #7b7264; }
+
+  /* scene 5 */
+  .nums5 { position: absolute; left: 0; top: 330px; width: 1648px; display: flex; }
+  .nums5 div { flex: 1; padding-right: 24px; }
+  .nums5 b { display: block; font: 700 88px/1 Georgia, serif; letter-spacing: -.03em; color: #17130e; }
+  .nums5 b em { font-size: 30px; color: #9a1b12; font-style: normal; }
+  .nums5 span { display: block; margin-top: 12px; font: 700 10px/1.5 "Consolas", monospace; letter-spacing: .18em; color: #7b7264;
+    padding-top: 12px; border-top: 1px solid rgba(23,19,14,.3); }
+  .bars5 { position: absolute; left: 0; top: 540px; width: 1648px; height: 260px; display: flex; align-items: flex-end; gap: 20px; }
+  .b5 { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; position: relative; }
+  .b5 i { position: relative; display: block; width: 100%; height: 0; background: #1f4d3f; }
+  .b5.hi i { background: #9a1b12; }
+  .b5 .v { position: absolute; left: 0; right: 0; bottom: 100%; margin-bottom: 8px; font: 700 12px/1 "Consolas", monospace; color: #17130e; opacity: 0; }
+  .b5 .x { position: absolute; top: 100%; margin-top: 10px; font: 700 11px/1 "Consolas", monospace; letter-spacing: .1em; color: #7b7264; }
+  .foot5 { position: absolute; left: 0; top: 850px; width: 1648px; display: flex; font: 400 13px/1.6 "Consolas", monospace;
+    letter-spacing: .08em; color: #7b7264; padding-top: 12px; border-top: 1px solid rgba(23,19,14,.3); }
+  .foot5 span + span { margin-left: auto; }
+
+  /* scene 6 */
+  .back { position: absolute; left: 50%; top: 44%; width: 1300px; transform: translate(-50%, -50%); text-align: center; }
+  .back .mk { font: 700 11px/1 "Consolas", monospace; letter-spacing: .4em; color: #9a1b12; }
+  .back h2 { margin-top: 30px; font-size: 124px; line-height: 1.06; font-weight: 700; letter-spacing: -.04em; color: #17130e; }
+  .back .sub { margin-top: 26px; font: italic 400 24px/1.5 Georgia, serif; color: #574f42; }
+  .back .line { width: 0; height: 1px; margin: 40px auto 0; background: #17130e; }
+  .colophon { margin-top: 44px; display: flex; justify-content: center; gap: 54px;
+    font: 400 11px/1.6 "Consolas", monospace; letter-spacing: .18em; color: #7b7264; }
+  .colophon b { display: block; margin-bottom: 8px; color: #17130e; }
+
+  #veil { position: absolute; inset: 0; z-index: 40; opacity: 0; pointer-events: none; overflow: hidden; }
+  #veil .leaf { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+    background: linear-gradient(90deg, #faf6ee, #f2ebdc 62%, #e8dfcd); transform: translateY(1080px); }
+  #veil .leaf::before { content: attr(data-n); position: absolute; right: 136px; bottom: 90px;
+    font: 700 160px/1 Georgia, serif; color: rgba(23,19,14,.07); }
+  #veil .leaf::after { content: ""; position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+    box-shadow: inset 0 30px 60px rgba(23,19,14,.1); }
+  #veil .band { position: absolute; left: 0; top: 0; width: 1920px; height: 20px; background: #9a1b12; transform: translateY(1080px); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="grain"></div>
+  <div class="edge l"></div><div class="edge r"></div>
+
+  <div class="chrome top">
+    <b data-brand>NUTCUT QUARTERLY</b>
+    <span>PRINTED ORDER / 印刷秩序</span>
+    <span>ISSUE 06 · 2026</span>
+  </div>
+  <div class="chrome bot">
+    <span id="run">封面 / COVER</span>
+    <span style="margin-left:44px" id="sec">SECTION 01</span>
+    <span class="folio"><span id="folio">01</span><em>of 06</em></span>
+  </div>
+
+  <section class="scene" id="sc1">
+    <div class="page">
+      <div class="kicker">封面故事 <span>/ COVER STORY</span></div>
+      <h1 class="title" id="h1" data-title></h1>
+      <p class="deck" id="s1sub" data-sub></p>
+      <div class="rule thick" style="width:620px;margin-top:40px"></div>
+      <p class="lede">六个章节，一张跨页。我们把数据放进表格，把情绪交给影像，把节奏留在页边距里。这不是一期关于排版的教程，而是一次把内容重新排队的练习。</p>
+      <div class="s1meta">
+        <div><b>30</b><span>SECONDS</span></div>
+        <div><b>06</b><span>CHAPTERS</span></div>
+        <div><b>1920</b><span>PX WIDE</span></div>
+      </div>
+      <p class="abstract">本期我们只谈一件事：当信息被排成秩序，读者才愿意停下来读完它。</p>
+    </div>
+    <div class="slot s1slot" data-image-slot="01">
+      <img alt="" />
+      <div class="ph"><b>图片位 01</b><em>IMAGE SLOT 01</em><s>封面影像 / COVER IMAGE</s></div>
+    </div>
+    <div class="cap s1cap"><b>图 01</b> — 一张可以放在纸上的影像，替换为你的照片即可。</div>
+  </section>
+
+  <section class="scene" id="sc2">
+    <div class="page">
+      <div class="kicker">长文 <span>/ FEATURE ESSAY</span></div>
+      <h2 class="head" id="h2"></h2>
+      <div class="rule"></div>
+      <div class="col2 a">
+        <p class="body"><span class="drop">排</span>版从来不是装饰。它是把混乱的信息，按重要程度重新排一次队。读者看到的每一行字，位置都由上一条内容决定，而不是由美学决定。</p>
+        <p class="body">当我们把一条片子拆成六个章节，实际上是在替观众做选择：先看什么，再看什么，最后记住什么。这个顺序，就是结构。</p>
+      </div>
+      <div class="col2 b">
+        <div class="pull">“留白不是空缺，是留给读者的一次呼吸。”<span>— 编辑手记 / EDITOR'S NOTE</span></div>
+        <p class="body">数据需要刻度，影像需要边距。两者放在同一页上时，秩序就变成了可读的节奏。</p>
+      </div>
+      <div class="mini">
+        <div class="mh"><span>近五期篇幅 / PAGES PER ISSUE</span><b>3.2×</b></div>
+        <div class="mbars" id="mbars">
+          <div class="mb"><b>42</b><i data-h="42"></i><span>01</span></div>
+          <div class="mb"><b>58</b><i data-h="58"></i><span>02</span></div>
+          <div class="mb"><b>51</b><i data-h="51"></i><span>03</span></div>
+          <div class="mb hi"><b>76</b><i data-h="76"></i><span>04</span></div>
+          <div class="mb"><b>64</b><i data-h="64"></i><span>05</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc3">
+    <div class="page">
+      <div class="kicker">跨页表格 <span>/ SPREAD TABLE</span></div>
+      <h2 class="head sm" id="h3"></h2>
+      <div class="t3">
+        <table class="tbl">
+          <thead>
+            <tr><th>章节</th><th>主题</th><th>页数</th><th>信息密度</th><th>阅读时长</th><th>备注</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>01</td><td>封面与主张</td><td class="num">02</td><td class="num">0.42</td><td class="num">04:30</td><td class="mut">建立语气</td></tr>
+            <tr><td>02</td><td>长文与引语</td><td class="num">04</td><td class="num">0.68</td><td class="num">09:10</td><td class="mut">展开论证</td></tr>
+            <tr><td>03</td><td>跨页数据表</td><td class="num">02</td><td class="num">0.94</td><td class="num">06:40</td><td class="mut"><em>信息最密</em></td></tr>
+            <tr><td>04</td><td>影像与曲线</td><td class="num">03</td><td class="num">0.55</td><td class="num">05:20</td><td class="mut">图注配合</td></tr>
+            <tr><td>05</td><td>数字与柱形</td><td class="num">02</td><td class="num">0.81</td><td class="num">04:50</td><td class="mut">节奏加快</td></tr>
+            <tr><td>06</td><td>版权与结语</td><td class="num">01</td><td class="num">0.22</td><td class="num">01:30</td><td class="mut">收束</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tcap"><b>表 1</b> — 六章篇幅与信息密度对照。密度 = 有效信息条目 / 版面面积。</div>
+      <div class="notes3">
+        <div><b>NOTE 01</b>表格是这一期的主角：六行数据，六种阅读速度。</div>
+        <div><b>NOTE 02</b>所有数字使用等宽字体，保证小数点对齐。</div>
+        <div><b>NOTE 03</b>表头只出现一次，重复会让页面变吵。</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc4">
+    <div class="page">
+      <div class="kicker">影像与曲线 <span>/ IMAGE &amp; CURVE</span></div>
+      <h2 class="head sm" id="h4"></h2>
+      <div class="chart4">
+        <div class="ch-head" style="padding-bottom:10px;border-bottom:2px solid #17130e"><span>阅读完成率 / COMPLETION RATE</span><b>JAN — JUN</b></div>
+        <svg viewBox="0 0 948 380" style="margin-top:20px" preserveAspectRatio="none">
+          <defs><clipPath id="c4clip"><rect id="c4rect" x="0" y="0" width="0" height="380"/></clipPath></defs>
+          <g stroke="rgba(23,19,14,.14)">
+            <line x1="0" y1="40" x2="948" y2="40"/><line x1="0" y1="130" x2="948" y2="130"/>
+            <line x1="0" y1="220" x2="948" y2="220"/><line x1="0" y1="310" x2="948" y2="310"/>
+          </g>
+          <g font-family="Consolas, monospace" font-size="13" fill="#8b8173">
+            <text x="0" y="330">JAN</text><text x="180" y="330">FEB</text><text x="360" y="330">MAR</text>
+            <text x="540" y="330">APR</text><text x="720" y="330">MAY</text><text x="900" y="330">JUN</text>
+          </g>
+          <g clip-path="url(#c4clip)">
+            <path d="M0 250 L180 214 L360 236 L540 150 L720 118 L948 62 L948 380 L0 380 Z" fill="rgba(31,77,63,.1)"/>
+            <path d="M0 250 L180 214 L360 236 L540 150 L720 118 L948 62" fill="none" stroke="#1f4d3f" stroke-width="3"/>
+            <g fill="#9a1b12">
+              <circle cx="180" cy="214" r="5"/><circle cx="540" cy="150" r="5"/><circle cx="948" cy="62" r="5"/>
+            </g>
+          </g>
+          <g stroke="#9a1b12" stroke-width="1" stroke-dasharray="3 5">
+            <line x1="948" y1="62" x2="948" y2="310"/>
+          </g>
+          <text x="944" y="46" text-anchor="end" font-family="Consolas, monospace" font-size="13" fill="#9a1b12">82.4%</text>
+        </svg>
+      </div>
+      <div class="slot s4slot" data-image-slot="02">
+        <img alt="" />
+        <div class="ph"><b>图片位 02</b><em>IMAGE SLOT 02</em><s>内文影像 / FEATURE IMAGE</s></div>
+      </div>
+      <div class="cap s4cap"><b>图 02</b> — 内文影像，建议 4:3 竖构图。</div>
+      <p class="s4body">曲线只讲一件事：当版面愿意留白，读者就愿意留下来。</p>
+      <div class="stats4">
+        <div><b>82.4<em>%</em></b><span>COMPLETION</span></div>
+        <div><b>6.2<em>min</em></b><span>AVG. TIME</span></div>
+        <div><b>+18<em>%</em></b><span>YOY GROWTH</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc5">
+    <div class="page">
+      <div class="kicker">数字页 <span>/ BY THE NUMBERS</span></div>
+      <h2 class="head sm" id="h5"></h2>
+      <div class="nums5">
+        <div><b>06</b><span>CHAPTERS / 章节</span></div>
+        <div><b>18<em>k</em></b><span>WORDS / 字数</span></div>
+        <div><b>42</b><span>FIGURES / 图表</span></div>
+        <div><b>99.2<em>%</em></b><span>PRECISION / 精度</span></div>
+      </div>
+      <div class="bars5" id="bars5">
+        <div class="b5"><i data-h="64"><span class="v">64</span></i><span class="x">W01</span></div>
+        <div class="b5"><i data-h="72"><span class="v">72</span></i><span class="x">W02</span></div>
+        <div class="b5"><i data-h="58"><span class="v">58</span></i><span class="x">W03</span></div>
+        <div class="b5 hi"><i data-h="91"><span class="v">91</span></i><span class="x">W04</span></div>
+        <div class="b5"><i data-h="78"><span class="v">78</span></i><span class="x">W05</span></div>
+        <div class="b5"><i data-h="66"><span class="v">66</span></i><span class="x">W06</span></div>
+        <div class="b5"><i data-h="84"><span class="v">84</span></i><span class="x">W07</span></div>
+        <div class="b5"><i data-h="70"><span class="v">70</span></i><span class="x">W08</span></div>
+      </div>
+      <div class="foot5"><span>数据来源：编辑部周报 · 单位：千次阅读</span><span>FIG. 05 / WEEKLY REACH</span></div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc6">
+    <div class="back">
+      <div class="mk">NUTCUT QUARTERLY · ISSUE 06</div>
+      <h2 id="h6" data-title></h2>
+      <p class="sub" id="s6sub" data-sub></p>
+      <div class="line" id="backline"></div>
+      <div class="colophon">
+        <div><b>EDITOR</b>NUTCUT LAB</div>
+        <div><b>TYPE</b>GEORGIA / SONG</div>
+        <div><b>PAGES</b>06 / 30S</div>
+        <div><b>LICENSE</b>CC0 1.0</div>
+      </div>
+    </div>
+  </section>
+
+  <div id="veil">
+    <div class="leaf" data-n="02"></div>
+    <div class="band"></div>
+  </div>
+</div>
+<script>
+(function () {
+  'use strict';
+  var FPS = 30, DUR = 30, N = 6;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var C = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+  var S = function (v) { v = C(v); return v * v * (3 - 2 * v); };
+  var E = function (v) { return 1 - Math.pow(1 - C(v), 3); };
+  var EB = function (v) { v = C(v); var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(v - 1, 3) + c1 * Math.pow(v - 1, 2); };
+  var DEMO = [
+    { id: '01', text: '一张纸，能装下一整个时代的重量。', start: 0, end: 4.7 },
+    { id: '02', text: '排版不是装饰，是让信息各归其位。', start: 5, end: 9.7 },
+    { id: '03', text: '数据第一次被读成故事，是在表格里。', start: 10, end: 14.7 },
+    { id: '04', text: '影像给数字以温度，数字给影像以坐标。', start: 15, end: 19.7 },
+    { id: '05', text: '留白不是空缺，是给读者的一次呼吸。', start: 20, end: 24.7 },
+    { id: '06', text: '翻过这一页，故事才真正开始。', start: 25, end: 29.7 }
+  ];
+  var RUNS = ['封面 / COVER', '长文 / FEATURE', '表格 / TABLE', '曲线 / CURVE', '数字 / NUMBERS', '结语 / COLOPHON'];
+  var sceneEls = $$('.scene');
+  var plan = [];
+  var title = '纸上的秩序';
+  var sub = 'PRINTED ORDER · 一份关于排版的田野笔记';
+
+  function buildPlan(inputs) {
+    var src = Array.isArray(inputs.lines) && inputs.lines.length ? inputs.lines.slice(0, 6) : DEMO;
+    var timed = src.length === 6 && src.every(function (l) {
+      return Number.isFinite(l.start) && Number.isFinite(l.end) && l.end > l.start;
+    });
+    plan = sceneEls.map(function (el, i) {
+      var line = src[i] || DEMO[i];
+      return {
+        start: timed ? src[i].start : i * 5,
+        end: timed ? src[i].end : (i + 1) * 5 + 0.35,
+        text: String(line.text == null ? DEMO[i].text : line.text)
+      };
+    });
+  }
+
+  function setText(el, v) { if (el && el.textContent !== v) el.textContent = v; }
+
+  function applyInputs(inputs) {
+    title = inputs.title || '纸上的秩序';
+    sub = inputs.subtitle || 'PRINTED ORDER · 一份关于排版的田野笔记';
+    $$('[data-title]').forEach(function (el) { setText(el, title); });
+    $$('[data-sub]').forEach(function (el) { setText(el, sub); });
+    $$('[data-brand]').forEach(function (el) { setText(el, inputs.brand || 'NUTCUT QUARTERLY'); });
+  }
+
+  function applyImages(inputs) {
+    var list = Array.isArray(inputs.images) ? inputs.images : [];
+    $$('[data-image-slot]').forEach(function (el, i) {
+      var raw = list[i];
+      var url = typeof raw === 'string' ? raw : (raw && typeof raw.url === 'string' ? raw.url : '');
+      var img = el.querySelector('img');
+      if (url) {
+        if (img.getAttribute('src') !== url) img.setAttribute('src', url);
+        el.classList.add('has-image');
+      } else {
+        el.classList.remove('has-image');
+        img.removeAttribute('src');
+      }
+    });
+  }
+
+  function revealRows(rows, local, delay, stagger) {
+    rows.forEach(function (el, i) {
+      var p = E((local - delay - i * stagger) / 0.4);
+      el.style.opacity = p;
+      el.style.transform = 'translateY(' + ((1 - p) * 10) + 'px)';
+    });
+  }
+
+  function upd1(local, t) {
+    var e = E((local - 0.05) / 0.75);
+    $('#h1').style.opacity = e;
+    $('#h1').style.transform = 'translateY(' + ((1 - e) * 30) + 'px)';
+    var d = E((local - 0.25) / 0.7);
+    $('#s1sub').style.opacity = d;
+    $('#s1sub').style.transform = 'translateY(' + ((1 - d) * 18) + 'px)';
+    $$('.s1meta div').forEach(function (el, i) {
+      var q = E((local - 0.35 - i * 0.08) / 0.6);
+      el.style.opacity = q;
+    });
+    $('.abstract').style.opacity = S((local - 0.65) / 0.5);
+    var l = E((local - 0.5) / 0.7);
+    $('.lede').style.opacity = l;
+    $('.lede').style.transform = 'translateY(' + ((1 - l) * 16) + 'px)';
+    var slot = $('.s1slot');
+    var sp = E((local - 0.15) / 0.8);
+    slot.style.opacity = sp;
+    slot.style.transform = 'translateY(' + ((1 - sp) * 24) + 'px)';
+    $('.s1cap').style.opacity = S((local - 0.6) / 0.5);
+  }
+
+  function upd2(local, t) {
+    setText($('#h2'), plan[1].text);
+    var e = E((local - 0.05) / 0.65);
+    $('#h2').style.opacity = e;
+    $('#h2').style.transform = 'translateY(' + ((1 - e) * 22) + 'px)';
+    $$('.col2').forEach(function (el, i) {
+      var q = E((local - 0.2 - i * 0.15) / 0.7);
+      el.style.opacity = q;
+      el.style.transform = 'translateY(' + ((1 - q) * 22) + 'px)';
+    });
+    var m = E((local - 0.35) / 0.7);
+    $('.mini').style.opacity = m;
+    $('.mini').style.transform = 'translateY(' + ((1 - m) * 24) + 'px)';
+    $$('#mbars .mb').forEach(function (el, i) {
+      var h = Number(el.querySelector('i').dataset.h);
+      var p = E((local - 0.55 - i * 0.08) / 0.8);
+      el.querySelector('i').style.height = (h * 1.8 * p) + 'px';
+      el.querySelector('b').style.opacity = S((p - 0.5) * 2.4);
+    });
+  }
+
+  function upd3(local, t) {
+    setText($('#h3'), plan[2].text);
+    var e = E((local - 0.05) / 0.65);
+    $('#h3').style.opacity = e;
+    $('#h3').style.transform = 'translateY(' + ((1 - e) * 22) + 'px)';
+    var tbl = $('.t3');
+    var q = E((local - 0.1) / 0.6);
+    tbl.style.opacity = q;
+    tbl.style.transform = 'translateY(' + ((1 - q) * 20) + 'px)';
+    revealRows($$('.t3 tbody tr'), local, 0.12, 0.05);
+    $('.tcap').style.opacity = S((local - 0.4) / 0.4);
+    $$('.notes3 div').forEach(function (el, i) {
+      var n = E((local - 0.45 - i * 0.06) / 0.5);
+      el.style.opacity = n;
+      el.style.transform = 'translateY(' + ((1 - n) * 10) + 'px)';
+    });
+  }
+
+  function upd4(local, t) {
+    setText($('#h4'), plan[3].text);
+    var e = E((local - 0.05) / 0.65);
+    $('#h4').style.opacity = e;
+    $('#h4').style.transform = 'translateY(' + ((1 - e) * 22) + 'px)';
+    var slot = $('.s4slot');
+    var sp = E((local - 0.1) / 0.8);
+    slot.style.opacity = sp;
+    slot.style.transform = 'translateY(' + ((1 - sp) * 26) + 'px)';
+    $('.s4cap').style.opacity = S((local - 0.5) / 0.5);
+    $('.s4body').style.opacity = S((local - 0.7) / 0.5);
+    var ch = E((local - 0.15) / 0.6);
+    $('.chart4').style.opacity = ch;
+    $('.chart4').style.transform = 'translateY(' + ((1 - ch) * 24) + 'px)';
+    $('#c4rect').setAttribute('width', String(948 * E((local - 0.3) / 1.6)));
+    $$('.stats4 div').forEach(function (el, i) {
+      var q = E((local - 0.5 - i * 0.09) / 0.6);
+      el.style.opacity = q;
+      el.style.transform = 'translateY(' + ((1 - q) * 16) + 'px)';
+    });
+  }
+
+  function upd5(local, t) {
+    setText($('#h5'), plan[4].text);
+    var e = E((local - 0.05) / 0.65);
+    $('#h5').style.opacity = e;
+    $('#h5').style.transform = 'translateY(' + ((1 - e) * 22) + 'px)';
+    $$('.nums5 div').forEach(function (el, i) {
+      var q = E((local - 0.15 - i * 0.1) / 0.65);
+      el.style.opacity = q;
+      el.style.transform = 'translateY(' + ((1 - q) * 22) + 'px)';
+    });
+    $$('.b5').forEach(function (el, i) {
+      var h = Number(el.querySelector('i').dataset.h);
+      var p = E((local - 0.3 - i * 0.05) / 0.8);
+      el.querySelector('i').style.height = (h * 2.2 * p) + 'px';
+      el.querySelector('.v').style.opacity = S((p - 0.25) * 1.8);
+    });
+    $('.foot5').style.opacity = S((local - 0.7) / 0.5);
+  }
+
+  function upd6(local, t) {
+    setText($('#h6'), title);
+    var e = E((local - 0.05) / 0.8);
+    $('#h6').style.opacity = S((local - 0.05) / 0.5);
+    $('#h6').style.transform = 'translateY(' + ((1 - e) * 26) + 'px)';
+    var s = E((local - 0.45) / 0.7);
+    $('#s6sub').style.opacity = s;
+    $('#backline').style.width = (520 * E((local - 0.6) / 0.8)) + 'px';
+    $$('.colophon div').forEach(function (el, i) {
+      var q = E((local - 0.8 - i * 0.08) / 0.6);
+      el.style.opacity = q;
+    });
+  }
+
+  var updaters = [upd1, upd2, upd3, upd4, upd5, upd6];
+
+  window.renderFrame = function (frame, inputs) {
+    inputs = inputs || {};
+    buildPlan(inputs);
+    applyInputs(inputs);
+    applyImages(inputs);
+    var t = frame / FPS;
+    var active = 0;
+    for (var i = 0; i < plan.length; i += 1) if (t >= plan[i].start - 0.001) active = i;
+    sceneEls.forEach(function (el, i) {
+      var p = plan[i];
+      var op = Math.min(S((t - p.start + 0.7) / 0.7), S((p.end - t) / 0.6));
+      el.style.visibility = op > 0.001 ? 'visible' : 'hidden';
+      el.style.opacity = op.toFixed(3);
+    });
+    var local = Math.max(0, t - plan[active].start) + (active === 0 ? 1.6 : 0.6);
+    updaters[active](local, t);
+
+    setText($('#run'), RUNS[active]);
+    setText($('#sec'), 'SECTION 0' + (active + 1));
+    setText($('#folio'), String(active + 1).padStart(2, '0'));
+
+    var vt = -1, vp = 0;
+    for (var k = 1; k < N; k += 1) {
+      var b = k * 5;
+      var q = (t - (b - 0.78)) / 0.78;
+      if (q > 0 && q <= 1) { vt = b; vp = q; }
+    }
+    if (vt >= 0) {
+      $('#veil').style.opacity = '1';
+      var leaf = $('.leaf');
+      leaf.style.transform = 'translateY(' + (1080 - vp * 2160) + 'px)';
+      leaf.setAttribute('data-n', String(Math.max(1, Math.round(vt / 5))).padStart(2, '0'));
+      var band = $('.band');
+      var bp = C((vp - 0.1) / 0.8);
+      band.style.transform = 'translateY(' + (1080 - bp * 2160) + 'px)';
+    } else {
+      $('#veil').style.opacity = '0';
+    }
+  };
+
+  applyInputs({});
+  applyImages({});
+  window.renderFrame(0, {});
+  window.__ready = true;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "科技霓虹 · 参数合同",
+  "description": "tech-neon 的可替换文案参数。所有字段均可省略，省略时使用内置演示文案。",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "brand": {
+      "type": "string",
+      "title": "品牌名",
+      "default": "NUTCUT / LAB",
+      "maxLength": 24
+    },
+    "title": {
+      "type": "string",
+      "title": "主标题",
+      "default": "技术，正在发光",
+      "maxLength": 24,
+      "x-capacity": {
+        "maxChars": 24,
+        "maxLines": 2
+      }
+    },
+    "subtitle": {
+      "type": "string",
+      "title": "副标题",
+      "default": "TECHNOLOGY IN MOTION · 30S",
+      "maxLength": 60
+    },
+    "accent": {
+      "type": "string",
+      "title": "强调色",
+      "default": "#a78bfa",
+      "pattern": "^#[0-9a-fA-F]{6}$"
+    },
+    "lines": {
+      "type": "array",
+      "title": "分句文案",
+      "description": "最多 6 句；start/end 单位为秒。全部给出时按真实时间排场景，否则平均分配 30 秒。",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 12
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 42
+          },
+          "start": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 30
+          },
+          "end": {
+            "type": "number",
+            "minimum": 0.5,
+            "maximum": 30
+          }
+        }
+      }
+    }
+  },
+  "required": []
+}

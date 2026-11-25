@@ -1,0 +1,43 @@
+{
+  "id": "nature-organic",
+  "name": "自然有机",
+  "category": "自然",
+  "description": "森林绿与米色的自然模板：柔和圆角、手绘叶片与生长式动效，适合健康、环保与生活方式内容。",
+  "tags": [
+    "自然",
+    "有机",
+    "柔和",
+    "手绘",
+    "浅色"
+  ],
+  "palette": {
+    "background": "#f3efe4",
+    "surface": "#ffffff",
+    "primary": "#2f5d3a",
+    "accent": "#c98a5e",
+    "text": "#23372a",
+    "muted": "#7a8f76"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 400,
+    "titleSize": 100
+  },
+  "motion": {
+    "transition": "grow",
+    "speed": "slow"
+  },
+  "duration": 30,
+  "sceneCount": 6,
+  "stylePrompt": "自然有机风格，森林绿与米色，柔和的圆角形状，手绘叶片与水彩晕染，亚麻纸纹理，温暖自然光，安静治愈",
+  "preview": "preview.svg",
+  "features": [
+    "image-slot"
+  ],
+  "styleRefs": [
+    "C1",
+    "K21",
+    "Z1"
+  ],
+  "group": "主题创意"
+}

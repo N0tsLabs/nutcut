@@ -1,0 +1,32 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "type-rain",
+  "name": "字雨",
+  "version": "1.0.0",
+  "description": "文字像雨一样下落、堆叠、冲刷画面，大字标题强冲击；内置字符密度柱状图、高频词表格与双联图片位。",
+  "tags": [
+    "字雨",
+    "文字",
+    "金句",
+    "深色",
+    "片头"
+  ],
+  "runtime": {
+    "profile": "html/1",
+    "entry": "src/index.html",
+    "network": false
+  },
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 30
+  },
+  "params": {
+    "schema": "params.schema.json",
+    "defaultPreset": "presets/default.json"
+  },
+  "license": "LICENSE",
+  "preview": "preview.svg"
+}

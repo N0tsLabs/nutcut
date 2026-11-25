@@ -1,0 +1,45 @@
+{
+  "id": "editorial-magazine",
+  "name": "杂志跨页",
+  "category": "内容",
+  "description": "米色纸张质感的杂志跨页模板：大图位、分栏正文、跨页数据表与页码，适合专访、长文、品牌故事与年度报告。",
+  "tags": [
+    "杂志",
+    "排版",
+    "纸感",
+    "长文",
+    "编辑"
+  ],
+  "palette": {
+    "background": "#f7f2e8",
+    "surface": "#fffdf8",
+    "primary": "#9a1b12",
+    "accent": "#1f4d3f",
+    "text": "#17130e",
+    "muted": "#7b7264"
+  },
+  "typography": {
+    "titleWeight": 700,
+    "bodyWeight": 400,
+    "titleSize": 152
+  },
+  "motion": {
+    "transition": "page-slide",
+    "speed": "slow"
+  },
+  "duration": 30,
+  "sceneCount": 6,
+  "features": [
+    "table",
+    "chart",
+    "image-slot"
+  ],
+  "stylePrompt": "米色纸张与深红油墨的杂志跨页，衬线大标题、分栏正文、细线与页码，印刷感颗粒，克制的红绿双色，编辑设计，留白充分",
+  "preview": "preview.svg",
+  "styleRefs": [
+    "H1",
+    "H2",
+    "M20"
+  ],
+  "group": "主题创意"
+}

@@ -1,0 +1,14 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "cursor-terminal",
+  "name": "光标终端",
+  "version": "1.0.0",
+  "description": "终端逐字打字风格模板。",
+  "tags": ["终端", "打字", "AI", "编程"],
+  "runtime": { "profile": "html/1", "entry": "src/index.html", "network": false },
+  "output": { "width": 1920, "height": 1080, "fps": 30, "duration": 30 },
+  "params": { "schema": "params.schema.json", "defaultPreset": "presets/default.json" },
+  "license": "LICENSE",
+  "preview": "preview.svg"
+}

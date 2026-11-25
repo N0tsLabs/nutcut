@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>口播分屏 · Talk Split</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { width:1920px; height:1080px; overflow:hidden; background:#f4ede4; }
+  body { font-family:"Microsoft YaHei","PingFang SC","Segoe UI",sans-serif; color:#211b17; }
+  #stage { position:relative; width:1920px; height:1080px; overflow:hidden; background:
+    radial-gradient(circle at 88% 10%,#ffe2d4 0,transparent 38%),
+    radial-gradient(circle at 4% 88%,#e1e8ff 0,transparent 42%),
+    linear-gradient(135deg,#f8f2e9,#efe5db); }
+  .grid { position:absolute; inset:0; opacity:.24; background-image:linear-gradient(90deg,rgba(33,27,23,.07) 1px,transparent 1px),linear-gradient(0deg,rgba(33,27,23,.05) 1px,transparent 1px); background-size:80px 80px; }
+  .scene { position:absolute; inset:0; visibility:hidden; opacity:0; z-index:5; }
+  .kicker { font:800 15px/1 "Consolas",monospace; letter-spacing:.22em; color:#d9523a; }
+  .title { font-size:88px; line-height:1.05; font-weight:900; letter-spacing:-.055em; }
+  .title em { font-style:normal; color:#d9523a; }
+  .lead { margin-top:26px; font-size:26px; line-height:1.65; color:#75675e; max-width:650px; }
+  .cards { display:grid; gap:14px; margin-top:38px; max-width:700px; }
+  .card { border-top:2px solid rgba(33,27,23,.16); padding-top:16px; display:flex; gap:18px; align-items:baseline; }
+  .card b { font:900 20px/1 "Consolas",monospace; color:#d9523a; width:34px; flex:none; }
+  .card span { font-size:23px; font-weight:800; }
+  .s1 .body, .s3 .body { position:absolute; left:120px; top:180px; width:820px; }
+  .s2 .body, .s4 .body { position:absolute; left:1000px; top:180px; width:800px; }
+  .ghost { position:absolute; z-index:2; font:900 330px/.72 "Consolas",monospace; letter-spacing:-.1em; color:rgba(33,27,23,.055); }
+  .ghost.a { left:980px; top:650px; }
+  .ghost.b { left:20px; top:650px; }
+  .video-panel { position:absolute; z-index:6; width:600px; height:880px; top:100px; border-radius:26px; overflow:hidden; background:#252a34; border:10px solid #fff; box-shadow:0 40px 90px rgba(58,38,28,.24); }
+  .video-panel::before { content:""; position:absolute; inset:0; background:repeating-linear-gradient(90deg,rgba(255,255,255,.055) 0 1px,transparent 1px 7px); }
+  .video-panel .tag { position:absolute; left:24px; top:24px; z-index:2; border:1px solid rgba(255,255,255,.4); background:rgba(18,16,22,.35); backdrop-filter:blur(8px); border-radius:999px; padding:9px 15px; color:#fff; font:800 13px/1 "Consolas",monospace; letter-spacing:.14em; }
+  .video-panel .face { position:absolute; left:50%; top:44%; width:210px; height:210px; border-radius:50%; transform:translate(-50%,-50%); border:6px solid rgba(255,255,255,.9); background:#3a4353; display:grid; place-items:center; font:800 19px/1 "Microsoft YaHei",sans-serif; color:rgba(255,255,255,.7); letter-spacing:.06em; box-shadow:0 24px 60px rgba(0,0,0,.28); }
+  .video-panel .meta { position:absolute; left:24px; right:24px; bottom:22px; display:flex; justify-content:space-between; color:rgba(255,255,255,.78); font:800 12px/1 "Consolas",monospace; letter-spacing:.13em; }
+  .hud { position:absolute; left:120px; right:120px; bottom:48px; z-index:9; display:flex; align-items:center; gap:20px; font:800 13px/1 "Consolas",monospace; letter-spacing:.14em; color:rgba(33,27,23,.48); }
+  .hud .bar { flex:1; height:3px; border-radius:2px; background:rgba(33,27,23,.12); overflow:hidden; }
+  .hud .bar i { display:block; height:100%; width:0; background:#d9523a; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="grid"></div>
+  <section class="scene s1"><div class="ghost a">01</div><div class="body"><div class="kicker">TALK SPLIT / 01</div><div class="title" style="margin-top:22px">一半是<em>人</em><br>一半是内容</div><div class="lead">口播画面只占一侧，另一侧负责把信息讲清楚。位置变化要有过渡。</div><div class="cards"><div class="card"><b>01</b><span>画面负责亲切感</span></div><div class="card"><b>02</b><span>文字负责信息量</span></div></div></div></section>
+  <section class="scene s2"><div class="ghost b">02</div><div class="body"><div class="kicker">TALK SPLIT / 02</div><div class="title" style="margin-top:22px">让画面<br><em>滑过去</em></div><div class="lead">同一个头像元素换边时，用 0.6–0.8 秒平滑移动，不要直接闪断。</div><div class="cards"><div class="card"><b>01</b><span>共享元素连续移动</span></div><div class="card"><b>02</b><span>内容先退场，再换边</span></div></div></div></section>
+  <section class="scene s3"><div class="ghost a">03</div><div class="body"><div class="kicker">TALK SPLIT / 03</div><div class="title" style="margin-top:22px">近景不是<br><em>换一个视频</em></div><div class="lead">是同一个画面放大、移动到更近的位置，观众才知道自己在看同一个人。</div><div class="cards"><div class="card"><b>01</b><span>位置：角落 → 中央</span></div><div class="card"><b>02</b><span>尺寸：小窗 → 近景</span></div></div></div></section>
+  <section class="scene s4"><div class="ghost b">04</div><div class="body"><div class="kicker">TALK SPLIT / 04</div><div class="title" style="margin-top:22px">最后<br><em>落回内容</em></div><div class="lead">画面是元素，不是全部。让标题、字幕和节奏把观众带到结尾。</div><div class="cards"><div class="card"><b>01</b><span>结尾留一句记得住的话</span></div><div class="card"><b>02</b><span>给下一步动作留空间</span></div></div></div></section>
+  <div class="video-panel" id="panel"><div class="tag">A-ROLL / 口播</div><div class="face">头像占位</div><div class="meta"><span>FRONT CAMERA</span><span>10 SEC</span></div></div>
+  <div class="hud"><span id="idx">01 / 04</span><div class="bar"><i id="bar"></i></div><span>TALK SPLIT</span></div>
+</div>
+<script>
+(function(){
+  var FPS=30,DUR=10,$=function(s){return document.querySelector(s)};
+  var scenes=[].slice.call(document.querySelectorAll('.scene'));
+  var panel=$('#panel');
+  var xs=[1220,120,120,1220];
+  function clamp(v){return Math.max(0,Math.min(1,v))}
+  function cubicBezier(x1,y1,x2,y2){
+    var cx=3*x1,bx=3*(x2-x1)-cx,ax=1-cx-bx,cy=3*y1,by=3*(y2-y1)-cy,ay=1-cy-by;
+    function fx(t){return ((ax*t+bx)*t+cx)*t}
+    function dfx(t){return (3*ax*t+2*bx)*t+cx}
+    function fy(t){return ((ay*t+by)*t+cy)*t}
+    return function(v){v=clamp(v);var t=v;for(var i=0;i<6;i++){var x=fx(t)-v;if(Math.abs(x)<1e-5)break;var d=dfx(t);if(Math.abs(d)<1e-5)break;t=clamp(t-x/d)}return fy(t)}
+  }
+  var ease=cubicBezier(.16,1,.3,1);
+  function smooth(v){return ease(v)}
+  function lerp(a,b,t){return a+(b-a)*t}
+  window.renderFrame=function(frame,inputs){
+    var t=Math.max(0,frame/FPS), active=Math.min(3,Math.floor(t/2.5));
+    scenes.forEach(function(el,i){
+      var start=i*2.5, op=Math.min(smooth((t-start)/.35),smooth((start+2.5-t)/.35));
+      el.style.visibility=op>.001?'visible':'hidden'; el.style.opacity=op.toFixed(3);
+      var local=Math.max(0,t-start);
+      el.style.transform='translateX('+((1-smooth(local/.5))*24).toFixed(1)+'px)';
+    });
+    var from=active===0?xs[0]:xs[active-1], to=xs[active];
+    var local=t-active*2.5, e=smooth(local/.75);
+    panel.style.left=lerp(from,to,e).toFixed(1)+'px';
+    var scale=1+Math.sin(Math.min(1,local/.75)*Math.PI)*.025;
+    panel.style.transform='scale('+scale.toFixed(3)+')';
+    $('#idx').textContent=String(active+1).padStart(2,'0')+' / 04';
+    $('#bar').style.width=(t/DUR*100).toFixed(2)+'%';
+  };
+  window.renderFrame(0,{}); window.__ready=true;
+})();
+</script>
+</body>
+</html>

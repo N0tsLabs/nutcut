@@ -1,0 +1,14 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "talk-corner",
+  "name": "头像角标",
+  "version": "1.0.0",
+  "description": "口播/头像类：内容占主画面，圆形头像常驻角落，随章节在右下、左下和近景之间平滑移动。",
+  "tags": ["口播", "头像", "竖屏", "角标", "口播视频"],
+  "runtime": { "profile": "html/1", "entry": "src/index.html", "network": false },
+  "output": { "width": 1080, "height": 1920, "fps": 30, "duration": 10 },
+  "params": { "schema": "params.schema.json", "defaultPreset": "presets/default.json" },
+  "license": "LICENSE",
+  "preview": "preview.png"
+}

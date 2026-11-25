@@ -1,0 +1,14 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "video-split",
+  "name": "视频双屏",
+  "version": "1.0.0",
+  "description": "视频素材类：左右双屏同时播放两个视角，当前画面高亮，适合对话、对比和反应镜头。",
+  "tags": ["视频", "双屏", "对比", "反应", "横屏"],
+  "runtime": { "profile": "html/1", "entry": "src/index.html", "network": false },
+  "output": { "width": 1920, "height": 1080, "fps": 30, "duration": 10 },
+  "params": { "schema": "params.schema.json", "defaultPreset": "presets/default.json" },
+  "license": "LICENSE",
+  "preview": "preview.png"
+}

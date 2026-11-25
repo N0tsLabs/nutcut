@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>数据驾驶舱 · Data Console</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #070b10; }
+  body { font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", system-ui, sans-serif; color: #e6f1f6; }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background:
+    radial-gradient(1200px 720px at 74% 2%, rgba(94,234,212,.11), transparent 62%),
+    radial-gradient(880px 620px at 6% 98%, rgba(251,191,36,.07), transparent 64%),
+    linear-gradient(158deg, #070b10 0%, #0a1319 52%, #05080b 100%); }
+  .grid { position: absolute; inset: 0; opacity: .55; background-image:
+    linear-gradient(rgba(148,163,184,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148,163,184,.06) 1px, transparent 1px); background-size: 72px 72px; }
+  .vig { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 42%, transparent 46%, rgba(2,5,8,.62) 100%); }
+
+  /* ---------- chrome ---------- */
+  .topbar { position: absolute; left: 0; top: 0; width: 1920px; height: 78px; z-index: 30;
+    display: flex; align-items: center; gap: 34px; padding: 0 34px 0 34px;
+    border-bottom: 1px solid rgba(148,163,184,.16); background: linear-gradient(180deg, rgba(8,13,18,.94), rgba(8,13,18,.55)); }
+  .brand { display: flex; align-items: center; gap: 12px; font: 700 13px/1 "Consolas", monospace; letter-spacing: .26em; color: #d9e8ee; }
+  .brand i { width: 26px; height: 26px; border: 1px solid rgba(94,234,212,.6); display: grid; place-items: center;
+    color: #5eead4; font-style: normal; font-size: 12px; box-shadow: 0 0 18px rgba(94,234,212,.25); }
+  .tabs { display: flex; gap: 4px; margin-left: 18px; }
+  .tab { padding: 9px 18px; font: 600 13px/1 "Consolas", monospace; letter-spacing: .14em; color: rgba(214,232,240,.38);
+    border: 1px solid transparent; }
+  .tab.on { color: #071014; background: #5eead4; border-color: #5eead4; }
+  .clock { margin-left: auto; display: flex; align-items: center; gap: 16px; font: 700 13px/1 "Consolas", monospace;
+    letter-spacing: .16em; color: rgba(214,232,240,.62); }
+  .live { display: inline-flex; align-items: center; gap: 8px; color: #5eead4; }
+  .live i { width: 7px; height: 7px; border-radius: 50%; background: #5eead4; box-shadow: 0 0 12px #5eead4; }
+  .rail { position: absolute; left: 0; top: 78px; width: 78px; height: 1002px; z-index: 20; border-right: 1px solid rgba(148,163,184,.12);
+    display: flex; flex-direction: column; align-items: center; gap: 16px; padding-top: 34px; background: rgba(7,11,16,.4); }
+  .rail b { width: 40px; height: 40px; border: 1px solid rgba(148,163,184,.2); display: grid; place-items: center;
+    font: 700 11px/1 "Consolas", monospace; color: rgba(214,232,240,.4); letter-spacing: .06em; }
+  .rail b.on { border-color: rgba(94,234,212,.6); color: #5eead4; background: rgba(94,234,212,.08); }
+  .rail .sp { flex: 1; }
+  .rail em { font: 600 9px/1 "Consolas", monospace; color: rgba(214,232,240,.28); letter-spacing: .2em; writing-mode: vertical-rl; margin-bottom: 22px; }
+
+  .scene { position: absolute; inset: 0; visibility: hidden; opacity: 0; z-index: 5; }
+  .sc-in { position: absolute; left: 136px; top: 128px; width: 1120px; }
+  .eyebrow { display: flex; align-items: center; gap: 12px; font: 700 13px/1 "Consolas", monospace;
+    letter-spacing: .24em; color: #5eead4; text-transform: uppercase; }
+  .eyebrow i { width: 30px; height: 2px; background: #5eead4; box-shadow: 0 0 12px rgba(94,234,212,.8); }
+  .big { margin-top: 26px; font-size: 96px; line-height: 1.08; font-weight: 900; letter-spacing: -.045em; color: #f1f8fb;
+    max-width: 1020px; text-shadow: 0 12px 40px rgba(0,0,0,.5); }
+  .h2 { margin-top: 20px; font-size: 58px; line-height: 1.14; font-weight: 900; letter-spacing: -.035em; color: #eef7fa; max-width: 1300px; }
+  .sub { margin-top: 20px; font-size: 25px; font-weight: 400; letter-spacing: .04em; color: rgba(214,232,240,.55); max-width: 780px; }
+
+  .panel { position: absolute; border: 1px solid rgba(148,163,184,.16); border-radius: 8px;
+    background: linear-gradient(168deg, rgba(15,23,31,.94), rgba(8,13,19,.9));
+    box-shadow: 0 20px 60px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.03); }
+  .ph-head { display: flex; align-items: center; gap: 12px; font: 700 12px/1 "Consolas", monospace;
+    letter-spacing: .2em; color: rgba(214,232,240,.5); }
+  .ph-head b { margin-left: auto; font: 700 11px/1 "Consolas", monospace; letter-spacing: .18em; color: rgba(94,234,212,.75); }
+
+  /* ---------- kpi ---------- */
+  .kpis { margin-top: 38px; display: grid; grid-template-columns: repeat(4, 262px); gap: 24px; }
+  .kpi { position: relative; height: 168px; padding: 20px 22px; border: 1px solid rgba(148,163,184,.16); border-radius: 6px;
+    background: linear-gradient(165deg, rgba(19,29,38,.95), rgba(10,16,22,.92)); overflow: hidden; }
+  .kpi::after { content: ""; position: absolute; left: 0; top: 0; width: 100%; height: 2px;
+    background: linear-gradient(90deg, rgba(94,234,212,.9), rgba(94,234,212,0)); }
+  .kpi .k { font: 600 13px/1 "Consolas", monospace; letter-spacing: .16em; color: rgba(214,232,240,.45); }
+  .kpi b { display: flex; align-items: baseline; gap: 6px; margin-top: 20px; font: 900 50px/1 "Consolas", monospace;
+    letter-spacing: -.02em; color: #f2fbfd; }
+  .kpi b em { font: 600 15px/1 "Consolas", monospace; font-style: normal; letter-spacing: .08em; color: rgba(94,234,212,.8); }
+  .kpi .d { position: absolute; right: 22px; top: 22px; font: 700 13px/1 "Consolas", monospace; }
+  .d.up { color: #5eead4; } .d.down { color: #fbbf24; }
+  .kpi .bar { position: absolute; left: 22px; right: 22px; bottom: 20px; height: 3px; background: rgba(148,163,184,.16); }
+  .kpi .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #2dd4bf, #5eead4); }
+
+  /* ---------- image slot ---------- */
+  .slot { position: absolute; overflow: hidden; border: 1px solid rgba(94,234,212,.28); border-radius: 6px;
+    background: linear-gradient(160deg, rgba(13,32,36,.55), rgba(7,12,16,.9)); }
+  .slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+  .slot.has-image img { opacity: 1; }
+  .slot.has-image .ph { opacity: 0; }
+  .slot .ph { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px; opacity: 1; transition: none; }
+  .slot .ph::before { content: ""; position: absolute; inset: 14px; border: 1px dashed rgba(94,234,212,.22); }
+  .slot .ph::after { content: ""; position: absolute; left: 50%; top: 50%; width: 54px; height: 54px; margin: -27px 0 0 -27px;
+    background:
+      linear-gradient(rgba(94,234,212,.28), rgba(94,234,212,.28)) 50% 0/1px 100% no-repeat,
+      linear-gradient(rgba(94,234,212,.28), rgba(94,234,212,.28)) 0 50%/100% 1px no-repeat; }
+  .slot .ph b { position: relative; z-index: 1; font-size: 26px; font-weight: 900; letter-spacing: .06em; color: rgba(214,232,240,.82); }
+  .slot .ph em { position: relative; z-index: 1; font: 600 12px/1 "Consolas", monospace; font-style: normal;
+    letter-spacing: .24em; color: rgba(94,234,212,.6); }
+  .slot .ph s { position: relative; z-index: 1; text-decoration: none; font: 700 11px/1 "Consolas", monospace;
+    letter-spacing: .2em; color: rgba(214,232,240,.3); }
+  .slot .corner { position: absolute; width: 22px; height: 22px; border: 2px solid rgba(94,234,212,.5); z-index: 2; }
+  .slot .corner.a { left: 8px; top: 8px; border-right: 0; border-bottom: 0; }
+  .slot .corner.b { right: 8px; top: 8px; border-left: 0; border-bottom: 0; }
+  .slot .corner.c { left: 8px; bottom: 8px; border-right: 0; border-top: 0; }
+  .slot .corner.d { right: 8px; bottom: 8px; border-left: 0; border-top: 0; }
+
+  /* scene 1 right */
+  .right1 { position: absolute; left: 1310px; top: 128px; width: 514px; }
+  .s1slot { left: 1310px; top: 128px; width: 514px; height: 352px; }
+  .meters { left: 1310px; top: 512px; width: 514px; height: 416px; padding: 24px 26px; }
+  .meter { margin-top: 24px; }
+  .meter:first-of-type { margin-top: 26px; }
+  .meter .l { display: flex; align-items: baseline; gap: 10px; font-size: 17px; color: rgba(214,232,240,.66); }
+  .meter .l b { margin-left: auto; font: 700 18px/1 "Consolas", monospace; color: #dff7f4; letter-spacing: .02em; }
+  .meter .t { margin-top: 9px; height: 6px; background: rgba(148,163,184,.16); border-radius: 3px; overflow: hidden; }
+  .meter .t i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #0f766e, #5eead4); }
+  .strip { left: 0; top: 424px; width: 1120px; height: 300px; padding: 22px 26px; }
+  .mini { position: absolute; left: 26px; bottom: 22px; width: 1068px; height: 190px; }
+
+  /* scene 2 */
+  .chartwrap { left: 136px; top: 286px; width: 1300px; height: 610px; padding: 24px 26px; }
+  .chartwrap svg { position: absolute; left: 26px; top: 62px; width: 1248px; height: 520px; }
+  .side2 { left: 1468px; top: 286px; width: 356px; height: 610px; padding: 24px 24px; }
+  .side2 .kpi-mini { margin-top: 26px; padding-bottom: 20px; border-bottom: 1px dashed rgba(148,163,184,.16); }
+  .side2 .kpi-mini span { font: 600 12px/1 "Consolas", monospace; letter-spacing: .16em; color: rgba(214,232,240,.4); }
+  .side2 .kpi-mini b { display: block; margin-top: 10px; font: 900 34px/1 "Consolas", monospace; color: #eafafd; }
+  .side2 .kpi-mini b em { font: 600 13px/1 "Consolas", monospace; font-style: normal; color: rgba(94,234,212,.7); margin-left: 6px; }
+  .side2 .meter { margin-top: 18px; }
+
+  /* scene 3 */
+  .barpanel { left: 136px; top: 286px; width: 760px; height: 610px; padding: 24px 28px; }
+  .bars { position: absolute; left: 46px; right: 36px; bottom: 88px; top: 96px; display: flex; align-items: flex-end; gap: 34px; }
+  .bcol { position: relative; flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; }
+  .bcol .col { position: relative; width: 100%; max-width: 74px; height: 0; border-radius: 2px 2px 0 0;
+    background: linear-gradient(180deg, #5eead4, rgba(15,118,110,.35)); }
+  .bcol.hi .col { background: linear-gradient(180deg, #fbbf24, rgba(180,83,9,.3)); }
+  .bcol .v { position: absolute; left: 50%; bottom: 100%; margin-bottom: 8px; width: 120px; margin-left: -60px;
+    text-align: center; font: 700 18px/1 "Consolas", monospace; color: #e8f7f9; }
+  .bcol .x { position: absolute; top: 100%; margin-top: 12px; font: 600 14px/1 "Consolas", monospace; letter-spacing: .08em; color: rgba(214,232,240,.45); }
+  .bcol .gl { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: rgba(148,163,184,.2); }
+  .axisline { position: absolute; left: 46px; right: 36px; bottom: 88px; height: 1px; background: rgba(148,163,184,.24); }
+  .hline { position: absolute; left: 46px; right: 36px; border-top: 1px dashed rgba(148,163,184,.1); }
+
+  .tablepanel { left: 936px; top: 286px; width: 888px; height: 610px; padding: 24px 26px; }
+  table.tbl { width: 100%; border-collapse: collapse; margin-top: 20px; }
+  table.tbl th { text-align: left; padding: 13px 14px; font: 700 14px/1 "Consolas", monospace; letter-spacing: .14em;
+    color: rgba(214,232,240,.42); border-bottom: 1px solid rgba(148,163,184,.28); white-space: nowrap; }
+  table.tbl td { padding: 16px 14px; font-size: 18px; font-weight: 400; color: rgba(230,244,248,.86);
+    border-bottom: 1px solid rgba(148,163,184,.1); }
+  table.tbl td.num { font-family: "Consolas", monospace; font-size: 18px; color: #e9fbff; letter-spacing: .02em; }
+  table.tbl td.up { color: #5eead4; font-family: "Consolas", monospace; font-size: 17px; }
+  table.tbl td.dn { color: #fbbf24; font-family: "Consolas", monospace; font-size: 17px; }
+  .pill { display: inline-block; padding: 5px 10px; font: 700 13px/1 "Consolas", monospace; letter-spacing: .1em;
+    border: 1px solid rgba(94,234,212,.4); color: #5eead4; }
+  .pill.warn { border-color: rgba(251,191,36,.45); color: #fbbf24; }
+  .pill.run { border-color: rgba(96,165,250,.45); color: #93c5fd; }
+  .tnote { position: absolute; left: 26px; right: 26px; bottom: 20px; display: flex; align-items: center; gap: 12px;
+    padding-top: 14px; border-top: 1px dashed rgba(148,163,184,.18);
+    font: 600 13px/1 "Consolas", monospace; letter-spacing: .12em; color: rgba(214,232,240,.34); }
+  .tnote b { color: rgba(94,234,212,.7); font-weight: 700; }
+
+  /* scene 4 */
+  .bigtable { left: 136px; top: 286px; width: 1232px; height: 610px; padding: 24px 28px; }
+  .bigtable table.tbl td { padding: 18px 16px; }  .rings { left: 1400px; top: 286px; width: 424px; height: 610px; padding: 24px 26px; }
+  .ringrow { display: flex; align-items: center; gap: 18px; margin-top: 30px; }
+  .ringrow:first-of-type { margin-top: 28px; }
+  .ringrow svg { width: 96px; height: 96px; transform: rotate(-90deg); }
+  .ringrow svg circle { fill: none; }
+  .ringrow .bg { stroke: rgba(148,163,184,.16); stroke-width: 7; }
+  .ringrow .fg { stroke: #5eead4; stroke-width: 7; stroke-linecap: round; filter: drop-shadow(0 0 8px rgba(94,234,212,.6)); }
+  .ringrow .fg.warn { stroke: #fbbf24; filter: drop-shadow(0 0 8px rgba(251,191,36,.5)); }
+  .ringrow .tt b { display: block; font: 900 22px/1 "Consolas", monospace; color: #eafafd; }
+  .ringrow .tt span { display: block; margin-top: 7px; font-size: 15px; color: rgba(214,232,240,.52); }
+
+  /* scene 5 */
+  .s2slot { left: 136px; top: 286px; width: 760px; height: 420px; }
+  .smalltable { left: 136px; top: 736px; width: 760px; height: 236px; padding: 18px 24px; }
+  .smalltable table.tbl { margin-top: 8px; }
+  .smalltable table.tbl th { padding: 10px 12px; }
+  .smalltable table.tbl td { padding: 11px 12px; font-size: 16px; }
+  .hbars { left: 936px; top: 286px; width: 888px; height: 300px; padding: 22px 28px; }
+  .hrow { display: flex; align-items: center; gap: 16px; margin-top: 18px; }
+  .hrow .n { width: 96px; font-size: 16px; color: rgba(214,232,240,.6); }
+  .hrow .t { flex: 1; height: 12px; background: rgba(148,163,184,.12); border-radius: 6px; overflow: hidden; }
+  .hrow .t i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, rgba(94,234,212,.5), #5eead4); }
+  .hrow b { width: 62px; text-align: right; font: 700 16px/1 "Consolas", monospace; color: #dff7f4; }
+  .logpanel { left: 936px; top: 616px; width: 888px; height: 356px; padding: 22px 28px; }
+  .logline { display: flex; gap: 16px; margin-top: 15px; font: 400 15px/1.3 "Consolas", monospace; color: rgba(214,232,240,.5); }
+  .logline b { color: rgba(94,234,212,.85); font-weight: 600; }
+  .logline em { font-style: normal; color: rgba(251,191,36,.75); }
+  .logline:nth-child(1) { margin-top: 18px; }
+
+  /* scene 6 */
+  .outro { position: absolute; left: 50%; top: 50%; width: 1500px; transform: translate(-50%, -52%); text-align: center; }
+  .eyebrow.center { justify-content: center; }
+  .out-title { margin-top: 30px; font-size: 122px; line-height: 1.06; font-weight: 900; letter-spacing: -.05em; color: #f3fbfd; }
+  .out-rule { width: 0; height: 2px; margin: 40px auto 0; background: linear-gradient(90deg, transparent, #5eead4, transparent); }
+  .out-sub { margin-top: 26px; font: 400 24px/1 "Consolas", monospace; letter-spacing: .3em; color: rgba(214,232,240,.48); }
+  .out-kpis { margin: 54px auto 0; display: flex; justify-content: center; gap: 0; }
+  .out-kpis div { width: 288px; border-left: 1px solid rgba(94,234,212,.22); }
+  .out-kpis div:first-child { border-left: 0; }
+  .out-kpis b { display: block; font: 900 40px/1 "Consolas", monospace; color: #5eead4; }
+  .out-kpis span { display: block; margin-top: 10px; font: 600 12px/1 "Consolas", monospace; letter-spacing: .22em; color: rgba(214,232,240,.4); }
+  .stamp { display: inline-block; margin-top: 52px; padding: 12px 22px; border: 1px solid rgba(94,234,212,.4);
+    font: 700 12px/1 "Consolas", monospace; letter-spacing: .26em; color: #5eead4; }
+
+  /* hud + veil */
+  .hud { position: absolute; left: 136px; right: 96px; bottom: 38px; z-index: 30; display: flex; align-items: center; gap: 22px;
+    font: 700 11px/1 "Consolas", monospace; letter-spacing: .2em; color: rgba(214,232,240,.36); }
+  .hud .track { flex: 1; height: 1px; background: rgba(148,163,184,.18); }
+  .hud .track i { display: block; height: 100%; width: 0; background: #5eead4; box-shadow: 0 0 10px rgba(94,234,212,.7); }
+  .hud .idx { color: #5eead4; }
+  #veil { position: absolute; top: -80px; left: 0; width: 300px; height: 1240px; z-index: 40; opacity: 0; pointer-events: none;
+    background: linear-gradient(90deg, rgba(94,234,212,0), rgba(94,234,212,.12) 22%, rgba(94,234,212,.26) 50%, rgba(94,234,212,.12) 78%, rgba(94,234,212,0));
+    border-left: 1px solid rgba(94,234,212,.45); border-right: 1px solid rgba(94,234,212,.45); }
+  #veil b { position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: rgba(94,234,212,.55); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="grid"></div>
+  <div class="vig"></div>
+
+  <div class="topbar">
+    <div class="brand"><i>NC</i><span data-brand>NUTCUT · OPS</span></div>
+    <div class="tabs">
+      <div class="tab on" data-tab="0">总览</div>
+      <div class="tab" data-tab="1">信号</div>
+      <div class="tab" data-tab="2">结构</div>
+      <div class="tab" data-tab="3">明细</div>
+      <div class="tab" data-tab="4">监控</div>
+    </div>
+    <div class="clock">
+      <span class="live"><i></i>LIVE</span>
+      <span id="clock">09:42:18</span>
+      <span>UTC+8</span>
+    </div>
+  </div>
+
+  <div class="rail">
+    <b class="on">DB</b><b>Q</b><b>CPU</b><b>NET</b>
+    <span class="sp"></span>
+    <em>REALTIME · NODE 07</em>
+  </div>
+
+  <!-- scene 1 -->
+  <section class="scene" id="sc1">
+    <div class="sc-in">
+      <div class="eyebrow"><i></i>01 / 总览 · OVERVIEW</div>
+      <h1 class="big" id="h1" data-title></h1>
+      <p class="sub" id="s1sub" data-sub></p>
+      <div class="kpis" id="kpis">
+        <div class="kpi"><span class="k">实时吞吐</span><span class="d up">+12.8%</span><b><span data-count="82.4" data-dec="1">0</span><em>k/s</em></b><span class="bar"><i></i></span></div>
+        <div class="kpi"><span class="k">平均延迟</span><span class="d down">-13.6%</span><b><span data-count="38" >0</span><em>ms</em></b><span class="bar"><i></i></span></div>
+        <div class="kpi"><span class="k">在线会话</span><span class="d up">+8.2%</span><b><span data-count="12480">0</span><em>人</em></b><span class="bar"><i></i></span></div>
+        <div class="kpi"><span class="k">任务完成</span><span class="d up">+3.1%</span><b><span data-count="99.2" data-dec="1">0</span><em>%</em></b><span class="bar"><i></i></span></div>
+      </div>
+      <div class="panel strip">
+        <div class="ph-head"><span>过去 30 分钟请求曲线</span><b>REQ / MIN</b></div>
+        <svg class="mini" viewBox="0 0 1068 118" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="mgrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#5eead4" stop-opacity=".34"/>
+              <stop offset="1" stop-color="#5eead4" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <g stroke="rgba(148,163,184,.14)" stroke-width="1">
+            <line x1="0" y1="26" x2="1068" y2="26"/><line x1="0" y1="60" x2="1068" y2="60"/><line x1="0" y1="94" x2="1068" y2="94"/>
+          </g>
+          <path id="m-area" d="M0 96 L92 84 L184 90 L276 66 L368 72 L460 48 L552 56 L644 34 L736 42 L828 24 L920 30 L1012 12 L1068 18 L1068 118 L0 118 Z" fill="url(#mgrad)"/>
+          <path id="m-line" pathLength="1000" d="M0 96 L92 84 L184 90 L276 66 L368 72 L460 48 L552 56 L644 34 L736 42 L828 24 L920 30 L1012 12 L1068 18"
+            fill="none" stroke="#5eead4" stroke-width="2.4" stroke-linejoin="round" style="stroke-dasharray:1000;stroke-dashoffset:1000"/>
+        </svg>
+      </div>
+    </div>
+    <div class="slot s1slot" data-image-slot="01">
+      <img alt="" />
+      <div class="ph"><b>图片位 01</b><em>IMAGE SLOT 01</em><s>监控画面 / MONITOR FEED</s></div>
+      <span class="corner a"></span><span class="corner b"></span><span class="corner c"></span><span class="corner d"></span>
+    </div>
+    <div class="panel meters">
+      <div class="ph-head"><span>资源占用</span><b>NODE 07</b></div>
+      <div class="meter"><div class="l"><span>CPU 集群</span><b>82%</b></div><div class="t"><i data-h="82"></i></div></div>
+      <div class="meter"><div class="l"><span>内存池</span><b>64%</b></div><div class="t"><i data-h="64"></i></div></div>
+      <div class="meter"><div class="l"><span>显存带宽</span><b>91%</b></div><div class="t"><i data-h="91"></i></div></div>
+      <div class="meter"><div class="l"><span>队列水位</span><b>47%</b></div><div class="t"><i data-h="47"></i></div></div>
+      <div class="meter"><div class="l"><span>存储索引</span><b>73%</b></div><div class="t"><i data-h="73"></i></div></div>
+    </div>
+  </section>
+
+  <!-- scene 2 -->
+  <section class="scene" id="sc2">
+    <div class="sc-in" style="width:1688px">
+      <div class="eyebrow"><i></i>02 / 实时信号 · REALTIME SIGNAL</div>
+      <h2 class="h2" id="h2"></h2>
+    </div>
+    <div class="panel chartwrap">
+      <div class="ph-head"><span>吞吐 / 延迟双轴采样</span><b>LAST 30 MIN · 1S RES</b></div>
+      <svg viewBox="0 0 1248 520">
+        <defs>
+          <linearGradient id="cgrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#5eead4" stop-opacity=".3"/>
+            <stop offset="1" stop-color="#5eead4" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <g stroke="rgba(148,163,184,.13)" stroke-width="1">
+          <line x1="70" y1="30" x2="1220" y2="30"/><line x1="70" y1="110" x2="1220" y2="110"/>
+          <line x1="70" y1="190" x2="1220" y2="190"/><line x1="70" y1="270" x2="1220" y2="270"/>
+          <line x1="70" y1="350" x2="1220" y2="350"/><line x1="70" y1="430" x2="1220" y2="430"/>
+        </g>
+        <g font-family="Consolas, monospace" font-size="15" fill="rgba(214,232,240,.42)">
+          <text x="30" y="35">100</text><text x="36" y="115">80</text><text x="36" y="195">60</text>
+          <text x="36" y="275">40</text><text x="36" y="355">20</text><text x="42" y="435">0</text>
+          <text x="70" y="470">00:00</text><text x="296" y="470">00:06</text><text x="522" y="470">00:12</text>
+          <text x="748" y="470">00:18</text><text x="974" y="470">00:24</text><text x="1180" y="470">00:30</text>
+          <text x="1220" y="500" text-anchor="end" fill="rgba(148,163,184,.3)">TIME / S</text>
+        </g>
+        <path id="c-area" d="M70 358 L196.7 326 L323.3 338 L450 278 L576.7 294 L703.3 222 L830 198 L956.7 214 L1083.3 150 L1210 102 L1210 430 L70 430 Z" fill="url(#cgrad)"/>
+        <path id="c-line" pathLength="1000" d="M70 358 L196.7 326 L323.3 338 L450 278 L576.7 294 L703.3 222 L830 198 L956.7 214 L1083.3 150 L1210 102"
+          fill="none" stroke="#5eead4" stroke-width="3" stroke-linejoin="round" style="stroke-dasharray:1000;stroke-dashoffset:1000"/>
+        <path id="c-line2" pathLength="1000" d="M70 310 L196.7 318 L323.3 270 L450 286 L576.7 222 L703.3 246 L830 166 L956.7 142 L1083.3 174 L1210 70"
+          fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="1000" stroke-dashoffset="1000" opacity=".85"/>
+        <g id="c-dots" fill="#5eead4">
+          <circle cx="70" cy="358" r="4"/><circle cx="196.7" cy="326" r="4"/><circle cx="323.3" cy="338" r="4"/>
+          <circle cx="450" cy="278" r="4"/><circle cx="576.7" cy="294" r="4"/><circle cx="703.3" cy="222" r="4"/>
+          <circle cx="830" cy="198" r="4"/><circle cx="956.7" cy="214" r="4"/><circle cx="1083.3" cy="150" r="4"/>
+          <circle cx="1210" cy="102" r="4"/>
+        </g>
+        <g id="c-head">
+          <line x1="1210" y1="70" x2="1210" y2="430" stroke="rgba(94,234,212,.35)" stroke-dasharray="4 6"/>
+          <rect x="1120" y="60" width="168" height="34" fill="rgba(94,234,212,.14)" stroke="rgba(94,234,212,.5)"/>
+          <text x="1204" y="83" text-anchor="end" font-family="Consolas, monospace" font-size="15" fill="#dffaf8">NOW · 82.4k</text>
+        </g>
+      </svg>
+    </div>
+    <div class="panel side2">
+      <div class="ph-head"><span>关键指标</span><b>Δ 24H</b></div>
+      <div class="kpi-mini"><span>P95 响应</span><b>142<em>ms</em></b></div>
+      <div class="kpi-mini"><span>缓存命中</span><b>94.2<em>%</em></b></div>
+      <div class="meter"><div class="l"><span>链路预算</span><b>64%</b></div><div class="t"><i data-h="64"></i></div></div>
+      <div class="meter"><div class="l"><span>错误预算</span><b>31%</b></div><div class="t"><i data-h="31"></i></div></div>
+      <div class="meter"><div class="l"><span>扩容余量</span><b>57%</b></div><div class="t"><i data-h="57"></i></div></div>
+    </div>
+  </section>
+
+  <!-- scene 3 -->
+  <section class="scene" id="sc3">
+    <div class="sc-in" style="width:1688px">
+      <div class="eyebrow"><i></i>03 / 结构拆解 · BREAKDOWN</div>
+      <h2 class="h2" id="h3"></h2>
+    </div>
+    <div class="panel barpanel">
+      <div class="ph-head"><span>分片负载分布</span><b>SHARD / UTIL</b></div>
+      <div class="bars" id="bars">
+        <div class="bcol"><div class="col" data-h="82"><span class="v">82%</span></div><span class="x">S-01</span><span class="gl"></span></div>
+        <div class="bcol"><div class="col" data-h="64"><span class="v">64%</span></div><span class="x">S-02</span><span class="gl"></span></div>
+        <div class="bcol hi"><div class="col" data-h="96"><span class="v">96%</span></div><span class="x">S-03</span><span class="gl"></span></div>
+        <div class="bcol"><div class="col" data-h="71"><span class="v">71%</span></div><span class="x">S-04</span><span class="gl"></span></div>
+        <div class="bcol"><div class="col" data-h="48"><span class="v">48%</span></div><span class="x">S-05</span><span class="gl"></span></div>
+      </div>
+      <div class="axisline"></div>
+      <div class="hline" style="bottom:410px"></div><div class="hline" style="bottom:560px"></div>
+    </div>
+    <div class="panel tablepanel">
+      <div class="ph-head"><span>核心指标对照</span><b>5 ROWS</b></div>
+      <table class="tbl">
+        <thead><tr><th>指标</th><th>当前</th><th>24H 前</th><th>变化</th><th>状态</th></tr></thead>
+        <tbody>
+          <tr><td>并发会话</td><td class="num">12,480</td><td class="num">11,204</td><td class="up">+11.4%</td><td><span class="pill">正常</span></td></tr>
+          <tr><td>平均延迟</td><td class="num">38 ms</td><td class="num">44 ms</td><td class="up">-13.6%</td><td><span class="pill">优秀</span></td></tr>
+          <tr><td>渲染队列</td><td class="num">216</td><td class="num">302</td><td class="up">-28.5%</td><td><span class="pill">正常</span></td></tr>
+          <tr><td>分片 S-03</td><td class="num">96%</td><td class="num">88%</td><td class="dn">+8.0pp</td><td><span class="pill warn">观察</span></td></tr>
+          <tr><td>错误率</td><td class="num">0.12%</td><td class="num">0.31%</td><td class="up">-61.3%</td><td><span class="pill">优秀</span></td></tr>
+        </tbody>
+      </table>
+      <div class="tnote"><b>NOTE</b><span>数据每 5 秒刷新 · 采样窗口 24 小时 · 时区 UTC+8</span></div>
+    </div>
+  </section>
+
+  <!-- scene 4 -->
+  <section class="scene" id="sc4">
+    <div class="sc-in" style="width:1688px">
+      <div class="eyebrow"><i></i>04 / 明细 · EVENT STREAM</div>
+      <h2 class="h2" id="h4"></h2>
+    </div>
+    <div class="panel bigtable">
+      <div class="ph-head"><span>实时事件流</span><b>STREAM · 6 EVENTS</b></div>
+      <table class="tbl">
+        <thead><tr><th>时间</th><th>事件</th><th>来源</th><th>数值</th><th>状态</th></tr></thead>
+        <tbody>
+          <tr><td class="num">09:12:04</td><td>模型 A 扩容</td><td>华东集群</td><td class="num">2,480</td><td><span class="pill">完成</span></td></tr>
+          <tr><td class="num">09:26:41</td><td>队列重排</td><td>调度中心</td><td class="num">1,860</td><td><span class="pill">完成</span></td></tr>
+          <tr><td class="num">09:41:18</td><td>缓存预热</td><td>边缘节点</td><td class="num">3,120</td><td><span class="pill run">运行中</span></td></tr>
+          <tr><td class="num">09:58:02</td><td>音频转写</td><td>语音服务</td><td class="num">960</td><td><span class="pill">完成</span></td></tr>
+          <tr><td class="num">10:14:37</td><td>图像渲染</td><td>渲染农场</td><td class="num">1,240</td><td><span class="pill run">运行中</span></td></tr>
+          <tr><td class="num">10:31:55</td><td>异常重试</td><td>网关</td><td class="num">42</td><td><span class="pill warn">观察</span></td></tr>
+        </tbody>
+      </table>
+      <div class="tnote"><b>STREAM</b><span>事件按到达时间排序 · 保留 30 天 · 可导出 CSV</span></div>
+    </div>
+    <div class="panel rings">
+      <div class="ph-head"><span>质量构成</span><b>QUALITY</b></div>
+      <div class="ringrow">
+        <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="42"/><circle class="fg" cx="50" cy="50" r="42" pathLength="100" data-ring="94" stroke-dasharray="100" stroke-dashoffset="100"/></svg>
+        <div class="tt"><b>94.2%</b><span>缓存命中率</span></div>
+      </div>
+      <div class="ringrow">
+        <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="42"/><circle class="fg" cx="50" cy="50" r="42" pathLength="100" data-ring="87" stroke-dasharray="100" stroke-dashoffset="100"/></svg>
+        <div class="tt"><b>87.0%</b><span>任务一次通过</span></div>
+      </div>
+      <div class="ringrow">
+        <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="42"/><circle class="fg warn" cx="50" cy="50" r="42" pathLength="100" data-ring="63" stroke-dasharray="100" stroke-dashoffset="100"/></svg>
+        <div class="tt"><b>63.5%</b><span>显存占用</span></div>
+      </div>
+      <div class="ringrow" style="margin-top:34px">
+        <div style="width:100%">
+          <div class="meter" style="margin-top:0"><div class="l"><span>调度健康度</span><b>91</b></div><div class="t"><i data-h="91"></i></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- scene 5 -->
+  <section class="scene" id="sc5">
+    <div class="sc-in" style="width:1688px">
+      <div class="eyebrow"><i></i>05 / 监控 · MONITOR FEED</div>
+      <h2 class="h2" id="h5"></h2>
+    </div>
+    <div class="slot s2slot" data-image-slot="02">
+      <img alt="" />
+      <div class="ph"><b>图片位 02</b><em>IMAGE SLOT 02</em><s>现场 / 设备 / 画面</s></div>
+      <span class="corner a"></span><span class="corner b"></span><span class="corner c"></span><span class="corner d"></span>
+    </div>
+    <div class="panel smalltable">
+      <div class="ph-head"><span>通道质量</span><b>4 CH</b></div>
+      <table class="tbl">
+        <thead><tr><th>通道</th><th>分辨率</th><th>帧率</th><th>状态</th></tr></thead>
+        <tbody>
+          <tr><td>CAM-01 主舞台</td><td class="num">3840×2160</td><td class="num">30 fps</td><td><span class="pill">稳定</span></td></tr>
+          <tr><td>CAM-02 特写</td><td class="num">1920×1080</td><td class="num">30 fps</td><td><span class="pill">稳定</span></td></tr>
+          <tr><td>CAM-03 侧机位</td><td class="num">1920×1080</td><td class="num">25 fps</td><td><span class="pill warn">轻微丢帧</span></td></tr>
+          <tr><td>CAM-04 数据屏</td><td class="num">1280×720</td><td class="num">30 fps</td><td><span class="pill run">接入中</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="panel hbars">
+      <div class="ph-head"><span>近 7 日请求量</span><b>DAY / K REQ</b></div>
+      <div class="hrow"><span class="n">周一</span><div class="t"><i data-w="58"></i></div><b>58.2</b></div>
+      <div class="hrow"><span class="n">周二</span><div class="t"><i data-w="66"></i></div><b>66.4</b></div>
+      <div class="hrow"><span class="n">周三</span><div class="t"><i data-w="74"></i></div><b>74.1</b></div>
+      <div class="hrow"><span class="n">周四</span><div class="t"><i data-w="69"></i></div><b>69.8</b></div>
+      <div class="hrow"><span class="n">周五</span><div class="t"><i data-w="88"></i></div><b>88.3</b></div>
+    </div>
+    <div class="panel logpanel">
+      <div class="ph-head"><span>系统日志</span><b>TAIL -F</b></div>
+      <div class="logline"><b>10:42:08</b><span>ingest.pipeline</span><em>commit</em><span>batch 2148 ok</span></div>
+      <div class="logline"><b>10:42:11</b><span>render.queue</span><em>scale</em><span>workers 12 → 18</span></div>
+      <div class="logline"><b>10:42:16</b><span>cache.edge</span><em>hit</em><span>ratio 0.942</span></div>
+      <div class="logline"><b>10:42:19</b><span>gateway</span><span>retry</span><em>42 requests</em></div>
+      <div class="logline"><b>10:42:24</b><span>model.a</span><em>ready</em><span>latency 38ms</span></div>
+      <div class="logline"><b>10:42:31</b><span>monitor</span><span>frame</span><em>slot 02 linked</em></div>
+      <div class="logline"><b>10:42:36</b><span>storage</span><em>flush</em><span>index rebuilt 1.2m</span></div>
+      <div class="logline"><b>10:42:42</b><span>alert</span><span>clear</span><em>shard s-03 96%</em></div>
+    </div>
+  </section>
+
+  <!-- scene 6 -->
+  <section class="scene" id="sc6">
+    <div class="outro">
+      <div class="eyebrow center"><i></i>06 / 系统就绪 · SYSTEM NOMINAL<i></i></div>
+      <h2 class="out-title" id="h6" data-title></h2>
+      <div class="out-rule" id="out-rule"></div>
+      <p class="out-sub" id="s6sub" data-sub></p>
+      <div class="out-kpis">
+        <div><b>99.98%</b><span>UPTIME / 30D</span></div>
+        <div><b>38ms</b><span>P95 LATENCY</span></div>
+        <div><b>6/6</b><span>NODES ONLINE</span></div>
+        <div><b>24/7</b><span>WATCH MODE</span></div>
+      </div>
+      <div class="stamp">ALL SYSTEMS NOMINAL · 数据来自实时链路</div>
+    </div>
+  </section>
+
+  <div class="hud">
+    <span data-brand>NUTCUT · OPS</span>
+    <span class="track"><i id="hud-bar"></i></span>
+    <span class="idx" id="hud-idx">01 / 06</span>
+    <span id="hud-time">00:00</span>
+  </div>
+  <div id="veil"><b></b></div>
+</div>
+<script>
+(function () {
+  'use strict';
+  var FPS = 30, DUR = 30, N = 6;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var C = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+  var S = function (v) { v = C(v); return v * v * (3 - 2 * v); };
+  var E = function (v) { return 1 - Math.pow(1 - C(v), 3); };
+  var EB = function (v) { v = C(v); var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(v - 1, 3) + c1 * Math.pow(v - 1, 2); };
+  var fmt = function (v, dec) {
+    var n = dec ? v.toFixed(dec) : Math.round(v).toString();
+    var p = n.split('.');
+    p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return p.join('.');
+  };
+  var DEMO = [
+    { id: '01', text: '所有指标，都在同一块屏幕上呼吸。', start: 0, end: 4.7 },
+    { id: '02', text: '信号变成曲线，曲线变成判断。', start: 5, end: 9.7 },
+    { id: '03', text: '拆开看，每个分片都有自己的节奏。', start: 10, end: 14.7 },
+    { id: '04', text: '事件流不撒谎，它只是需要被读懂。', start: 15, end: 19.7 },
+    { id: '05', text: '画面与数字，互相验证。', start: 20, end: 24.7 },
+    { id: '06', text: '当一切正常，最好的界面是安静的。', start: 25, end: 29.7 }
+  ];
+  var sceneEls = $$('.scene');
+  var plan = [];
+  var title = '数据，正在呼吸';
+  var sub = 'DATA CONSOLE · 30S OVERVIEW';
+
+  function buildPlan(inputs) {
+    var src = Array.isArray(inputs.lines) && inputs.lines.length ? inputs.lines.slice(0, 6) : DEMO;
+    var timed = src.length === 6 && src.every(function (l) {
+      return Number.isFinite(l.start) && Number.isFinite(l.end) && l.end > l.start;
+    });
+    plan = sceneEls.map(function (el, i) {
+      var line = src[i] || DEMO[i];
+      return {
+        start: timed ? src[i].start : i * 5,
+        end: timed ? src[i].end : (i + 1) * 5 + 0.35,
+        text: String(line.text == null ? DEMO[i].text : line.text)
+      };
+    });
+  }
+
+  function setText(el, v) { if (el && el.textContent !== v) el.textContent = v; }
+
+  function applyInputs(inputs) {
+    title = inputs.title || '数据，正在呼吸';
+    sub = inputs.subtitle || 'DATA CONSOLE · 30S OVERVIEW';
+    var brand = inputs.brand || 'NUTCUT · OPS';
+    $$('[data-brand]').forEach(function (el) { setText(el, brand); });
+    $$('[data-title]').forEach(function (el) { setText(el, title); });
+    $$('[data-sub]').forEach(function (el) { setText(el, sub); });
+    if (inputs.accent) document.documentElement.style.setProperty('--accent', inputs.accent);
+  }
+
+  function applyImages(inputs) {
+    var list = Array.isArray(inputs.images) ? inputs.images : [];
+    $$('[data-image-slot]').forEach(function (el, i) {
+      var raw = list[i];
+      var url = typeof raw === 'string' ? raw : (raw && typeof raw.url === 'string' ? raw.url : '');
+      var img = el.querySelector('img');
+      if (url) {
+        if (img.getAttribute('src') !== url) img.setAttribute('src', url);
+        el.classList.add('has-image');
+      } else {
+        el.classList.remove('has-image');
+        img.removeAttribute('src');
+      }
+    });
+  }
+
+  function revealRow(rows, local, delay, stagger) {
+    rows.forEach(function (el, i) {
+      var p = E((local - delay - i * stagger) / 0.5);
+      el.style.opacity = p;
+      el.style.transform = 'translateY(' + ((1 - p) * 14) + 'px)';
+    });
+  }
+
+  function fillMeters(local, delay) {
+    $$('.meter .t i').forEach(function (el, i) {
+      var h = Number(el.dataset.h || 0);
+      var p = E((local - (delay || 0.2) - i * 0.07) / 0.9);
+      el.style.width = (h * p).toFixed(1) + '%';
+    });
+  }
+
+  function upd1(local, t) {
+    var e = E((local - 0.1) / 0.65);
+    $('#h1').style.opacity = e;
+    $('#h1').style.transform = 'translateY(' + ((1 - e) * 26) + 'px)';
+    var se = E((local - 0.5) / 0.6);
+    $('#s1sub').style.opacity = se;
+    $('#s1sub').style.transform = 'translateY(' + ((1 - se) * 16) + 'px)';
+    $$('#kpis .kpi').forEach(function (el, i) {
+      var q = E((local - 0.35 - i * 0.1) / 0.65);
+      el.style.opacity = q;
+      el.style.transform = 'translateY(' + ((1 - q) * 30) + 'px)';
+    });
+    $$('#kpis [data-count]').forEach(function (el) {
+      var to = Number(el.dataset.count);
+      var dec = Number(el.dataset.dec || 0);
+      var q = E((local - 0.55) / 1.35);
+      if (q > 0.995) q = 1;
+      setText(el, fmt(to * q, dec));
+    });
+    $$('#kpis .bar i').forEach(function (el, i) {
+      var p = E((local - 0.8 - i * 0.08) / 1.1);
+      el.style.width = (70 + i * 7) * p + '%';
+    });
+    fillMeters(local, 0.7);
+    var m = E((local - 0.9) / 1.4);
+    $('#m-line').style.strokeDashoffset = String(1000 * (1 - m));
+    $('#m-area').style.opacity = m * 0.9;
+    var slot = $('#sc1 .slot');
+    var sp = E((local - 0.25) / 0.8);
+    slot.style.opacity = sp;
+    slot.style.transform = 'translateY(' + ((1 - sp) * 22) + 'px)';
+  }
+
+  function upd2(local, t) {
+    setText($('#h2'), plan[1].text);
+    var e = E((local - 0.05) / 0.6);
+    $('#h2').style.opacity = e;
+    $('#h2').style.transform = 'translateX(' + ((1 - e) * -28) + 'px)';
+    var p = E((local - 0.25) / 2.0);
+    $('#c-line').style.strokeDashoffset = String(1000 * (1 - p));
+    var p2 = E((local - 0.6) / 2.2);
+    $('#c-line2').style.strokeDashoffset = String(1000 * (1 - p2));
+    $('#c-area').style.opacity = p * 0.95;
+    $$('#c-dots circle').forEach(function (el, i) {
+      el.style.opacity = S((p * 10.5) - i);
+    });
+    $('#c-head').style.opacity = S((local - 1.9) / 0.5);
+    $('#c-head').style.transform = 'translateX(' + ((1 - C((local - 1.9) / 0.6)) * 40) + 'px)';
+    $$('.chartwrap, .side2').forEach(function (el, i) {
+      var q = E((local - 0.1 - i * 0.14) / 0.7);
+      el.style.opacity = q;
+      el.style.transform = 'translateY(' + ((1 - q) * 26) + 'px)';
+    });
+    fillMeters(local, 0.9);
+  }
+
+  function upd3(local, t) {
+    setText($('#h3'), plan[2].text);
+    var e = E((local - 0.05) / 0.6);
+    $('#h3').style.opacity = e;
+    $('#h3').style.transform = 'translateX(' + ((1 - e) * -28) + 'px)';
+    $$('#bars .col').forEach(function (el, i) {
+      var h = Number(el.dataset.h);
+      var p = E((local - 0.15 - i * 0.07) / 0.85);
+      el.style.height = (h * p * 4.1) + 'px';
+      var v = el.querySelector('.v');
+      v.style.opacity = S((p - 0.6) * 2.5);
+    });
+    var rows = $$('.tablepanel tbody tr');
+    revealRow(rows, local, 0.15, 0.06);
+    $$('.barpanel, .tablepanel').forEach(function (el, i) {
+      var q = E((local - 0.1 - i * 0.12) / 0.7);
+      el.style.opacity = q;
+      el.style.transform = 'translateY(' + ((1 - q) * 30) + 'px)';
+    });
+  }
+
+  function upd4(local, t) {
+    setText($('#h4'), plan[3].text);
+    var e = E((local - 0.05) / 0.6);
+    $('#h4').style.opacity = e;
+    $('#h4').style.transform = 'translateX(' + ((1 - e) * -28) + 'px)';
+    revealRow($$('.bigtable tbody tr'), local, 0.15, 0.06);
+    $$('.rings circle[data-ring]').forEach(function (el, i) {
+      var v = Number(el.dataset.ring);
+      var p = E((local - 0.2 - i * 0.12) / 0.8);
+      el.setAttribute('stroke-dashoffset', String(100 - v * p));
+    });
+    $$('.bigtable, .rings').forEach(function (el, i) {
+      var q = E((local - 0.1 - i * 0.12) / 0.7);
+      el.style.opacity = q;
+      el.style.transform = 'translateY(' + ((1 - q) * 30) + 'px)';
+    });
+  }
+
+  function upd5(local, t) {
+    setText($('#h5'), plan[4].text);
+    var e = E((local - 0.05) / 0.6);
+    $('#h5').style.opacity = e;
+    $('#h5').style.transform = 'translateX(' + ((1 - e) * -28) + 'px)';
+    $$('.hrow .t i').forEach(function (el, i) {
+      var w = Number(el.dataset.w);
+      var p = E((local - 0.15 - i * 0.07) / 0.8);
+      el.style.width = (w * p) + '%';
+    });
+    revealRow($$('.smalltable tbody tr'), local, 0.2, 0.06);
+    revealRow($$('.logline'), local, 0.3, 0.05);
+    var slot = $('.s2slot');
+    var sp = E((local - 0.2) / 0.8);
+    slot.style.opacity = sp;
+    slot.style.transform = 'scale(' + (0.97 + 0.03 * sp) + ')';
+    $$('.hbars, .logpanel, .smalltable').forEach(function (el, i) {
+      var q = E((local - 0.1 - i * 0.1) / 0.7);
+      el.style.opacity = q;
+      el.style.transform = 'translateY(' + ((1 - q) * 24) + 'px)';
+    });
+  }
+
+  function upd6(local, t) {
+    setText($('#h6'), title);
+    var e = EB((local - 0.1) / 0.9);
+    $('#h6').style.opacity = S((local - 0.1) / 0.5);
+    $('#h6').style.transform = 'scale(' + (0.94 + 0.06 * e) + ')';
+    $('#out-rule').style.width = (640 * E((local - 0.6) / 0.8)) + 'px';
+    var s = E((local - 0.8) / 0.7);
+    $('#s6sub').style.opacity = s;
+    $('#s6sub').style.letterSpacing = (0.3 + (1 - s) * 0.12) + 'em';
+    $$('.out-kpis div').forEach(function (el, i) {
+      var q = E((local - 1.0 - i * 0.1) / 0.7);
+      el.style.opacity = q;
+      el.style.transform = 'translateY(' + ((1 - q) * 20) + 'px)';
+    });
+    $('.stamp').style.opacity = S((local - 1.6) / 0.6);
+  }
+
+  var updaters = [upd1, upd2, upd3, upd4, upd5, upd6];
+
+  window.renderFrame = function (frame, inputs) {
+    inputs = inputs || {};
+    buildPlan(inputs);
+    applyInputs(inputs);
+    applyImages(inputs);
+    var t = frame / FPS;
+    var active = 0;
+    for (var i = 0; i < plan.length; i += 1) if (t >= plan[i].start - 0.001) active = i;
+    sceneEls.forEach(function (el, i) {
+      var p = plan[i];
+      var op = Math.min(S((t - p.start + 0.7) / 0.7), S((p.end - t) / 0.6));
+      el.style.visibility = op > 0.001 ? 'visible' : 'hidden';
+      el.style.opacity = op.toFixed(3);
+    });
+    var local = Math.max(0, t - plan[active].start) + (active === 0 ? 1.9 : 0.6);
+    updaters[active](local, t);
+
+    var sec = Math.floor(t);
+    $('#clock').textContent = '09:' + String(42 + Math.floor(sec / 60)).padStart(2, '0') + ':' + String(18 + sec % 60).padStart(2, '0');
+    $('#hud-bar').style.width = (C(t / DUR) * 100) + '%';
+    $('#hud-idx').textContent = String(active + 1).padStart(2, '0') + ' / 06';
+    $('#hud-time').textContent = '00:' + String(Math.floor(t)).padStart(2, '0');
+    $$('.tab').forEach(function (el, i) { el.classList.toggle('on', i === active); });
+    $$('.rail b').forEach(function (el, i) { el.classList.toggle('on', i === active % 4); });
+
+    var vt = -1, vp = 0;
+    for (var k = 1; k < N; k += 1) {
+      var b = k * 5;
+      var q = (t - b) / 0.9 + 0.5;
+      if (q > 0 && q < 1 && (vt < 0 || Math.abs(t - b) < Math.abs(t - vt))) { vt = b; vp = q; }
+    }
+    var veil = $('#veil');
+    if (vt >= 0) {
+      veil.style.opacity = String(0.62 * Math.sin(Math.PI * vp));
+      veil.style.transform = 'translateX(' + (-320 + vp * 2240) + 'px) skewX(-12deg)';
+    } else {
+      veil.style.opacity = '0';
+    }
+  };
+
+  applyInputs({});
+  applyImages({});
+  window.renderFrame(0, {});
+  window.__ready = true;
+})();
+</script>
+</body>
+</html>

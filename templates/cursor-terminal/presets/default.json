@@ -1,0 +1,13 @@
+{
+  "brand": "NUTCUT / TERMINAL",
+  "title": "剪辑，从一条命令开始",
+  "subtitle": "CURSOR TERMINAL · 30S",
+  "lines": [
+    { "id": "01", "text": "剪辑，从一条命令开始。", "start": 0, "end": 4.7 },
+    { "id": "02", "text": "把意图写清楚，机器才听得懂。", "start": 5, "end": 9.7 },
+    { "id": "03", "text": "每一步，都有日志。", "start": 10, "end": 14.7 },
+    { "id": "04", "text": "延迟，是体验的真相。", "start": 15, "end": 19.7 },
+    { "id": "05", "text": "结果，要能被看见。", "start": 20, "end": 24.7 },
+    { "id": "06", "text": "命令结束，片子开始。", "start": 25, "end": 29.7 }
+  ]
+}

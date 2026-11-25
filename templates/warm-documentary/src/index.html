@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>温暖纪实 · Warm Documentary</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #2a211b; }
+  body { font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", system-ui, sans-serif; color: #f0e2cd; }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden;
+    background:
+      radial-gradient(1100px 760px at 24% 18%, rgba(224,169,109,.14), transparent 64%),
+      radial-gradient(900px 700px at 82% 86%, rgba(192,122,74,.12), transparent 62%),
+      linear-gradient(160deg, #2f251d 0%, #241c17 52%, #1b1510 100%); }
+  #fx { position: absolute; inset: 0; width: 1920px; height: 1080px; z-index: 2; opacity: .5; }
+  .light { position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    background: radial-gradient(680px 460px at 76% 22%, rgba(240,226,205,.09), transparent 70%); }
+  .vignette { position: absolute; inset: 0; pointer-events: none; z-index: 8;
+    background: radial-gradient(ellipse at 50% 50%, transparent 36%, rgba(10,7,5,.66) 100%); }
+  .bar { position: absolute; left: 0; right: 0; height: 96px; background: #100b08; z-index: 12; }
+  .bar.top { top: 0; } .bar.bottom { bottom: 0; }
+  .scene { position: absolute; inset: 0; visibility: hidden; opacity: 0; z-index: 5; }
+  .inner { position: absolute; left: 150px; right: 150px; }
+  .serif { font-family: "Songti SC", "SimSun", "Noto Serif SC", Georgia, serif; }
+  .tag { font: 400 13px/1 "Consolas", monospace; letter-spacing: .34em; color: rgba(240,226,205,.46); text-transform: uppercase; }
+  .tag b { color: #e0a96d; font-weight: 400; }
+  .ch { display: inline-block; }
+  em { font-style: normal; color: #e0a96d; }
+
+  .s1 { top: 236px; }
+  .s1 h1 { margin-top: 34px; width: 1420px; font-size: 118px; line-height: 1.16; font-weight: 700; letter-spacing: .01em; color: #f0e2cd; }
+  .s1 .kicker { margin-top: 24px; font-size: 22px; letter-spacing: .08em; color: rgba(240,226,205,.62); }
+  .s1 .rule { margin-top: 38px; width: 0; height: 1px; background: rgba(224,169,109,.6); }
+  .s1 .sub { margin-top: 26px; font-size: 25px; font-weight: 400; letter-spacing: .22em; color: rgba(240,226,205,.52); }
+  .s1 .ghost { position: absolute; right: 40px; top: -60px; font: 700 380px/1 Georgia, serif; color: rgba(240,226,205,.035); letter-spacing: -.06em; }
+  .s1 .credit { position: absolute; right: 0; bottom: -86px; text-align: right; font: 400 12px/1.9 "Consolas", monospace; letter-spacing: .22em; color: rgba(240,226,205,.3); }
+
+  .s2 .quote { position: absolute; left: 220px; right: 220px; top: 310px; }
+  .s2 .mark { position: absolute; left: -8px; top: -118px; font: 700 220px/1 Georgia, serif; color: rgba(224,169,109,.22); }
+  .s2 h2 { font-size: 68px; line-height: 1.6; font-weight: 400; letter-spacing: .06em; color: #f4e9d8; text-align: center; }
+  .s2 .who { margin-top: 54px; text-align: center; font: 400 13px/1 "Consolas", monospace; letter-spacing: .3em; color: rgba(224,169,109,.6); }
+  .s2 .who::before { content: ""; display: inline-block; width: 54px; height: 1px; margin-right: 18px; vertical-align: 4px; background: rgba(224,169,109,.5); }
+
+  .s3 { top: 180px; }
+  .s3 h2 { margin-top: 22px; width: 1360px; font-size: 64px; line-height: 1.3; font-weight: 700; letter-spacing: .02em; }
+  .frames { margin-top: 42px; display: flex; gap: 32px; }
+  .frame { width: 500px; }
+  .frame .img { position: relative; height: 310px; overflow: hidden; background: #3a2d24; box-shadow: 0 24px 60px rgba(0,0,0,.35); }
+  .frame .img::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 80px rgba(10,7,5,.6); }
+  .frame .img .scene-a, .frame .img .scene-b, .frame .img .scene-c { position: absolute; inset: -6%; }
+  .scene-a { background:
+      linear-gradient(115deg, rgba(255,232,199,.55) 0 18%, transparent 34%),
+      linear-gradient(180deg, #d9b184 0%, #8a5f40 58%, #38271c 100%); }
+  .scene-a::before { content: ""; position: absolute; left: 9%; top: 9%; width: 44%; height: 56%;
+    background: linear-gradient(165deg, rgba(255,244,220,.95), rgba(255,226,186,.25)); box-shadow: 0 0 60px rgba(255,232,199,.4); }
+  .scene-a::after { content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(24,14,8,.55), transparent 24%, transparent 72%, rgba(24,14,8,.6)); }
+  .scene-b { background:
+      radial-gradient(circle at 30% 42%, #c69463 0 16%, #7d5335 34%, transparent 56%),
+      radial-gradient(circle at 70% 70%, rgba(240,226,205,.35) 0 6%, transparent 20%),
+      linear-gradient(160deg, #4b3324, #241a14 80%); }
+  .scene-b::before { content: ""; position: absolute; left: 24%; top: 38%; width: 30%; height: 34%; border-radius: 50%;
+    background: radial-gradient(circle at 38% 30%, #c99a6a, #6b452d 68%, #3a2418); box-shadow: 0 18px 34px rgba(10,7,5,.5); }
+  .scene-b::after { content: ""; position: absolute; left: 0; right: 0; bottom: 18%; height: 1px; background: rgba(240,226,205,.22); box-shadow: 0 8px 30px rgba(0,0,0,.4); }
+  .scene-c { background:
+      radial-gradient(circle at 24% 30%, rgba(255,214,163,.65) 0 3%, transparent 7%),
+      radial-gradient(circle at 58% 24%, rgba(255,214,163,.5) 0 2%, transparent 6%),
+      radial-gradient(circle at 82% 38%, rgba(255,214,163,.4) 0 2%, transparent 6%),
+      linear-gradient(180deg, #9e7049 0%, #5d402c 52%, #241a14 100%); }
+  .scene-c::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 38%;
+    background: linear-gradient(180deg, transparent, rgba(24,14,8,.7)); }
+  .scene-c::after { content: ""; position: absolute; left: 12%; right: 12%; bottom: 30%; height: 2px; background: rgba(255,226,186,.3); }
+  .frame .cap { margin-top: 18px; font: 400 12px/1.6 "Consolas", monospace; letter-spacing: .18em; color: rgba(240,226,205,.45); }
+  .frame .cap b { display: block; margin-bottom: 4px; font-family: "Microsoft YaHei", sans-serif; font-size: 18px; font-weight: 600; letter-spacing: .06em; color: rgba(240,226,205,.82); }
+
+  .s4 .vtext { position: absolute; right: 140px; top: 170px; height: 660px; writing-mode: vertical-rl; text-orientation: upright;
+    font-size: 88px; line-height: 1.5; font-weight: 700; letter-spacing: .12em; color: #f4e9d8; }
+  .s4 .left { position: absolute; left: 0; top: 330px; width: 760px; }
+  .s4 .left .tag { margin-bottom: 26px; }
+  .s4 .left p { font-size: 24px; line-height: 1.9; color: rgba(240,226,205,.56); }
+  .s4 .swatch { margin-top: 34px; display: flex; gap: 12px; }
+  .s4 .swatch i { width: 54px; height: 8px; background: #e0a96d; }
+  .s4 .swatch i:nth-child(2) { background: #c07a4a; } .s4 .swatch i:nth-child(3) { background: #8a9a7b; }
+  .s4 .swatch i:nth-child(4) { background: #f0e2cd; }
+  .s4 .glow { position: absolute; left: 60px; top: 120px; width: 620px; height: 620px;
+    background: radial-gradient(circle, rgba(224,169,109,.14), transparent 66%); }
+
+  .s5 { top: 250px; }
+  .s5 .num { display: flex; align-items: flex-start; font: 400 300px/.82 "Georgia", "Songti SC", serif; color: #e0a96d; letter-spacing: -.04em; }
+  .s5 .num small { margin-top: 30px; font-size: 54px; letter-spacing: .04em; color: rgba(224,169,109,.6); }
+  .s5 h2 { margin-top: 46px; width: 1280px; font-size: 46px; line-height: 1.5; font-weight: 400; letter-spacing: .04em; color: rgba(240,226,205,.78); }
+  .s5 .line { position: absolute; right: 0; top: 60px; width: 560px; height: 1px; background: rgba(224,169,109,.3); }
+  .s5 .line::after { content: "24 FPS / EVERY FRAME COUNTS"; position: absolute; right: 0; top: 14px; font: 400 11px/1 "Consolas", monospace; letter-spacing: .24em; color: rgba(240,226,205,.32); }
+
+  .s6 { top: 300px; text-align: center; }
+  .s6 .tag { text-align: center; }
+  .s6 h2 { margin-top: 34px; font-size: 100px; line-height: 1.24; font-weight: 700; letter-spacing: .02em; }
+  .s6 .rule { margin: 40px auto 0; width: 0; height: 1px; background: rgba(224,169,109,.55); }
+  .s6 .sub { margin-top: 26px; font-size: 23px; letter-spacing: .26em; color: rgba(240,226,205,.5); }
+  .s6 .fin { margin-top: 54px; font: 400 12px/1 "Consolas", monospace; letter-spacing: .4em; color: rgba(224,169,109,.55); }
+
+  .hud { position: absolute; left: 150px; right: 150px; bottom: 116px; z-index: 20; display: flex; align-items: center; gap: 24px;
+    font: 400 11px/1 "Consolas", monospace; letter-spacing: .24em; color: rgba(240,226,205,.34); }
+  .hud .track { flex: 1; height: 1px; background: rgba(240,226,205,.12); }
+  .hud .track i { display: block; height: 100%; width: 0; background: #e0a96d; }
+  .hud .idx { color: rgba(224,169,109,.7); }
+  @media (max-width: 900px) { body { zoom: .5; } }
+
+  .nutcut-image-slot { position: absolute; right: 112px; bottom: 112px; width: 280px; height: 158px; border: 1px dashed #8a93a1; opacity: .62; display: grid; place-items: center; font: 700 11px/1 "Consolas", monospace; letter-spacing: .2em; z-index: 9; pointer-events: none; color: #8a93a1; }
+  .nutcut-image-slot::before { content: ""; position: absolute; inset: 12px; border: 1px solid currentColor; opacity: .22; }
+  .nutcut-image-slot span { position: relative; }
+  .nutcut-image-slot.has-image { opacity: .9; border-style: solid; background-size: cover; background-position: center; }
+  .nutcut-image-slot.has-image span { display: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="light"></div>
+  <canvas id="fx" width="1920" height="1080"></canvas>
+  <div class="vignette"></div>
+
+  <section class="scene" id="sc1">
+    <div class="inner s1">
+      <div class="tag"><b>A NUTCUT DOCUMENTARY</b> · 2026</div>
+      <div class="kicker" id="s1-kicker"></div>
+      <h1 id="s1-title" data-title class="serif"></h1>
+      <div class="rule" id="s1-rule"></div>
+      <p class="sub" id="s1-sub" data-sub></p>
+      <div class="credit">DIRECTED BY<br>ORDINARY DAYS</div>
+      <div class="ghost">01</div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc2">
+    <div class="inner s2">
+      <div class="quote">
+        <div class="mark serif">“</div>
+        <h2 id="s2-quote" class="serif"></h2>
+        <div class="who">VOICE OVER / 旁白</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc3">
+    <div class="inner s3">
+      <div class="tag"><b>SCENE 03</b> · THREE FRAGMENTS</div>
+      <h2 id="s3-title" class="serif"></h2>
+      <div class="frames">
+        <article class="frame" data-frame="0">
+          <div class="img"><div class="scene-a"></div></div>
+          <div class="cap"><b>清晨六点</b>WINDOW / 05:58</div>
+        </article>
+        <article class="frame" data-frame="1">
+          <div class="img"><div class="scene-b"></div></div>
+          <div class="cap"><b>一杯热水</b>TABLE / 06:12</div>
+        </article>
+        <article class="frame" data-frame="2">
+          <div class="img"><div class="scene-c"></div></div>
+          <div class="cap"><b>出门的路</b>STREET / 06:40</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc4">
+    <div class="inner s4">
+      <div class="glow"></div>
+      <div class="left">
+        <div class="tag"><b>SCENE 04</b> · BETWEEN THE LINES</div>
+        <p>镜头停久一点，情绪才有地方落下。纪录片不负责给答案，只负责把问题留在空气里。</p>
+        <div class="swatch"><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="vtext serif" id="s4-text"></div>
+    </div>
+  </section>
+
+  <section class="scene" id="sc5">
+    <div class="inner s5">
+      <div class="line"></div>
+      <div class="num"><span id="s5-num">0</span><small>帧 / 秒</small></div>
+      <h2 id="s5-text" class="serif"></h2>
+    </div>
+  </section>
+
+  <section class="scene" id="sc6">
+    <div class="inner s6">
+      <div class="tag"><b>THE END</b> · THANK YOU FOR WATCHING</div>
+      <h2 id="s6-title" data-title class="serif"></h2>
+      <div class="rule" id="s6-rule"></div>
+      <p class="sub" id="s6-sub" data-sub></p>
+      <div class="fin" id="s6-note"></div>
+    </div>
+    <div class="nutcut-image-slot" data-image-slot><span>图片位 01</span></div>
+  </section>
+
+  <div class="bar top"></div>
+  <div class="bar bottom"></div>
+  <div class="hud">
+    <span data-brand>NUTCUT / FILM</span>
+    <span class="track"><i id="hud-bar"></i></span>
+    <span class="idx" id="hud-idx">01 / 06</span>
+    <span id="hud-time">00:00</span>
+  </div>
+</div>
+<script>
+(function () {
+  const FPS = 30, DUR = 30;
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+  const C = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
+  const S = (v) => { v = C(v); return v * v * (3 - 2 * v); };
+  const E = (v) => 1 - Math.pow(1 - C(v), 3);
+  const EI = (v) => { v = C(v); return v < .5 ? 2 * v * v : 1 - Math.pow(-2 * v + 2, 2) / 2; };
+  const EB = (v) => { v = C(v); const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(v - 1, 3) + c1 * Math.pow(v - 1, 2); };
+  const R = (i, s) => { const x = Math.sin(i * 127.1 + (s || 0) * 311.7) * 43758.5453; return x - Math.floor(x); };
+  const DEFAULT_TITLE = '把日子，过成故事';
+  const DEFAULT_SUB = 'A QUIET DOCUMENTARY';
+  const DEMO = [
+    { id: '01', text: '有些故事，不需要说得太快。', start: 0, end: 4.7 },
+    { id: '02', text: '清晨六点，水壶先醒了。', start: 5, end: 9.7 },
+    { id: '03', text: '一双旧鞋，走过三条街。', start: 10, end: 14.7 },
+    { id: '04', text: '沉默的地方，也藏着回答。', start: 15, end: 19.7 },
+    { id: '05', text: '慢下来，才听得见生活。', start: 20, end: 24.7 },
+    { id: '06', text: '把日子，过成值得记住的样子。', start: 25, end: 30.6 }
+  ];
+  const scenes = $$('.scene');
+  let plan = [];
+
+  function buildPlan(inputs) {
+    const src = Array.isArray(inputs.lines) && inputs.lines.length ? inputs.lines.slice(0, 6) : DEMO;
+    const timed = src.length === 6 && src.every((l) => Number.isFinite(l.start) && Number.isFinite(l.end) && l.end > l.start);
+    plan = scenes.map((el, i) => {
+      const line = src[i] || DEMO[i];
+      return {
+        start: timed ? src[i].start : i * 5,
+        end: timed ? src[i].end : (i + 1) * 5 + .35,
+        text: String(line.text == null ? DEMO[i].text : line.text),
+        id: String(line.id == null ? DEMO[i].id : line.id)
+      };
+    });
+  }
+
+  function setText(el, value) { if (el && el.textContent !== value) el.textContent = value; }
+
+  function setChars(el, value) {
+    if (!el) return [];
+    if (el.dataset.text !== value) {
+      el.dataset.text = value; el.textContent = '';
+      for (const ch of Array.from(value)) {
+        const s = document.createElement('span'); s.className = 'ch'; s.textContent = ch; el.appendChild(s);
+      }
+    }
+    return Array.from(el.children);
+  }
+
+  function revealChars(list, local, delay, stagger, y) {
+    list.forEach((node, i) => {
+      const p = E((local - delay - i * stagger) / .7);
+      node.style.opacity = p;
+      node.style.transform = 'translateY(' + ((1 - p) * y) + '%)';
+    });
+  }
+
+  function applyInputs(inputs) {
+    if (inputs.accent) document.documentElement.style.setProperty('--accent', inputs.accent);
+    const brand = inputs.brand || 'NUTCUT / FILM';
+    $$('[data-brand]').forEach((el) => setText(el, brand));
+    const title = inputs.title || DEFAULT_TITLE;
+    const sub = inputs.subtitle || DEFAULT_SUB;
+    $$('[data-title]').forEach((el) => setText(el, title));
+    $$('[data-sub]').forEach((el) => setText(el, sub));
+  }
+
+  const fx = $('#fx');
+  const g = fx.getContext('2d');
+  function drawBG(t, active) {
+    g.clearRect(0, 0, 1920, 1080);
+    const frame = Math.round(t * FPS);
+    const seed = frame * 977;
+    for (let i = 0; i < 1100; i++) {
+      const x = R(i + seed, 1) * 1920;
+      const y = R(i + seed, 2) * 1080;
+      const a = .05 + R(i + seed, 3) * .16;
+      const s = .5 + R(i + seed, 4) * 1.6;
+      g.fillStyle = 'rgba(240,226,205,' + a.toFixed(3) + ')';
+      g.fillRect(x, y, s, s);
+    }
+    const leak = g.createRadialGradient(1780, 120, 10, 1780, 120, 320);
+    leak.addColorStop(0, 'rgba(224,169,109,' + (.1 + .02 * Math.sin(t * .8)) + ')');
+    leak.addColorStop(1, 'rgba(224,169,109,0)');
+    g.fillStyle = leak;
+    g.fillRect(1300, 0, 620, 500);
+  }
+
+  function updateScene1(local, t, p) {
+    setText($('#s1-kicker'), p.text);
+    const chars = setChars($('#s1-title'), $('#s1-title').dataset.text || DEFAULT_TITLE);
+    revealChars(chars, local, .25, .06, 60);
+    $('#s1-rule').style.width = (340 * E((local - 1.2) / 1.2)) + 'px';
+    const sub = $('#s1-sub');
+    sub.style.opacity = S((local - 1.5) / 1.2);
+    sub.style.letterSpacing = (.22 + (1 - E((local - 1.5) / 1.4)) * .08) + 'em';
+    $('.s1 .credit').style.opacity = S((local - 2.0) / 1.0);
+    const out = 1 - C((t - (p.end - .7)) / .7);
+    $('.s1').style.transform = 'scale(' + (1 + .035 * C(local / 4.7)) + ')';
+    $('.s1').style.opacity = out;
+  }
+
+  function updateScene2(local, t, p) {
+    const q = $('#s2-quote');
+    if (q.dataset.text !== p.text) { q.dataset.text = p.text; q.textContent = p.text; }
+    const e = E((local - .35) / 1.4);
+    q.style.opacity = e;
+    q.style.transform = 'translateY(' + ((1 - e) * 26) + 'px)';
+    $('.s2 .mark').style.opacity = S((local - .2) / 1.0) * .9;
+    $('.s2 .who').style.opacity = S((local - 1.4) / .9);
+    $('.s2 .quote').style.transform = 'translateY(' + (Math.sin(t * .35) * 4) + 'px)';
+  }
+
+  function updateScene3(local, t, p) {
+    setText($('#s3-title'), p.text);
+    $$('.frame').forEach((el, i) => {
+      const e = E((local - .25 - i * .3) / 1.1);
+      el.style.opacity = e;
+      el.style.transform = 'translateY(' + ((1 - e) * 26) + 'px)';
+      const img = el.querySelector('.img > div');
+      const k = C((local - .3 - i * .3) / 4.4);
+      img.style.transform = 'scale(' + (1.02 + .08 * k) + ') translate(' + (k * -2) + '%, ' + (k * 1.5) + '%)';
+    });
+  }
+
+  function updateScene4(local, t, p) {
+    const el = $('#s4-text');
+    if (el.dataset.text !== p.text) { el.dataset.text = p.text; el.textContent = p.text; }
+    const e = E((local - .2) / 1.2);
+    el.style.opacity = e;
+    el.style.transform = 'translateY(' + ((1 - e) * 40) + 'px)';
+    $('.s4 .left').style.opacity = S((local - .8) / 1.0);
+    $('.s4 .left').style.transform = 'translateX(' + ((1 - E((local - .8) / 1.1)) * -20) + 'px)';
+    $('.s4 .glow').style.opacity = .7 + .3 * Math.sin(t * .5);
+  }
+
+  function updateScene5(local, t, p) {
+    setText($('#s5-num'), String(Math.round(24 * E((local - .3) / 1.8))));
+    setText($('#s5-text'), p.text);
+    const e = E((local - .5) / 1.2);
+    $('.s5 .num').style.opacity = S((local - .1) / .8);
+    $('.s5 .num').style.transform = 'translateY(' + ((1 - e) * 22) + 'px)';
+    $('.s5 h2').style.opacity = S((local - 1.1) / 1.0);
+    $('.s5 h2').style.transform = 'translateY(' + ((1 - E((local - 1.1) / 1.0)) * 20) + 'px)';
+  }
+
+  function updateScene6(local, t, p) {
+    const chars = setChars($('#s6-title'), $('#s6-title').dataset.text || DEFAULT_TITLE);
+    revealChars(chars, local, .2, .07, 50);
+    $('#s6-rule').style.width = (260 * E((local - 1.1) / 1.2)) + 'px';
+    $('#s6-sub').style.opacity = S((local - 1.4) / 1.1);
+    setText($('#s6-note'), '— ' + p.text);
+    $('#s6-note').style.opacity = S((local - 1.9) / 1.0);
+  }
+
+  const updates = [updateScene1, updateScene2, updateScene3, updateScene4, updateScene5, updateScene6];
+
+  window.renderFrame = function (frame, inputs) {
+    inputs = inputs || {};
+    buildPlan(inputs);
+    applyInputs(inputs);
+    const t = frame / FPS;
+    let active = 0;
+    for (let i = 0; i < plan.length; i += 1) if (t >= plan[i].start - .001) active = i;
+    scenes.forEach((el, i) => {
+      const p = plan[i];
+      const op = Math.min(S((t - p.start + .7) / .7), S((p.end - t) / .6));
+      el.style.visibility = op > .001 ? 'visible' : 'hidden';
+      el.style.opacity = op.toFixed(3);
+    });
+    updates[active](Math.max(0, t - plan[active].start) + (active === 0 ? 1.4 : 0), t, plan[active]);
+    drawBG(t, active);
+    $('#hud-bar').style.width = (C(t / DUR) * 100) + '%';
+    setText($('#hud-idx'), String(active + 1).padStart(2, '0') + ' / 06');
+    setText($('#hud-time'), '00:' + String(Math.floor(t)).padStart(2, '0'));
+  };
+
+  applyInputs({});
+  window.renderFrame(0, {});
+  window.__ready = true;
+})();
+</script>
+<script>
+  (function () {
+    var slot = document.querySelector('[data-image-slot]');
+    if (!slot) return;
+    var original = window.renderFrame;
+    window.renderFrame = function (frame, inputs) {
+      var image = inputs && inputs.images && inputs.images[0];
+      var url = image && (typeof image === 'string' ? image : image.url);
+      if (url) { slot.style.backgroundImage = 'url("' + url + '")'; slot.classList.add('has-image'); }
+      else { slot.style.backgroundImage = ''; slot.classList.remove('has-image'); }
+      return original(frame, inputs);
+    };
+  })();
+</script>
+</body>
+</html>

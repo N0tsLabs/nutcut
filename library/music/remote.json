@@ -1,0 +1,153 @@
+{
+  "name": "DURU AI CC0 BGM",
+  "version": 1,
+  "license": "CC0-1.0",
+  "source": "https://github.com/uncle-sheepsky/duru-ai-cc0-bgm",
+  "description": "On-demand CC0 background tracks from DURU-AI. Downloaded only when selected.",
+  "tracks": [
+    {
+      "id": "duru-bed-galaxy-spin",
+      "title": "Galaxy Spin",
+      "file": "duru-bed-galaxy-spin.mp3",
+      "url": "https://raw.githubusercontent.com/uncle-sheepsky/duru-ai-cc0-bgm/main/mp3/duru-bed-galaxy-spin.mp3",
+      "category": "cinematic",
+      "tags": ["cinematic", "space", "ambient", "calm", "documentary"],
+      "mood": "cinematic",
+      "duration": 114,
+      "license": "CC0-1.0",
+      "attribution": "DURU-AI"
+    },
+    {
+      "id": "duru-bed-brainmap-leftpanel",
+      "title": "Brainmap Left Panel",
+      "file": "duru-bed-brainmap-leftpanel.mp3",
+      "url": "https://raw.githubusercontent.com/uncle-sheepsky/duru-ai-cc0-bgm/main/mp3/duru-bed-brainmap-leftpanel.mp3",
+      "category": "cinematic",
+      "tags": ["cinematic", "documentary", "calm", "tech", "minimal"],
+      "mood": "calm",
+      "duration": 138,
+      "license": "CC0-1.0",
+      "attribution": "DURU-AI"
+    },
+    {
+      "id": "duru-bed-tspin-fake",
+      "title": "Tspin Fake",
+      "file": "duru-bed-tspin-fake.mp3",
+      "url": "https://raw.githubusercontent.com/uncle-sheepsky/duru-ai-cc0-bgm/main/mp3/duru-bed-tspin-fake.mp3",
+      "category": "cinematic",
+      "tags": ["cinematic", "tension", "tech", "documentary"],
+      "mood": "tense",
+      "duration": 157,
+      "license": "CC0-1.0",
+      "attribution": "DURU-AI"
+    },
+    {
+      "id": "duru-bed-colorkit-template",
+      "title": "Template Montuno",
+      "file": "duru-bed-colorkit-template.mp3",
+      "url": "https://raw.githubusercontent.com/uncle-sheepsky/duru-ai-cc0-bgm/main/mp3/duru-bed-colorkit-template.mp3",
+      "category": "world",
+      "tags": ["warm", "latin", "playful", "design", "explainer"],
+      "mood": "warm",
+      "duration": 145,
+      "license": "CC0-1.0",
+      "attribution": "DURU-AI"
+    },
+    {
+      "id": "duru-roomscene-lofi",
+      "title": "Roomscene Lofi",
+      "file": "duru-roomscene-lofi.mp3",
+      "url": "https://raw.githubusercontent.com/uncle-sheepsky/duru-ai-cc0-bgm/main/mp3/duru-roomscene-lofi.mp3",
+      "category": "lofi",
+      "tags": ["lofi", "warm", "cozy", "study", "calm"],
+      "mood": "warm",
+      "duration": 104,
+      "license": "CC0-1.0",
+      "attribution": "DURU-AI"
+    },
+    {
+      "id": "duru-zoneout-06-sleepy-bossa",
+      "title": "Sleepy Bossa",
+      "file": "duru-zoneout-06-sleepy-bossa.mp3",
+      "url": "https://raw.githubusercontent.com/uncle-sheepsky/duru-ai-cc0-bgm/main/mp3/duru-zoneout-06-sleepy-bossa.mp3",
+      "category": "lofi",
+      "tags": ["bossa", "calm", "warm", "evening", "acoustic"],
+      "mood": "calm",
+      "duration": 209,
+      "license": "CC0-1.0",
+      "attribution": "DURU-AI"
+    },
+    {
+      "id": "duru-zoneout-11-warm-milk-nocturne",
+      "title": "Warm Milk Nocturne",
+      "file": "duru-zoneout-11-warm-milk-nocturne.mp3",
+      "url": "https://raw.githubusercontent.com/uncle-sheepsky/duru-ai-cc0-bgm/main/mp3/duru-zoneout-11-warm-milk-nocturne.mp3",
+      "category": "lofi",
+      "tags": ["piano", "calm", "night", "warm", "reflective"],
+      "mood": "calm",
+      "duration": 228,
+      "license": "CC0-1.0",
+      "attribution": "DURU-AI"
+    },
+    {
+      "id": "duru-bed-bgm-free",
+      "title": "BGM Free Bed",
+      "file": "duru-bed-bgm-free.mp3",
+      "url": "https://raw.githubusercontent.com/uncle-sheepsky/duru-ai-cc0-bgm/main/mp3/duru-bed-bgm-free.mp3",
+      "category": "explainer",
+      "tags": ["tech", "explainer", "minimal", "documentary", "calm"],
+      "mood": "focused",
+      "duration": 221,
+      "license": "CC0-1.0",
+      "attribution": "DURU-AI"
+    },
+    {
+      "id": "duru-ai-ep2-music",
+      "title": "Music From Code",
+      "file": "duru-ai-ep2-music.mp3",
+      "url": "https://raw.githubusercontent.com/uncle-sheepsky/duru-ai-cc0-bgm/main/mp3/duru-ai-ep2-music.mp3",
+      "category": "explainer",
+      "tags": ["tech", "explainer", "build", "rhythmic", "curious"],
+      "mood": "focused",
+      "duration": 120,
+      "license": "CC0-1.0",
+      "attribution": "DURU-AI"
+    },
+    {
+      "id": "duru-zoneout-10-five-beats-on-a-cloud",
+      "title": "Five Beats on a Cloud",
+      "file": "duru-zoneout-10-five-beats-on-a-cloud.mp3",
+      "url": "https://raw.githubusercontent.com/uncle-sheepsky/duru-ai-cc0-bgm/main/mp3/duru-zoneout-10-five-beats-on-a-cloud.mp3",
+      "category": "dreamy",
+      "tags": ["dreamy", "calm", "cinematic", "celesta", "harp"],
+      "mood": "dreamy",
+      "duration": 255,
+      "license": "CC0-1.0",
+      "attribution": "DURU-AI"
+    },
+    {
+      "id": "duru-bed-rhythm-perspective",
+      "title": "Rhythm Perspective",
+      "file": "duru-bed-rhythm-perspective.mp3",
+      "url": "https://raw.githubusercontent.com/uncle-sheepsky/duru-ai-cc0-bgm/main/mp3/duru-bed-rhythm-perspective.mp3",
+      "category": "explainer",
+      "tags": ["tech", "rhythmic", "design", "explainer", "playful"],
+      "mood": "focused",
+      "duration": 179,
+      "license": "CC0-1.0",
+      "attribution": "DURU-AI"
+    },
+    {
+      "id": "duru-rondo",
+      "title": "Rondo",
+      "file": "duru-rondo.mp3",
+      "url": "https://raw.githubusercontent.com/uncle-sheepsky/duru-ai-cc0-bgm/main/mp3/duru-rondo.mp3",
+      "category": "intro",
+      "tags": ["intro", "neutral", "short", "brand"],
+      "mood": "neutral",
+      "duration": 64,
+      "license": "CC0-1.0",
+      "attribution": "DURU-AI"
+    }
+  ]
+}

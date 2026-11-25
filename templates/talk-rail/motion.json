@@ -1,0 +1,14 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "talk-rail",
+  "name": "口播侧栏",
+  "version": "1.0.0",
+  "description": "口播/头像类：左侧固定章节侧栏，右侧口播视频与大字说明，适合知识讲解和课程片段。",
+  "tags": ["口播", "侧栏", "章节", "横屏", "讲解"],
+  "runtime": { "profile": "html/1", "entry": "src/index.html", "network": false },
+  "output": { "width": 1920, "height": 1080, "fps": 30, "duration": 10 },
+  "params": { "schema": "params.schema.json", "defaultPreset": "presets/default.json" },
+  "license": "LICENSE",
+  "preview": "preview.png"
+}

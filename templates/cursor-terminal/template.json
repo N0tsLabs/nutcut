@@ -1,0 +1,45 @@
+{
+  "id": "cursor-terminal",
+  "name": "光标终端",
+  "category": "文字动态",
+  "description": "终端/编辑器风格的逐字打字模板：命令、日志、延迟柱状图、状态表和截图位，适合 AI、编程、产品能力和教程。",
+  "tags": [
+    "终端",
+    "打字",
+    "AI",
+    "编程",
+    "科技"
+  ],
+  "palette": {
+    "background": "#030705",
+    "surface": "#07100c",
+    "primary": "#7cffb2",
+    "accent": "#ffd166",
+    "text": "#e8fff2",
+    "muted": "#4f7a62"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 400,
+    "titleSize": 104
+  },
+  "motion": {
+    "transition": "cursor-wipe",
+    "speed": "medium"
+  },
+  "duration": 30,
+  "sceneCount": 6,
+  "stylePrompt": "黑绿终端界面，等宽字体、光标逐字打字、日志滚动、延迟柱状图、状态表与截图位，冷静、精确、工程师气质。",
+  "preview": "preview.svg",
+  "features": [
+    "table",
+    "chart",
+    "image-slot"
+  ],
+  "styleRefs": [
+    "A2",
+    "E3",
+    "M1"
+  ],
+  "group": "风格片头"
+}

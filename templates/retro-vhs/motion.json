@@ -1,0 +1,32 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "retro-vhs",
+  "name": "复古录像带",
+  "version": "1.0.0",
+  "description": "80 年代 VHS 复古模板：紫粉青色霓虹、磁带噪点、时间码与 RGB 偏移故障，适合音乐与怀旧主题。",
+  "tags": [
+    "复古",
+    "VHS",
+    "霓虹",
+    "故障",
+    "磁带"
+  ],
+  "runtime": {
+    "profile": "html/1",
+    "entry": "src/index.html",
+    "network": false
+  },
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 30
+  },
+  "params": {
+    "schema": "params.schema.json",
+    "defaultPreset": "presets/default.json"
+  },
+  "license": "LICENSE",
+  "preview": "preview.svg"
+}

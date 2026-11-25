@@ -1,0 +1,3154 @@
+{
+  "name": "NutCut Music Library",
+  "version": 2,
+  "license": "CC0-1.0",
+  "description": "CC0 lo-fi background music from Open Lo-Fi.",
+  "trackCount": 166,
+  "categories": [
+    {
+      "category": "activities",
+      "label": "Focus, Rituals & Daily Routines",
+      "count": 29
+    },
+    {
+      "category": "late-night",
+      "label": "Late Night, Neon & After Hours",
+      "count": 18
+    },
+    {
+      "category": "soul-rnb",
+      "label": "Soul, Slow Jams & Warm Rooms",
+      "count": 21
+    },
+    {
+      "category": "seasonal-weather",
+      "label": "Seasons, Rain & Weather",
+      "count": 27
+    },
+    {
+      "category": "ambient-lofi",
+      "label": "Ambient Drift & Dreamscapes",
+      "count": 21
+    },
+    {
+      "category": "jazzhop",
+      "label": "Jazz Lounge & Bookstore Grooves",
+      "count": 12
+    },
+    {
+      "category": "asian-lofi",
+      "label": "Asian & Zen Lo-Fi",
+      "count": 8
+    },
+    {
+      "category": "funk-soul",
+      "label": "Funk, Soul & Retro Bounce",
+      "count": 14
+    },
+    {
+      "category": "hybrid",
+      "label": "Hybrid, World & Cinematic",
+      "count": 8
+    },
+    {
+      "category": "chillhop",
+      "label": "Chillhop & Cozy Beats",
+      "count": 8
+    }
+  ],
+  "tracks": [
+    {
+      "id": "openlofi-2-am-debug-loop",
+      "title": "2 AM Debug Loop",
+      "file": "openlofi/2-am-debug-loop.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "debug"
+      ],
+      "mood": "focused",
+      "duration": 117.8,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-3-am-echoes",
+      "title": "3 AM Echoes",
+      "file": "openlofi/3-am-echoes.mp3",
+      "category": "late-night",
+      "categoryLabel": "Late Night, Neon & After Hours",
+      "tags": [
+        "lofi",
+        "late-night",
+        "echoes"
+      ],
+      "mood": "moody",
+      "duration": 97.12,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-3am-sink-light",
+      "title": "3AM Sink Light",
+      "file": "openlofi/3am-sink-light.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "3am",
+        "sink",
+        "light"
+      ],
+      "mood": "warm",
+      "duration": 98.64,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-a-taste-of-spring",
+      "title": "A Taste of Spring",
+      "file": "openlofi/a-taste-of-spring.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "taste",
+        "spring"
+      ],
+      "mood": "calm",
+      "duration": 169.96,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-after-school-rain",
+      "title": "After School Rain",
+      "file": "openlofi/after-school-rain.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "after",
+        "school",
+        "rain"
+      ],
+      "mood": "calm",
+      "duration": 97.28,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-almost-floating",
+      "title": "Almost Floating",
+      "file": "openlofi/almost-floating.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "almost",
+        "floating"
+      ],
+      "mood": "calm",
+      "duration": 202.24,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-amber-sidewalks",
+      "title": "Amber Sidewalks",
+      "file": "openlofi/amber-sidewalks.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "amber",
+        "sidewalks"
+      ],
+      "mood": "calm",
+      "duration": 111.6,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-amber-windowpane",
+      "title": "Amber Windowpane",
+      "file": "openlofi/amber-windowpane.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "amber",
+        "windowpane"
+      ],
+      "mood": "calm",
+      "duration": 150.88,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-antenna-after-midnight",
+      "title": "Antenna After Midnight",
+      "file": "openlofi/antenna-after-midnight.mp3",
+      "category": "late-night",
+      "categoryLabel": "Late Night, Neon & After Hours",
+      "tags": [
+        "lofi",
+        "late-night",
+        "antenna",
+        "after",
+        "midnight"
+      ],
+      "mood": "moody",
+      "duration": 166.48,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-ashes-in-the-coffee-cup",
+      "title": "Ashes in the Coffee Cup",
+      "file": "openlofi/ashes-in-the-coffee-cup.mp3",
+      "category": "jazzhop",
+      "categoryLabel": "Jazz Lounge & Bookstore Grooves",
+      "tags": [
+        "lofi",
+        "jazzhop",
+        "ashes",
+        "coffee",
+        "cup"
+      ],
+      "mood": "warm",
+      "duration": 131.8,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-aurora-on-mute",
+      "title": "Aurora on Mute",
+      "file": "openlofi/aurora-on-mute.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "aurora",
+        "mute"
+      ],
+      "mood": "calm",
+      "duration": 177.68,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-autumn-on-the-window-glass",
+      "title": "Autumn on the Window Glass",
+      "file": "openlofi/autumn-on-the-window-glass.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "autumn",
+        "window",
+        "glass"
+      ],
+      "mood": "calm",
+      "duration": 192.28,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-bamboo-shadow-waltz",
+      "title": "Bamboo Shadow Waltz",
+      "file": "openlofi/bamboo-shadow-waltz.mp3",
+      "category": "asian-lofi",
+      "categoryLabel": "Asian & Zen Lo-Fi",
+      "tags": [
+        "lofi",
+        "asian-lofi",
+        "bamboo",
+        "shadow",
+        "waltz"
+      ],
+      "mood": "calm",
+      "duration": 161.64,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-barefoot-in-the-kitchen",
+      "title": "Barefoot in the Kitchen",
+      "file": "openlofi/barefoot-in-the-kitchen.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "barefoot",
+        "kitchen"
+      ],
+      "mood": "warm",
+      "duration": 137.08,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-basement-groove-86",
+      "title": "Basement Groove 86",
+      "file": "openlofi/basement-groove-86.mp3",
+      "category": "funk-soul",
+      "categoryLabel": "Funk, Soul & Retro Bounce",
+      "tags": [
+        "lofi",
+        "funk-soul",
+        "basement",
+        "groove"
+      ],
+      "mood": "upbeat",
+      "duration": 114.32,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-bells-before-sunrise",
+      "title": "Bells Before Sunrise",
+      "file": "openlofi/bells-before-sunrise.mp3",
+      "category": "asian-lofi",
+      "categoryLabel": "Asian & Zen Lo-Fi",
+      "tags": [
+        "lofi",
+        "asian-lofi",
+        "bells",
+        "before",
+        "sunrise"
+      ],
+      "mood": "calm",
+      "duration": 139.96,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-blinds-and-headlights",
+      "title": "Blinds and Headlights",
+      "file": "openlofi/blinds-and-headlights.mp3",
+      "category": "late-night",
+      "categoryLabel": "Late Night, Neon & After Hours",
+      "tags": [
+        "lofi",
+        "late-night",
+        "blinds",
+        "headlights"
+      ],
+      "mood": "moody",
+      "duration": 138.92,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-block-party-slow-jam",
+      "title": "Block Party Slow Jam",
+      "file": "openlofi/block-party-slow-jam.mp3",
+      "category": "funk-soul",
+      "categoryLabel": "Funk, Soul & Retro Bounce",
+      "tags": [
+        "lofi",
+        "funk-soul",
+        "block",
+        "party",
+        "slow",
+        "jam"
+      ],
+      "mood": "upbeat",
+      "duration": 148.4,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-bloom-between-showers",
+      "title": "Bloom Between Showers",
+      "file": "openlofi/bloom-between-showers.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "bloom",
+        "between",
+        "showers"
+      ],
+      "mood": "calm",
+      "duration": 157.84,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-blossoms-on-the-pavement",
+      "title": "Blossoms on the Pavement",
+      "file": "openlofi/blossoms-on-the-pavement.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "blossoms",
+        "pavement"
+      ],
+      "mood": "calm",
+      "duration": 114.24,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-blue-below-the-surface",
+      "title": "Blue Below the Surface",
+      "file": "openlofi/blue-below-the-surface.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "blue",
+        "below",
+        "surface"
+      ],
+      "mood": "calm",
+      "duration": 177.76,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-breezy-afternoon-terrace",
+      "title": "Breezy Afternoon Terrace",
+      "file": "openlofi/breezy-afternoon-terrace.mp3",
+      "category": "jazzhop",
+      "categoryLabel": "Jazz Lounge & Bookstore Grooves",
+      "tags": [
+        "lofi",
+        "jazzhop",
+        "breezy",
+        "afternoon",
+        "terrace"
+      ],
+      "mood": "warm",
+      "duration": 89.84,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-brushstrokes-and-rain",
+      "title": "Brushstrokes and Rain",
+      "file": "openlofi/brushstrokes-and-rain.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "brushstrokes",
+        "rain"
+      ],
+      "mood": "focused",
+      "duration": 146.32,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-burnt-sunset-groove",
+      "title": "Burnt Sunset Groove",
+      "file": "openlofi/burnt-sunset-groove.mp3",
+      "category": "funk-soul",
+      "categoryLabel": "Funk, Soul & Retro Bounce",
+      "tags": [
+        "lofi",
+        "funk-soul",
+        "burnt",
+        "sunset",
+        "groove"
+      ],
+      "mood": "upbeat",
+      "duration": 212.52,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-butter-and-windowlight",
+      "title": "Butter and Windowlight",
+      "file": "openlofi/butter-and-windowlight.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "butter",
+        "windowlight"
+      ],
+      "mood": "focused",
+      "duration": 128,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-cafe-da-tarde",
+      "title": "Cafe Da Tarde",
+      "file": "openlofi/cafe-da-tarde.mp3",
+      "category": "hybrid",
+      "categoryLabel": "Hybrid, World & Cinematic",
+      "tags": [
+        "lofi",
+        "hybrid",
+        "cafe",
+        "tarde"
+      ],
+      "mood": "cinematic",
+      "duration": 109.48,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-candle-wax-heart",
+      "title": "Candle Wax Heart",
+      "file": "openlofi/candle-wax-heart.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "candle",
+        "wax",
+        "heart"
+      ],
+      "mood": "warm",
+      "duration": 166,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-candlelit-at-70-bpm",
+      "title": "Candlelit at 70 BPM",
+      "file": "openlofi/candlelit-at-70-bpm.mp3",
+      "category": "jazzhop",
+      "categoryLabel": "Jazz Lounge & Bookstore Grooves",
+      "tags": [
+        "lofi",
+        "jazzhop",
+        "candlelit",
+        "bpm"
+      ],
+      "mood": "warm",
+      "duration": 121.6,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-cassette-basement-bounce",
+      "title": "Cassette Basement Bounce",
+      "file": "openlofi/cassette-basement-bounce.mp3",
+      "category": "funk-soul",
+      "categoryLabel": "Funk, Soul & Retro Bounce",
+      "tags": [
+        "lofi",
+        "funk-soul",
+        "cassette",
+        "basement",
+        "bounce"
+      ],
+      "mood": "upbeat",
+      "duration": 183.84,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-cassette-pastel-nights",
+      "title": "Cassette Pastel Nights",
+      "file": "openlofi/cassette-pastel-nights.mp3",
+      "category": "hybrid",
+      "categoryLabel": "Hybrid, World & Cinematic",
+      "tags": [
+        "lofi",
+        "hybrid",
+        "cassette",
+        "pastel",
+        "nights"
+      ],
+      "mood": "cinematic",
+      "duration": 223,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-cathedral-hiss",
+      "title": "Cathedral Hiss",
+      "file": "openlofi/cathedral-hiss.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "cathedral",
+        "hiss"
+      ],
+      "mood": "calm",
+      "duration": 207.68,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-chapter-by-lamplight",
+      "title": "Chapter By Lamplight",
+      "file": "openlofi/chapter-by-lamplight.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "chapter",
+        "lamplight"
+      ],
+      "mood": "focused",
+      "duration": 136.04,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-coffee-ring-notebook",
+      "title": "Coffee Ring Notebook",
+      "file": "openlofi/coffee-ring-notebook.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "coffee",
+        "ring",
+        "notebook"
+      ],
+      "mood": "focused",
+      "duration": 130.64,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-continue-screen-dreams",
+      "title": "Continue Screen Dreams",
+      "file": "openlofi/continue-screen-dreams.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "continue",
+        "screen",
+        "dreams"
+      ],
+      "mood": "focused",
+      "duration": 95.16,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-cursor-after-midnight",
+      "title": "Cursor After Midnight",
+      "file": "openlofi/cursor-after-midnight.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "cursor",
+        "after",
+        "midnight"
+      ],
+      "mood": "focused",
+      "duration": 232.4,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-deep-space-loop",
+      "title": "Deep Space Loop",
+      "file": "openlofi/deep-space-loop.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "deep",
+        "space"
+      ],
+      "mood": "calm",
+      "duration": 159.96,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-dog-eared-pages",
+      "title": "Dog Eared Pages",
+      "file": "openlofi/dog-eared-pages.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "dog",
+        "eared",
+        "pages"
+      ],
+      "mood": "focused",
+      "duration": 167.84,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-drifting-through-fog",
+      "title": "Drifting Through Fog",
+      "file": "openlofi/drifting-through-fog.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "drifting",
+        "through",
+        "fog"
+      ],
+      "mood": "calm",
+      "duration": 184.96,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-dusk-between-stoops",
+      "title": "Dusk Between Stoops",
+      "file": "openlofi/dusk-between-stoops.mp3",
+      "category": "chillhop",
+      "categoryLabel": "Chillhop & Cozy Beats",
+      "tags": [
+        "lofi",
+        "chillhop",
+        "dusk",
+        "between",
+        "stoops"
+      ],
+      "mood": "relaxed",
+      "duration": 132.24,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-dusk-on-red-earth",
+      "title": "Dusk on Red Earth",
+      "file": "openlofi/dusk-on-red-earth.mp3",
+      "category": "hybrid",
+      "categoryLabel": "Hybrid, World & Cinematic",
+      "tags": [
+        "lofi",
+        "hybrid",
+        "dusk",
+        "red",
+        "earth"
+      ],
+      "mood": "cinematic",
+      "duration": 153.52,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-dust-and-hardcovers",
+      "title": "Dust and Hardcovers",
+      "file": "openlofi/dust-and-hardcovers.mp3",
+      "category": "jazzhop",
+      "categoryLabel": "Jazz Lounge & Bookstore Grooves",
+      "tags": [
+        "lofi",
+        "jazzhop",
+        "dust",
+        "hardcovers"
+      ],
+      "mood": "warm",
+      "duration": 212.2,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-dust-in-the-curtains",
+      "title": "Dust in the Curtains",
+      "file": "openlofi/dust-in-the-curtains.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "dust",
+        "curtains"
+      ],
+      "mood": "focused",
+      "duration": 185.92,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-dust-on-the-morning-keys",
+      "title": "Dust on the Morning Keys",
+      "file": "openlofi/dust-on-the-morning-keys.mp3",
+      "category": "chillhop",
+      "categoryLabel": "Chillhop & Cozy Beats",
+      "tags": [
+        "lofi",
+        "chillhop",
+        "dust",
+        "morning",
+        "keys"
+      ],
+      "mood": "relaxed",
+      "duration": 152.76,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-dust-on-the-needle",
+      "title": "Dust on the Needle",
+      "file": "openlofi/dust-on-the-needle.mp3",
+      "category": "funk-soul",
+      "categoryLabel": "Funk, Soul & Retro Bounce",
+      "tags": [
+        "lofi",
+        "funk-soul",
+        "dust",
+        "needle"
+      ],
+      "mood": "upbeat",
+      "duration": 168.88,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-dusty-jukebox-heart",
+      "title": "Dusty Jukebox Heart",
+      "file": "openlofi/dusty-jukebox-heart.mp3",
+      "category": "funk-soul",
+      "categoryLabel": "Funk, Soul & Retro Bounce",
+      "tags": [
+        "lofi",
+        "funk-soul",
+        "dusty",
+        "jukebox",
+        "heart"
+      ],
+      "mood": "upbeat",
+      "duration": 156.92,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-electric-puddles",
+      "title": "Electric Puddles",
+      "file": "openlofi/electric-puddles.mp3",
+      "category": "late-night",
+      "categoryLabel": "Late Night, Neon & After Hours",
+      "tags": [
+        "lofi",
+        "late-night",
+        "electric",
+        "puddles"
+      ],
+      "mood": "moody",
+      "duration": 139.92,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-elevator-to-the-moon",
+      "title": "Elevator To the Moon",
+      "file": "openlofi/elevator-to-the-moon.mp3",
+      "category": "late-night",
+      "categoryLabel": "Late Night, Neon & After Hours",
+      "tags": [
+        "lofi",
+        "late-night",
+        "elevator",
+        "moon"
+      ],
+      "mood": "moody",
+      "duration": 169.12,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-embers-after-midnight",
+      "title": "Embers After Midnight",
+      "file": "openlofi/embers-after-midnight.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "embers",
+        "after",
+        "midnight"
+      ],
+      "mood": "calm",
+      "duration": 132.96,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-empty-street-static",
+      "title": "Empty Street Static",
+      "file": "openlofi/empty-street-static.mp3",
+      "category": "late-night",
+      "categoryLabel": "Late Night, Neon & After Hours",
+      "tags": [
+        "lofi",
+        "late-night",
+        "empty",
+        "street",
+        "static"
+      ],
+      "mood": "moody",
+      "duration": 99.72,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-end-scene-glow",
+      "title": "End Scene Glow",
+      "file": "openlofi/end-scene-glow.mp3",
+      "category": "hybrid",
+      "categoryLabel": "Hybrid, World & Cinematic",
+      "tags": [
+        "lofi",
+        "hybrid",
+        "end",
+        "scene",
+        "glow"
+      ],
+      "mood": "cinematic",
+      "duration": 197.76,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-envelope-on-the-bed",
+      "title": "Envelope on the Bed",
+      "file": "openlofi/envelope-on-the-bed.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "envelope",
+        "bed"
+      ],
+      "mood": "warm",
+      "duration": 176.08,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-exhale-the-morning",
+      "title": "Exhale the Morning",
+      "file": "openlofi/exhale-the-morning.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "exhale",
+        "morning"
+      ],
+      "mood": "focused",
+      "duration": 199.88,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-faded-corners-of-the-page",
+      "title": "Faded Corners of the Page",
+      "file": "openlofi/faded-corners-of-the-page.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "faded",
+        "corners",
+        "page"
+      ],
+      "mood": "focused",
+      "duration": 142.36,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-fallen-leaves-loop",
+      "title": "Fallen Leaves Loop",
+      "file": "openlofi/fallen-leaves-loop.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "fallen",
+        "leaves"
+      ],
+      "mood": "calm",
+      "duration": 149.2,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-fieldnotes-at-dawn",
+      "title": "Fieldnotes at Dawn",
+      "file": "openlofi/fieldnotes-at-dawn.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "fieldnotes",
+        "dawn"
+      ],
+      "mood": "calm",
+      "duration": 148.08,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-fireplace-loop",
+      "title": "Fireplace Loop",
+      "file": "openlofi/fireplace-loop.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "fireplace"
+      ],
+      "mood": "calm",
+      "duration": 93.88,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-first-coffee-thoughts",
+      "title": "First Coffee Thoughts",
+      "file": "openlofi/first-coffee-thoughts.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "first",
+        "coffee",
+        "thoughts"
+      ],
+      "mood": "focused",
+      "duration": 94.64,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-first-light-on-the-ridge",
+      "title": "First Light on the Ridge",
+      "file": "openlofi/first-light-on-the-ridge.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "first",
+        "light",
+        "ridge"
+      ],
+      "mood": "calm",
+      "duration": 157.56,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-ghosts-on-the-hillside",
+      "title": "Ghosts on the Hillside",
+      "file": "openlofi/ghosts-on-the-hillside.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "ghosts",
+        "hillside"
+      ],
+      "mood": "calm",
+      "duration": 199.64,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-glasshouse-ghosts",
+      "title": "Glasshouse Ghosts",
+      "file": "openlofi/glasshouse-ghosts.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "glasshouse",
+        "ghosts"
+      ],
+      "mood": "calm",
+      "duration": 173.48,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-glow-on-the-overpass",
+      "title": "Glow on the Overpass",
+      "file": "openlofi/glow-on-the-overpass.mp3",
+      "category": "chillhop",
+      "categoryLabel": "Chillhop & Cozy Beats",
+      "tags": [
+        "lofi",
+        "chillhop",
+        "glow",
+        "overpass"
+      ],
+      "mood": "relaxed",
+      "duration": 159.92,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-golden-afternoon-groove",
+      "title": "Golden Afternoon Groove",
+      "file": "openlofi/golden-afternoon-groove.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "golden",
+        "afternoon",
+        "groove"
+      ],
+      "mood": "warm",
+      "duration": 155.64,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-grandmas-kitchen-on-sunday",
+      "title": "Grandmas Kitchen on Sunday",
+      "file": "openlofi/grandmas-kitchen-on-sunday.mp3",
+      "category": "funk-soul",
+      "categoryLabel": "Funk, Soul & Retro Bounce",
+      "tags": [
+        "lofi",
+        "funk-soul",
+        "grandmas",
+        "kitchen",
+        "sunday"
+      ],
+      "mood": "upbeat",
+      "duration": 216.28,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-graphite-in-the-quiet",
+      "title": "Graphite in the Quiet",
+      "file": "openlofi/graphite-in-the-quiet.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "graphite",
+        "quiet"
+      ],
+      "mood": "focused",
+      "duration": 130.76,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-graphite-mornings",
+      "title": "Graphite Mornings",
+      "file": "openlofi/graphite-mornings.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "graphite",
+        "mornings"
+      ],
+      "mood": "focused",
+      "duration": 130.32,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-green-after-midnight",
+      "title": "Green After Midnight",
+      "file": "openlofi/green-after-midnight.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "green",
+        "after",
+        "midnight"
+      ],
+      "mood": "calm",
+      "duration": 184.76,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-half-empty-coupe",
+      "title": "Half Empty Coupe",
+      "file": "openlofi/half-empty-coupe.mp3",
+      "category": "late-night",
+      "categoryLabel": "Late Night, Neon & After Hours",
+      "tags": [
+        "lofi",
+        "late-night",
+        "half",
+        "empty",
+        "coupe"
+      ],
+      "mood": "moody",
+      "duration": 194.76,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-hammock-in-the-shade",
+      "title": "Hammock in the Shade",
+      "file": "openlofi/hammock-in-the-shade.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "hammock",
+        "shade"
+      ],
+      "mood": "calm",
+      "duration": 122,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-harbor-before-words",
+      "title": "Harbor Before Words",
+      "file": "openlofi/harbor-before-words.mp3",
+      "category": "jazzhop",
+      "categoryLabel": "Jazz Lounge & Bookstore Grooves",
+      "tags": [
+        "lofi",
+        "jazzhop",
+        "harbor",
+        "before",
+        "words"
+      ],
+      "mood": "warm",
+      "duration": 145.96,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-headlights-on-the-divider",
+      "title": "Headlights on the Divider",
+      "file": "openlofi/headlights-on-the-divider.mp3",
+      "category": "late-night",
+      "categoryLabel": "Late Night, Neon & After Hours",
+      "tags": [
+        "lofi",
+        "late-night",
+        "headlights",
+        "divider"
+      ],
+      "mood": "moody",
+      "duration": 183.36,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-high-rise-haze",
+      "title": "High Rise Haze",
+      "file": "openlofi/high-rise-haze.mp3",
+      "category": "late-night",
+      "categoryLabel": "Late Night, Neon & After Hours",
+      "tags": [
+        "lofi",
+        "late-night",
+        "high",
+        "rise",
+        "haze"
+      ],
+      "mood": "moody",
+      "duration": 128.24,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-honey-on-the-speakers",
+      "title": "Honey on the Speakers",
+      "file": "openlofi/honey-on-the-speakers.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "honey",
+        "speakers"
+      ],
+      "mood": "warm",
+      "duration": 180.12,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-hour-between-clicks",
+      "title": "Hour Between Clicks",
+      "file": "openlofi/hour-between-clicks.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "hour",
+        "between",
+        "clicks"
+      ],
+      "mood": "focused",
+      "duration": 223.72,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-kettle-before-work",
+      "title": "Kettle Before Work",
+      "file": "openlofi/kettle-before-work.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "kettle",
+        "before",
+        "work"
+      ],
+      "mood": "focused",
+      "duration": 147.28,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-kitchen-after-the-party",
+      "title": "Kitchen After the Party",
+      "file": "openlofi/kitchen-after-the-party.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "kitchen",
+        "after",
+        "party"
+      ],
+      "mood": "warm",
+      "duration": 179.92,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-lanterns-in-slow-motion",
+      "title": "Lanterns in Slow Motion",
+      "file": "openlofi/lanterns-in-slow-motion.mp3",
+      "category": "asian-lofi",
+      "categoryLabel": "Asian & Zen Lo-Fi",
+      "tags": [
+        "lofi",
+        "asian-lofi",
+        "lanterns",
+        "slow",
+        "motion"
+      ],
+      "mood": "calm",
+      "duration": 149.12,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-last-call-at-table-nine",
+      "title": "Last Call at Table Nine",
+      "file": "openlofi/last-call-at-table-nine.mp3",
+      "category": "late-night",
+      "categoryLabel": "Late Night, Neon & After Hours",
+      "tags": [
+        "lofi",
+        "late-night",
+        "last",
+        "call",
+        "table",
+        "nine"
+      ],
+      "mood": "moody",
+      "duration": 198.04,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-last-call-in-c-minor",
+      "title": "Last Call in C Minor",
+      "file": "openlofi/last-call-in-c-minor.mp3",
+      "category": "jazzhop",
+      "categoryLabel": "Jazz Lounge & Bookstore Grooves",
+      "tags": [
+        "lofi",
+        "jazzhop",
+        "last",
+        "call",
+        "minor"
+      ],
+      "mood": "warm",
+      "duration": 137.76,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-last-train-home",
+      "title": "Last Train Home",
+      "file": "openlofi/last-train-home.mp3",
+      "category": "late-night",
+      "categoryLabel": "Late Night, Neon & After Hours",
+      "tags": [
+        "lofi",
+        "late-night",
+        "last",
+        "train",
+        "home"
+      ],
+      "mood": "moody",
+      "duration": 184.8,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-lazy-love-letter-afternoon",
+      "title": "Lazy Love Letter Afternoon",
+      "file": "openlofi/lazy-love-letter-afternoon.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "lazy",
+        "love",
+        "letter",
+        "afternoon"
+      ],
+      "mood": "warm",
+      "duration": 291.56,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-lemonade-film-grain",
+      "title": "Lemonade Film Grain",
+      "file": "openlofi/lemonade-film-grain.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "lemonade",
+        "film",
+        "grain"
+      ],
+      "mood": "calm",
+      "duration": 109.96,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-linen-and-limoncello",
+      "title": "Linen and Limoncello",
+      "file": "openlofi/linen-and-limoncello.mp3",
+      "category": "jazzhop",
+      "categoryLabel": "Jazz Lounge & Bookstore Grooves",
+      "tags": [
+        "lofi",
+        "jazzhop",
+        "linen",
+        "limoncello"
+      ],
+      "mood": "warm",
+      "duration": 114.92,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-margin-notes-at-dusk",
+      "title": "Margin Notes at Dusk",
+      "file": "openlofi/margin-notes-at-dusk.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "margin",
+        "notes",
+        "dusk"
+      ],
+      "mood": "focused",
+      "duration": 134.96,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-mat-and-morning-light",
+      "title": "Mat and Morning Light",
+      "file": "openlofi/mat-and-morning-light.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "mat",
+        "morning",
+        "light"
+      ],
+      "mood": "focused",
+      "duration": 198.68,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-midnight-amber-room",
+      "title": "Midnight Amber Room",
+      "file": "openlofi/midnight-amber-room.mp3",
+      "category": "jazzhop",
+      "categoryLabel": "Jazz Lounge & Bookstore Grooves",
+      "tags": [
+        "lofi",
+        "jazzhop",
+        "midnight",
+        "amber",
+        "room"
+      ],
+      "mood": "warm",
+      "duration": 145.16,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-midnight-notes-on-the-floor",
+      "title": "Midnight Notes on the Floor",
+      "file": "openlofi/midnight-notes-on-the-floor.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "midnight",
+        "notes",
+        "floor"
+      ],
+      "mood": "warm",
+      "duration": 212.64,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-midnight-on-my-mind",
+      "title": "Midnight on My Mind",
+      "file": "openlofi/midnight-on-my-mind.mp3",
+      "category": "late-night",
+      "categoryLabel": "Late Night, Neon & After Hours",
+      "tags": [
+        "lofi",
+        "late-night",
+        "midnight",
+        "mind"
+      ],
+      "mood": "moody",
+      "duration": 133.72,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-midnight-steam-and-mango-skin",
+      "title": "Midnight Steam and Mango Skin",
+      "file": "openlofi/midnight-steam-and-mango-skin.mp3",
+      "category": "hybrid",
+      "categoryLabel": "Hybrid, World & Cinematic",
+      "tags": [
+        "lofi",
+        "hybrid",
+        "midnight",
+        "steam",
+        "mango",
+        "skin"
+      ],
+      "mood": "cinematic",
+      "duration": 136.24,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-midnight-table-talk",
+      "title": "Midnight Table Talk",
+      "file": "openlofi/midnight-table-talk.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "midnight",
+        "table",
+        "talk"
+      ],
+      "mood": "warm",
+      "duration": 181.08,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-midnight-window-glow",
+      "title": "Midnight Window Glow",
+      "file": "openlofi/midnight-window-glow.mp3",
+      "category": "late-night",
+      "categoryLabel": "Late Night, Neon & After Hours",
+      "tags": [
+        "lofi",
+        "late-night",
+        "midnight",
+        "window",
+        "glow"
+      ],
+      "mood": "moody",
+      "duration": 135.2,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-mirrorball-slow-roll",
+      "title": "Mirrorball Slow Roll",
+      "file": "openlofi/mirrorball-slow-roll.mp3",
+      "category": "funk-soul",
+      "categoryLabel": "Funk, Soul & Retro Bounce",
+      "tags": [
+        "lofi",
+        "funk-soul",
+        "mirrorball",
+        "slow",
+        "roll"
+      ],
+      "mood": "upbeat",
+      "duration": 138.64,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-mist-over-green-fields",
+      "title": "Mist Over Green Fields",
+      "file": "openlofi/mist-over-green-fields.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "mist",
+        "green",
+        "fields"
+      ],
+      "mood": "calm",
+      "duration": 159.84,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-misty-mountain-sunrise",
+      "title": "Misty Mountain Sunrise",
+      "file": "openlofi/misty-mountain-sunrise.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "misty",
+        "mountain",
+        "sunrise"
+      ],
+      "mood": "calm",
+      "duration": 139.96,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-misty-steam-quiet-dreams",
+      "title": "Misty Steam Quiet Dreams",
+      "file": "openlofi/misty-steam-quiet-dreams.mp3",
+      "category": "asian-lofi",
+      "categoryLabel": "Asian & Zen Lo-Fi",
+      "tags": [
+        "lofi",
+        "asian-lofi",
+        "misty",
+        "steam",
+        "quiet",
+        "dreams"
+      ],
+      "mood": "calm",
+      "duration": 151.96,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-moon-over-red-dunes",
+      "title": "Moon Over Red Dunes",
+      "file": "openlofi/moon-over-red-dunes.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "moon",
+        "red",
+        "dunes"
+      ],
+      "mood": "calm",
+      "duration": 138.28,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-moon-through-bamboo",
+      "title": "Moon Through Bamboo",
+      "file": "openlofi/moon-through-bamboo.mp3",
+      "category": "asian-lofi",
+      "categoryLabel": "Asian & Zen Lo-Fi",
+      "tags": [
+        "lofi",
+        "asian-lofi",
+        "moon",
+        "through",
+        "bamboo"
+      ],
+      "mood": "calm",
+      "duration": 171.08,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-moonlit-moss",
+      "title": "Moonlit Moss",
+      "file": "openlofi/moonlit-moss.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "moonlit",
+        "moss"
+      ],
+      "mood": "calm",
+      "duration": 152.64,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-morning-in-the-hiss",
+      "title": "Morning in the Hiss",
+      "file": "openlofi/morning-in-the-hiss.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "morning",
+        "hiss"
+      ],
+      "mood": "focused",
+      "duration": 136.84,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-morning-pages",
+      "title": "Morning Pages",
+      "file": "openlofi/morning-pages.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "morning",
+        "pages"
+      ],
+      "mood": "focused",
+      "duration": 133.28,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-motel-soul-radio",
+      "title": "Motel Soul Radio",
+      "file": "openlofi/motel-soul-radio.mp3",
+      "category": "funk-soul",
+      "categoryLabel": "Funk, Soul & Retro Bounce",
+      "tags": [
+        "lofi",
+        "funk-soul",
+        "motel",
+        "soul",
+        "radio"
+      ],
+      "mood": "upbeat",
+      "duration": 159.92,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-neon-on-the-diner-floor",
+      "title": "Neon on the Diner Floor",
+      "file": "openlofi/neon-on-the-diner-floor.mp3",
+      "category": "funk-soul",
+      "categoryLabel": "Funk, Soul & Retro Bounce",
+      "tags": [
+        "lofi",
+        "funk-soul",
+        "neon",
+        "diner",
+        "floor"
+      ],
+      "mood": "upbeat",
+      "duration": 149.8,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-old-photos-new-heart",
+      "title": "Old Photos New Heart",
+      "file": "openlofi/old-photos-new-heart.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "old",
+        "photos",
+        "new",
+        "heart"
+      ],
+      "mood": "warm",
+      "duration": 146.24,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-orbiting-in-silence",
+      "title": "Orbiting in Silence",
+      "file": "openlofi/orbiting-in-silence.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "orbiting",
+        "silence"
+      ],
+      "mood": "calm",
+      "duration": 158.68,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-palm-breeze-nap",
+      "title": "Palm Breeze Nap",
+      "file": "openlofi/palm-breeze-nap.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "palm",
+        "breeze",
+        "nap"
+      ],
+      "mood": "calm",
+      "duration": 122.56,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-pancakes-in-the-sun",
+      "title": "Pancakes in the Sun",
+      "file": "openlofi/pancakes-in-the-sun.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "pancakes",
+        "sun"
+      ],
+      "mood": "focused",
+      "duration": 107.68,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-paper-lantern-rain",
+      "title": "Paper Lantern Rain",
+      "file": "openlofi/paper-lantern-rain.mp3",
+      "category": "asian-lofi",
+      "categoryLabel": "Asian & Zen Lo-Fi",
+      "tags": [
+        "lofi",
+        "asian-lofi",
+        "paper",
+        "lantern",
+        "rain"
+      ],
+      "mood": "calm",
+      "duration": 164.8,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-peach-cobbler-static",
+      "title": "Peach Cobbler Static",
+      "file": "openlofi/peach-cobbler-static.mp3",
+      "category": "funk-soul",
+      "categoryLabel": "Funk, Soul & Retro Bounce",
+      "tags": [
+        "lofi",
+        "funk-soul",
+        "peach",
+        "cobbler",
+        "static"
+      ],
+      "mood": "upbeat",
+      "duration": 193,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-penciled-sunbeams",
+      "title": "Penciled Sunbeams",
+      "file": "openlofi/penciled-sunbeams.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "penciled",
+        "sunbeams"
+      ],
+      "mood": "focused",
+      "duration": 121.44,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-petals-after-rain",
+      "title": "Petals After Rain",
+      "file": "openlofi/petals-after-rain.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "petals",
+        "after",
+        "rain"
+      ],
+      "mood": "calm",
+      "duration": 125.36,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-petals-in-the-breeze",
+      "title": "Petals in the Breeze",
+      "file": "openlofi/petals-in-the-breeze.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "petals",
+        "breeze"
+      ],
+      "mood": "calm",
+      "duration": 170.84,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-picnic-polaroids",
+      "title": "Picnic Polaroids",
+      "file": "openlofi/picnic-polaroids.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "picnic",
+        "polaroids"
+      ],
+      "mood": "calm",
+      "duration": 120,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-pixel-quest-save-point",
+      "title": "Pixel Quest Save Point",
+      "file": "openlofi/pixel-quest-save-point.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "pixel",
+        "quest",
+        "save",
+        "point"
+      ],
+      "mood": "focused",
+      "duration": 84.88,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-platform-after-rain",
+      "title": "Platform After Rain",
+      "file": "openlofi/platform-after-rain.mp3",
+      "category": "late-night",
+      "categoryLabel": "Late Night, Neon & After Hours",
+      "tags": [
+        "lofi",
+        "late-night",
+        "platform",
+        "after",
+        "rain"
+      ],
+      "mood": "moody",
+      "duration": 173.6,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-polar-afterglow",
+      "title": "Polar Afterglow",
+      "file": "openlofi/polar-afterglow.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "polar",
+        "afterglow"
+      ],
+      "mood": "calm",
+      "duration": 299.36,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-polaroids-in-a-shoebox",
+      "title": "Polaroids in A Shoebox",
+      "file": "openlofi/polaroids-in-a-shoebox.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "polaroids",
+        "shoebox"
+      ],
+      "mood": "warm",
+      "duration": 163.88,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-porcelain-heartbeat",
+      "title": "Porcelain Heartbeat",
+      "file": "openlofi/porcelain-heartbeat.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "porcelain",
+        "heartbeat"
+      ],
+      "mood": "warm",
+      "duration": 115.12,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-porchlight-golden-hour",
+      "title": "Porchlight Golden Hour",
+      "file": "openlofi/porchlight-golden-hour.mp3",
+      "category": "chillhop",
+      "categoryLabel": "Chillhop & Cozy Beats",
+      "tags": [
+        "lofi",
+        "chillhop",
+        "porchlight",
+        "golden",
+        "hour"
+      ],
+      "mood": "relaxed",
+      "duration": 129.88,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-quiet-credits",
+      "title": "Quiet Credits",
+      "file": "openlofi/quiet-credits.mp3",
+      "category": "hybrid",
+      "categoryLabel": "Hybrid, World & Cinematic",
+      "tags": [
+        "lofi",
+        "hybrid",
+        "quiet",
+        "credits"
+      ],
+      "mood": "cinematic",
+      "duration": 178.48,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-quiet-lungs-quiet-light",
+      "title": "Quiet Lungs Quiet Light",
+      "file": "openlofi/quiet-lungs-quiet-light.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "quiet",
+        "lungs",
+        "light"
+      ],
+      "mood": "focused",
+      "duration": 151.12,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-rain-off-the-neon-signs",
+      "title": "Rain Off the Neon Signs",
+      "file": "openlofi/rain-off-the-neon-signs.mp3",
+      "category": "late-night",
+      "categoryLabel": "Late Night, Neon & After Hours",
+      "tags": [
+        "lofi",
+        "late-night",
+        "rain",
+        "off",
+        "neon",
+        "signs"
+      ],
+      "mood": "moody",
+      "duration": 118.04,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-rain-on-the-boulevard",
+      "title": "Rain on the Boulevard",
+      "file": "openlofi/rain-on-the-boulevard.mp3",
+      "category": "jazzhop",
+      "categoryLabel": "Jazz Lounge & Bookstore Grooves",
+      "tags": [
+        "lofi",
+        "jazzhop",
+        "rain",
+        "boulevard"
+      ],
+      "mood": "warm",
+      "duration": 89.88,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-rain-on-your-hoodie",
+      "title": "Rain on Your Hoodie",
+      "file": "openlofi/rain-on-your-hoodie.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "rain",
+        "hoodie"
+      ],
+      "mood": "warm",
+      "duration": 160.48,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-record-player-embrace",
+      "title": "Record Player Embrace",
+      "file": "openlofi/record-player-embrace.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "record",
+        "player",
+        "embrace"
+      ],
+      "mood": "warm",
+      "duration": 117.04,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-roller-rink-reverie",
+      "title": "Roller Rink Reverie",
+      "file": "openlofi/roller-rink-reverie.mp3",
+      "category": "funk-soul",
+      "categoryLabel": "Funk, Soul & Retro Bounce",
+      "tags": [
+        "lofi",
+        "funk-soul",
+        "roller",
+        "rink",
+        "reverie"
+      ],
+      "mood": "upbeat",
+      "duration": 124.96,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-rooftop-slow-jam",
+      "title": "Rooftop Slow Jam",
+      "file": "openlofi/rooftop-slow-jam.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "rooftop",
+        "slow",
+        "jam"
+      ],
+      "mood": "warm",
+      "duration": 115.92,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-rooftop-static-dreams",
+      "title": "Rooftop Static Dreams",
+      "file": "openlofi/rooftop-static-dreams.mp3",
+      "category": "late-night",
+      "categoryLabel": "Late Night, Neon & After Hours",
+      "tags": [
+        "lofi",
+        "late-night",
+        "rooftop",
+        "static",
+        "dreams"
+      ],
+      "mood": "moody",
+      "duration": 144.96,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-satellite-lullaby",
+      "title": "Satellite Lullaby",
+      "file": "openlofi/satellite-lullaby.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "satellite",
+        "lullaby"
+      ],
+      "mood": "calm",
+      "duration": 124.52,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-savanna-slow-glow",
+      "title": "Savanna Slow Glow",
+      "file": "openlofi/savanna-slow-glow.mp3",
+      "category": "hybrid",
+      "categoryLabel": "Hybrid, World & Cinematic",
+      "tags": [
+        "lofi",
+        "hybrid",
+        "savanna",
+        "slow",
+        "glow"
+      ],
+      "mood": "cinematic",
+      "duration": 174.8,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-saxophone-in-the-rain",
+      "title": "Saxophone in the Rain",
+      "file": "openlofi/saxophone-in-the-rain.mp3",
+      "category": "jazzhop",
+      "categoryLabel": "Jazz Lounge & Bookstore Grooves",
+      "tags": [
+        "lofi",
+        "jazzhop",
+        "saxophone",
+        "rain"
+      ],
+      "mood": "warm",
+      "duration": 98.8,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-scattered-sheet-music",
+      "title": "Scattered Sheet Music",
+      "file": "openlofi/scattered-sheet-music.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "scattered",
+        "sheet",
+        "music"
+      ],
+      "mood": "warm",
+      "duration": 179.88,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-sea-glass-evening",
+      "title": "Sea Glass Evening",
+      "file": "openlofi/sea-glass-evening.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "sea",
+        "glass",
+        "evening"
+      ],
+      "mood": "calm",
+      "duration": 224.28,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-sidewalk-puddles",
+      "title": "Sidewalk Puddles",
+      "file": "openlofi/sidewalk-puddles.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "sidewalk",
+        "puddles"
+      ],
+      "mood": "calm",
+      "duration": 102.12,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-sidewalk-slow-jam",
+      "title": "Sidewalk Slow Jam",
+      "file": "openlofi/sidewalk-slow-jam.mp3",
+      "category": "chillhop",
+      "categoryLabel": "Chillhop & Cozy Beats",
+      "tags": [
+        "lofi",
+        "chillhop",
+        "sidewalk",
+        "slow",
+        "jam"
+      ],
+      "mood": "relaxed",
+      "duration": 134.64,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-skyline-and-satin",
+      "title": "Skyline and Satin",
+      "file": "openlofi/skyline-and-satin.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "skyline",
+        "satin"
+      ],
+      "mood": "warm",
+      "duration": 119.88,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-slow-dance-in-the-living-room",
+      "title": "Slow Dance in the Living Room",
+      "file": "openlofi/slow-dance-in-the-living-room.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "slow",
+        "dance",
+        "living",
+        "room"
+      ],
+      "mood": "warm",
+      "duration": 96.48,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-slow-dancing-by-the-stove",
+      "title": "Slow Dancing By the Stove",
+      "file": "openlofi/slow-dancing-by-the-stove.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "slow",
+        "dancing",
+        "stove"
+      ],
+      "mood": "warm",
+      "duration": 181.92,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-smoke-in-the-orange-sky",
+      "title": "Smoke in the Orange Sky",
+      "file": "openlofi/smoke-in-the-orange-sky.mp3",
+      "category": "funk-soul",
+      "categoryLabel": "Funk, Soul & Retro Bounce",
+      "tags": [
+        "lofi",
+        "funk-soul",
+        "smoke",
+        "orange",
+        "sky"
+      ],
+      "mood": "upbeat",
+      "duration": 159.8,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-snow-on-the-needle",
+      "title": "Snow on the Needle",
+      "file": "openlofi/snow-on-the-needle.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "snow",
+        "needle"
+      ],
+      "mood": "calm",
+      "duration": 136.36,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-soft-gold-sky",
+      "title": "Soft Gold Sky",
+      "file": "openlofi/soft-gold-sky.mp3",
+      "category": "chillhop",
+      "categoryLabel": "Chillhop & Cozy Beats",
+      "tags": [
+        "lofi",
+        "chillhop",
+        "soft",
+        "gold",
+        "sky"
+      ],
+      "mood": "relaxed",
+      "duration": 142.92,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-soft-weightless-hours",
+      "title": "Soft Weightless Hours",
+      "file": "openlofi/soft-weightless-hours.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "soft",
+        "weightless",
+        "hours"
+      ],
+      "mood": "calm",
+      "duration": 222.72,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-spring-garden-loops",
+      "title": "Spring Garden Loops",
+      "file": "openlofi/spring-garden-loops.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "spring",
+        "garden",
+        "loops"
+      ],
+      "mood": "calm",
+      "duration": 167.08,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-stacks-of-quiet-books",
+      "title": "Stacks of Quiet Books",
+      "file": "openlofi/stacks-of-quiet-books.mp3",
+      "category": "jazzhop",
+      "categoryLabel": "Jazz Lounge & Bookstore Grooves",
+      "tags": [
+        "lofi",
+        "jazzhop",
+        "stacks",
+        "quiet",
+        "books"
+      ],
+      "mood": "warm",
+      "duration": 179.6,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-stacks-of-quiet-hours",
+      "title": "Stacks of Quiet Hours",
+      "file": "openlofi/stacks-of-quiet-hours.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "stacks",
+        "quiet",
+        "hours"
+      ],
+      "mood": "focused",
+      "duration": 139.92,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-stained-glass-static",
+      "title": "Stained Glass Static",
+      "file": "openlofi/stained-glass-static.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "stained",
+        "glass",
+        "static"
+      ],
+      "mood": "calm",
+      "duration": 170.72,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-starlight-in-the-sand",
+      "title": "Starlight in the Sand",
+      "file": "openlofi/starlight-in-the-sand.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "starlight",
+        "sand"
+      ],
+      "mood": "calm",
+      "duration": 134.36,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-storm-over-side-streets",
+      "title": "Storm Over Side Streets",
+      "file": "openlofi/storm-over-side-streets.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "storm",
+        "side",
+        "streets"
+      ],
+      "mood": "calm",
+      "duration": 160.72,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-streetlights-in-the-rearview",
+      "title": "Streetlights in the Rearview",
+      "file": "openlofi/streetlights-in-the-rearview.mp3",
+      "category": "late-night",
+      "categoryLabel": "Late Night, Neon & After Hours",
+      "tags": [
+        "lofi",
+        "late-night",
+        "streetlights",
+        "rearview"
+      ],
+      "mood": "moody",
+      "duration": 134.88,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-summer-curbside-glow",
+      "title": "Summer Curbside Glow",
+      "file": "openlofi/summer-curbside-glow.mp3",
+      "category": "funk-soul",
+      "categoryLabel": "Funk, Soul & Retro Bounce",
+      "tags": [
+        "lofi",
+        "funk-soul",
+        "summer",
+        "curbside",
+        "glow"
+      ],
+      "mood": "upbeat",
+      "duration": 144.68,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-sunday-light-through-lace",
+      "title": "Sunday Light Through Lace",
+      "file": "openlofi/sunday-light-through-lace.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "sunday",
+        "light",
+        "through",
+        "lace"
+      ],
+      "mood": "focused",
+      "duration": 134.28,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-sunrise-stretch-flow",
+      "title": "Sunrise Stretch Flow",
+      "file": "openlofi/sunrise-stretch-flow.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "sunrise",
+        "stretch",
+        "flow"
+      ],
+      "mood": "focused",
+      "duration": 189.04,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-sunset-offbeat",
+      "title": "Sunset Offbeat",
+      "file": "openlofi/sunset-offbeat.mp3",
+      "category": "chillhop",
+      "categoryLabel": "Chillhop & Cozy Beats",
+      "tags": [
+        "lofi",
+        "chillhop",
+        "sunset",
+        "offbeat"
+      ],
+      "mood": "relaxed",
+      "duration": 158.96,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-teacup-morning-fog",
+      "title": "Teacup Morning Fog",
+      "file": "openlofi/teacup-morning-fog.mp3",
+      "category": "asian-lofi",
+      "categoryLabel": "Asian & Zen Lo-Fi",
+      "tags": [
+        "lofi",
+        "asian-lofi",
+        "teacup",
+        "morning",
+        "fog"
+      ],
+      "mood": "calm",
+      "duration": 138.6,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-temple-at-dawn",
+      "title": "Temple at Dawn",
+      "file": "openlofi/temple-at-dawn.mp3",
+      "category": "asian-lofi",
+      "categoryLabel": "Asian & Zen Lo-Fi",
+      "tags": [
+        "lofi",
+        "asian-lofi",
+        "temple",
+        "dawn"
+      ],
+      "mood": "calm",
+      "duration": 114.2,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-terminal-rain",
+      "title": "Terminal Rain",
+      "file": "openlofi/terminal-rain.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "terminal",
+        "rain"
+      ],
+      "mood": "focused",
+      "duration": 123.76,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-thunder-in-the-dust",
+      "title": "Thunder in the Dust",
+      "file": "openlofi/thunder-in-the-dust.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "thunder",
+        "dust"
+      ],
+      "mood": "calm",
+      "duration": 173.84,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-tide-pools-at-twilight",
+      "title": "Tide Pools at Twilight",
+      "file": "openlofi/tide-pools-at-twilight.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "tide",
+        "pools",
+        "twilight"
+      ],
+      "mood": "calm",
+      "duration": 189.64,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-tide-stained-polaroids",
+      "title": "Tide Stained Polaroids",
+      "file": "openlofi/tide-stained-polaroids.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "tide",
+        "stained",
+        "polaroids"
+      ],
+      "mood": "calm",
+      "duration": 140.32,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-underwater-dreamscape",
+      "title": "Underwater Dreamscape",
+      "file": "openlofi/underwater-dreamscape.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "underwater",
+        "dreamscape"
+      ],
+      "mood": "calm",
+      "duration": 211.48,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-velvet-candle-smoke",
+      "title": "Velvet Candle Smoke",
+      "file": "openlofi/velvet-candle-smoke.mp3",
+      "category": "soul-rnb",
+      "categoryLabel": "Soul, Slow Jams & Warm Rooms",
+      "tags": [
+        "lofi",
+        "soul-rnb",
+        "velvet",
+        "candle",
+        "smoke"
+      ],
+      "mood": "warm",
+      "duration": 156.92,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-velvet-cigarette-haze",
+      "title": "Velvet Cigarette Haze",
+      "file": "openlofi/velvet-cigarette-haze.mp3",
+      "category": "jazzhop",
+      "categoryLabel": "Jazz Lounge & Bookstore Grooves",
+      "tags": [
+        "lofi",
+        "jazzhop",
+        "velvet",
+        "cigarette",
+        "haze"
+      ],
+      "mood": "warm",
+      "duration": 152.32,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-vhs-heartbeat",
+      "title": "VHS Heartbeat",
+      "file": "openlofi/vhs-heartbeat.mp3",
+      "category": "hybrid",
+      "categoryLabel": "Hybrid, World & Cinematic",
+      "tags": [
+        "lofi",
+        "hybrid",
+        "vhs",
+        "heartbeat"
+      ],
+      "mood": "cinematic",
+      "duration": 213.36,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-warm-constellations",
+      "title": "Warm Constellations",
+      "file": "openlofi/warm-constellations.mp3",
+      "category": "ambient-lofi",
+      "categoryLabel": "Ambient Drift & Dreamscapes",
+      "tags": [
+        "lofi",
+        "ambient-lofi",
+        "warm",
+        "constellations"
+      ],
+      "mood": "calm",
+      "duration": 112,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-warm-mile-markers",
+      "title": "Warm Mile Markers",
+      "file": "openlofi/warm-mile-markers.mp3",
+      "category": "late-night",
+      "categoryLabel": "Late Night, Neon & After Hours",
+      "tags": [
+        "lofi",
+        "late-night",
+        "warm",
+        "mile",
+        "markers"
+      ],
+      "mood": "moody",
+      "duration": 172.36,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-watercolors-by-the-window",
+      "title": "Watercolors By the Window",
+      "file": "openlofi/watercolors-by-the-window.mp3",
+      "category": "activities",
+      "categoryLabel": "Focus, Rituals & Daily Routines",
+      "tags": [
+        "lofi",
+        "activities",
+        "watercolors",
+        "window"
+      ],
+      "mood": "focused",
+      "duration": 116.64,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-window-seat-daydream",
+      "title": "Window Seat Daydream",
+      "file": "openlofi/window-seat-daydream.mp3",
+      "category": "chillhop",
+      "categoryLabel": "Chillhop & Cozy Beats",
+      "tags": [
+        "lofi",
+        "chillhop",
+        "window",
+        "seat",
+        "daydream"
+      ],
+      "mood": "relaxed",
+      "duration": 139.96,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    },
+    {
+      "id": "openlofi-winter-turntable",
+      "title": "Winter Turntable",
+      "file": "openlofi/winter-turntable.mp3",
+      "category": "seasonal-weather",
+      "categoryLabel": "Seasons, Rain & Weather",
+      "tags": [
+        "lofi",
+        "seasonal-weather",
+        "winter",
+        "turntable"
+      ],
+      "mood": "calm",
+      "duration": 108.2,
+      "license": "CC0-1.0",
+      "source": "https://github.com/btahir/open-lofi",
+      "attribution": "Open Lo-Fi"
+    }
+  ]
+}

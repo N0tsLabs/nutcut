@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>视频下三分之一 · Lower Third</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}html,body{width:1920px;height:1080px;overflow:hidden;background:#0b0e12}body{font-family:"Microsoft YaHei","PingFang SC","Segoe UI",sans-serif;color:#fff}
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:#0b0e12}
+  .bg{position:absolute;inset:0;background:#202a36}.bg::after{content:attr(data-label);position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);font:800 16px/1 "Consolas",monospace;letter-spacing:.15em;color:rgba(255,255,255,.38)}
+  .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,9,12,.06),rgba(7,9,12,.12) 55%,rgba(7,9,12,.72))}
+  .top{position:absolute;left:100px;top:70px;z-index:5;font:800 14px/1 "Consolas",monospace;letter-spacing:.18em;color:rgba(255,255,255,.6)}.top b{color:#ffb08f}
+  .lower{position:absolute;left:100px;bottom:170px;z-index:5;border-left:5px solid #ffb08f;padding-left:26px;max-width:1100px}
+  .lower .k{font:800 14px/1 "Consolas",monospace;letter-spacing:.2em;color:#ffb08f;margin-bottom:14px}
+  .lower h1{font-size:76px;line-height:1.05;font-weight:900;letter-spacing:-.05em}.lower h1 em{font-style:normal;color:#ffb08f}
+  .lower p{margin-top:14px;font-size:25px;line-height:1.6;color:rgba(255,255,255,.7)}
+  .chapters{position:absolute;right:100px;bottom:178px;z-index:5;display:grid;gap:8px;width:300px}
+  .chapter{display:flex;gap:10px;align-items:baseline;font:800 12px/1 "Consolas",monospace;color:rgba(255,255,255,.35);padding-top:8px;border-top:1px solid rgba(255,255,255,.14)}
+  .chapter b{color:rgba(255,255,255,.6)}.chapter.active{color:#fff;border-color:#ffb08f}.chapter.active b{color:#ffb08f}
+  .hud{position:absolute;left:100px;right:100px;bottom:64px;z-index:9;display:flex;align-items:center;gap:18px;font:800 12px/1 "Consolas",monospace;letter-spacing:.14em;color:rgba(255,255,255,.42)}.hud .bar{flex:1;height:3px;background:rgba(255,255,255,.14);border-radius:2px;overflow:hidden}.hud .bar i{display:block;height:100%;width:0;background:#ffb08f}
+</style>
+</head>
+<body><div id="stage">
+<div class="bg" data-label="视频占位"></div><div class="shade"></div>
+<div class="top">VIDEO LOWER THIRD / <b>01</b></div>
+<div class="lower"><div class="k" id="kicker">CHAPTER 01</div><h1 id="title">先把<em>人</em>放出来</h1><p id="text">下三分之一负责补充信息，不遮挡主体。</p></div>
+<div class="chapters" id="chapters"><div class="chapter active"><b>01</b><span>开场</span></div><div class="chapter"><b>02</b><span>展开</span></div><div class="chapter"><b>03</b><span>转折</span></div><div class="chapter"><b>04</b><span>收束</span></div></div>
+<div class="hud"><span id="idx">01 / 04</span><div class="bar"><i id="bar"></i></div><span>10 SEC</span></div>
+</div><script>
+(function(){var FPS=30,DUR=10,$=function(s){return document.querySelector(s)};var data=[['先把<em>人</em>放出来','下三分之一负责补充信息，不遮挡主体。'],['把<em>名字</em>说清楚','标题只出现一次，别让字幕抢戏。'],['给<em>画面</em>留空间','重要动作发生在上半部分。'],['最后<em>收住</em>','下三分之一退场，让画面自己结束。']];var chs=[].slice.call(document.querySelectorAll('.chapter'));
+function clamp(v){return Math.max(0,Math.min(1,v))}function cubicBezier(x1,y1,x2,y2){var cx=3*x1,bx=3*(x2-x1)-cx,ax=1-cx-bx,cy=3*y1,by=3*(y2-y1)-cy,ay=1-cy-by;function fx(t){return((ax*t+bx)*t+cx)*t}function dfx(t){return(3*ax*t+2*bx)*t+cx}function fy(t){return((ay*t+by)*t+cy)*t}return function(v){v=clamp(v);var t=v;for(var i=0;i<6;i++){var x=fx(t)-v;if(Math.abs(x)<1e-5)break;var d=dfx(t);if(Math.abs(d)<1e-5)break;t=clamp(t-x/d)}return fy(t)}}var ease=cubicBezier(.16,1,.3,1);function smooth(v){return ease(v)}
+window.renderFrame=function(frame,inputs){var t=Math.max(0,frame/FPS),active=Math.min(3,Math.floor(t/2.5));$('#kicker').textContent='CHAPTER '+String(active+1).padStart(2,'0');$('#title').innerHTML=data[active][0];$('#text').textContent=data[active][1];chs.forEach(function(c,i){c.classList.toggle('active',i===active)});var local=t-active*2.5,e=smooth(local/.5);$('.lower').style.opacity=e.toFixed(3);$('.lower').style.transform='translateY('+((1-e)*18).toFixed(1)+'px)';$('#idx').textContent=String(active+1).padStart(2,'0')+' / 04';$('#bar').style.width=(t/DUR*100).toFixed(2)+'%'};window.renderFrame(0,{});window.__ready=true})();
+</script></body></html>

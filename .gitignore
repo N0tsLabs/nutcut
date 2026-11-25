@@ -1,0 +1,33 @@
+.env
+node_modules/
+out/
+audio/vo*/
+audio/tmp*/
+.cache/
+# 本地安装的技能副本，仓库技能源在 skills/
+.opencode/skills/
+console/ui/remotion-player.js
+*.log
+
+# 声音档案属于本地私有数据
+voices/*/reference.wav
+voices/*/reference-candidate.wav
+voices/*/*.m4a
+voices/*/source/
+voices/*/samples/
+voices/*/profile.json
+
+# 按需下载 / 体积较大的 BGM、音效音频不提交；只保留 catalog 和 README
+library/music/openlofi/
+library/music/remote/
+library/music/.cache/
+library/sfx/codebank/
+library/sfx/kenney/
+library/sfx/meta/
+library/sfx/motion/
+
+# 用户项目属于本地私有数据
+projects/*
+!projects/README.md
+projects/*/assets/imported/
+projects/*/analysis/

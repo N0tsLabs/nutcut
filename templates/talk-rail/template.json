@@ -1,0 +1,48 @@
+{
+  "id": "talk-rail",
+  "name": "口播侧栏",
+  "group": "口播/头像",
+  "category": "口播",
+  "description": "左侧固定章节侧栏，右侧口播视频与大字说明，适合知识讲解和课程片段。",
+  "tags": [
+    "口播",
+    "侧栏",
+    "章节",
+    "讲解"
+  ],
+  "palette": {
+    "background": "#101318",
+    "surface": "#171b22",
+    "primary": "#f7f2ea",
+    "accent": "#ff9d78",
+    "text": "#f7f2ea",
+    "muted": "#9a9da6"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 500,
+    "titleSize": 54
+  },
+  "motion": {
+    "transition": "rail-chapter",
+    "speed": "smooth"
+  },
+  "duration": 10,
+  "sceneCount": 4,
+  "stylePrompt": "深色口播，左侧固定章节侧栏，右侧视频和章节标题；文字高对比，适合课程、知识分享和产品讲解。",
+  "preview": "preview.png",
+  "features": [
+    "image-slot"
+  ],
+  "styleRefs": [
+    "H1",
+    "K34"
+  ],
+  "remotion": {
+    "composition": "TalkRail",
+    "fps": 30,
+    "durationInFrames": 300,
+    "width": 1920,
+    "height": 1080
+  }
+}

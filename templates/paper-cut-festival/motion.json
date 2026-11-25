@@ -1,0 +1,32 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "paper-cut-festival",
+  "name": "剪纸节庆",
+  "version": "1.0.0",
+  "description": "红纸层叠、窗花与民俗纹样的节庆模板：年节表格、岁时时间轴、年俗环形图与双图片位。",
+  "tags": [
+    "剪纸",
+    "国风",
+    "节庆",
+    "红纸",
+    "民俗"
+  ],
+  "runtime": {
+    "profile": "html/1",
+    "entry": "src/index.html",
+    "network": false
+  },
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 30
+  },
+  "params": {
+    "schema": "params.schema.json",
+    "defaultPreset": "presets/default.json"
+  },
+  "license": "LICENSE",
+  "preview": "preview.svg"
+}

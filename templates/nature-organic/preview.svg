@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="自然有机模板预览">
+  <defs>
+    <radialGradient id="nbg" cx=".15" cy=".1" r=".9">
+      <stop offset="0" stop-color="#fbf8f0"/>
+      <stop offset=".6" stop-color="#f3efe4"/>
+      <stop offset="1" stop-color="#e9e3d3"/>
+    </radialGradient>
+    <linearGradient id="leafG" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#7a9e6f"/>
+      <stop offset="1" stop-color="#b7c9a8"/>
+    </linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="26"/></filter>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#nbg)"/>
+  <circle cx="1640" cy="260" r="330" fill="#7a9e6f" opacity=".14" filter="url(#soft)"/>
+  <circle cx="240" cy="900" r="260" fill="#c98a5e" opacity=".12" filter="url(#soft)"/>
+
+  <g font-family="YouYuan, Microsoft YaHei, PingFang SC, sans-serif">
+    <g transform="translate(112 214)">
+      <rect y="-18" width="26" height="2" fill="#c98a5e"/>
+      <text x="42" y="-10" font-size="12" font-family="Consolas, monospace" font-weight="700" letter-spacing="4" fill="#7a8f76">GROW SLOWLY / 01</text>
+    </g>
+    <text x="108" y="438" font-size="128" font-weight="900" letter-spacing="-3" fill="#23372a">慢一点，</text>
+    <text x="108" y="566" font-size="128" font-weight="900" letter-spacing="-3" fill="#23372a">长<span fill="#c98a5e">出来</span></text>
+    <text x="112" y="640" font-size="26" fill="#6b7f6a" letter-spacing="4">GROW WITH THE SEASON</text>
+    <g transform="translate(112 700)">
+      <rect width="430" height="52" rx="26" fill="#2f5d3a" fill-opacity=".08"/>
+      <circle cx="30" cy="26" r="4" fill="#2f5d3a"/>
+      <text x="48" y="33" font-size="14" font-family="Consolas, monospace" font-weight="700" letter-spacing="3" fill="#2f5d3a">所有生长，都有自己的速度。</text>
+    </g>
+  </g>
+
+  <g transform="translate(1470 360)">
+    <path d="M236 620C228 520 244 420 232 320S210 160 238 56" fill="none" stroke="#2f5d3a" stroke-width="5" stroke-linecap="round"/>
+    <path d="M234 520C174 508 128 466 118 408 176 408 222 448 234 520Z" fill="url(#leafG)" stroke="#2f5d3a" stroke-width="2"/>
+    <path d="M236 436C296 424 340 382 350 326 294 328 248 366 236 436Z" fill="#9db98f" stroke="#2f5d3a" stroke-width="2"/>
+    <path d="M232 350C172 338 130 298 120 242 176 242 220 280 232 350Z" fill="url(#leafG)" stroke="#2f5d3a" stroke-width="2"/>
+    <path d="M234 270C292 258 334 218 344 164 290 166 246 202 234 270Z" fill="#b7c9a8" stroke="#2f5d3a" stroke-width="2"/>
+    <path d="M236 186C186 174 152 140 146 94 192 96 226 126 236 186Z" fill="url(#leafG)" stroke="#2f5d3a" stroke-width="2"/>
+    <path d="M238 112C282 100 312 68 320 26 278 30 246 60 238 112Z" fill="#9db98f" stroke="#2f5d3a" stroke-width="2"/>
+  </g>
+
+  <g transform="translate(180 830)">
+    <rect width="900" height="112" rx="44" fill="#fffdf8" fill-opacity=".9" stroke="#2f5d3a" stroke-opacity=".1"/>
+    <path d="M44 66C44 46 56 32 76 26 74 46 62 60 44 66Z" fill="none" stroke="#7a9e6f" stroke-width="2.5"/>
+    <text x="104" y="56" font-size="21" fill="#5d705d">风雨不是敌人，是年轮。</text>
+    <text x="104" y="84" font-size="11" font-family="Consolas, monospace" letter-spacing="3" fill="#8a9b84">NOTE FROM THE GARDEN</text>
+  </g>
+
+  <g font-family="Consolas, monospace" font-size="11" font-weight="700" letter-spacing="3" fill="#8a9b84">
+    <text x="112" y="1042">NUTCUT / EARTH</text>
+    <rect x="330" y="1038" width="1390" height="3" rx="1.5" fill="#2f5d3a" fill-opacity=".12"/>
+    <rect x="330" y="1038" width="390" height="3" rx="1.5" fill="#2f5d3a"/>
+    <text x="1808" y="1042" text-anchor="end" fill="#c98a5e">01 / 06</text>
+  </g>
+</svg>

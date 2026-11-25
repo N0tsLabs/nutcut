@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <rect width="1920" height="1080" fill="#06080b"/>
+  <g fill="#b7f47b" font-family="Consolas, monospace" font-size="26" opacity=".55">
+    <text x="48" y="120">结</text><text x="132" y="220">时</text><text x="216" y="90">重</text><text x="300" y="300">选</text><text x="384" y="160">普</text><text x="468" y="260">通</text><text x="552" y="100">人</text><text x="636" y="340">留</text><text x="720" y="180">白</text><text x="804" y="280">开</text><text x="888" y="120">始</text><text x="972" y="320">看</text><text x="1056" y="200">见</text><text x="1140" y="90">结</text><text x="1224" y="300">构</text><text x="1308" y="150">时</text><text x="1392" y="250">间</text><text x="1476" y="110">重</text><text x="1560" y="330">复</text><text x="1644" y="190">选</text><text x="1728" y="280">择</text><text x="1812" y="130">人</text>
+  </g>
+  <g fill="#eafff0" font-family="Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="112" y="430" font-size="24" letter-spacing="6" fill="#6f8a78">A1 / TYPE RAIN</text>
+    <text x="112" y="620" font-size="150" font-weight="900" letter-spacing="-8">文字，开始下雨</text>
+    <text x="112" y="700" font-size="30" letter-spacing="8" fill="#6f8a78">TYPE RAIN · 30S</text>
+  </g>
+  <g stroke="#b7f47b" fill="none">
+    <path d="M112 780h1400" stroke-opacity=".35"/>
+    <path d="M112 900h180v120H112z" stroke-opacity=".45"/>
+    <path d="M320 900h180v120H320z" stroke-opacity=".45"/>
+    <path d="M528 900h180v120H528z" stroke="#86b7ff" stroke-opacity=".6"/>
+  </g>
+  <g fill="#6f8a78" font-family="Consolas, monospace" font-size="18">
+    <text x="132" y="955">92 / 结构</text>
+    <text x="340" y="955">84 / 时间</text>
+    <text x="548" y="955" fill="#86b7ff">71 / 重复</text>
+    <text x="112" y="1030">NUTCUT / TYPE RAIN · 1920 × 1080</text>
+  </g>
+</svg>

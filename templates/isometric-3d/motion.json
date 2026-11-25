@@ -1,0 +1,32 @@
+{
+  "format": "openmotion-template",
+  "specVersion": "0.1",
+  "id": "isometric-3d",
+  "name": "等距 3D",
+  "version": "1.0.0",
+  "description": "浅色等距 3D 模板：CSS 3D 层叠卡片、立方体积柱、参数表与产品图片位，适合产品结构、硬件与方案说明。",
+  "tags": [
+    "等距",
+    "3D",
+    "浅色",
+    "产品",
+    "结构"
+  ],
+  "runtime": {
+    "profile": "html/1",
+    "entry": "src/index.html",
+    "network": false
+  },
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 30
+  },
+  "params": {
+    "schema": "params.schema.json",
+    "defaultPreset": "presets/default.json"
+  },
+  "license": "LICENSE",
+  "preview": "preview.svg"
+}

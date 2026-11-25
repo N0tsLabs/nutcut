@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="数据驾驶舱模板预览">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#070b10"/>
+      <stop offset=".55" stop-color="#0a1319"/>
+      <stop offset="1" stop-color="#05080b"/>
+    </linearGradient>
+    <linearGradient id="teal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5eead4" stop-opacity=".34"/>
+      <stop offset="1" stop-color="#5eead4" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="bar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5eead4"/>
+      <stop offset="1" stop-color="#0f766e" stop-opacity=".4"/>
+    </linearGradient>
+    <pattern id="grid" width="72" height="72" patternUnits="userSpaceOnUse">
+      <path d="M72 0H0V72" fill="none" stroke="#94a3b8" stroke-opacity=".07"/>
+    </pattern>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#grid)"/>
+
+  <g font-family="Consolas, Microsoft YaHei, monospace">
+    <rect x="0" y="0" width="1920" height="78" fill="#080d12" fill-opacity=".92"/>
+    <path d="M0 78H1920" stroke="#94a3b8" stroke-opacity=".18"/>
+    <rect x="34" y="24" width="26" height="26" fill="none" stroke="#5eead4" stroke-opacity=".7"/>
+    <text x="70" y="43" font-size="13" font-weight="700" letter-spacing="4" fill="#d9e8ee">NUTCUT · OPS</text>
+    <rect x="252" y="22" width="72" height="32" fill="#5eead4"/>
+    <text x="270" y="43" font-size="13" font-weight="700" fill="#071014">总览</text>
+    <text x="352" y="43" font-size="13" font-weight="600" letter-spacing="2" fill="#d6e8f0" fill-opacity=".4">信号</text>
+    <text x="432" y="43" font-size="13" font-weight="600" letter-spacing="2" fill="#d6e8f0" fill-opacity=".4">结构</text>
+    <text x="512" y="43" font-size="13" font-weight="600" letter-spacing="2" fill="#d6e8f0" fill-opacity=".4">明细</text>
+    <circle cx="1700" cy="38" r="4" fill="#5eead4"/>
+    <text x="1716" y="43" font-size="13" font-weight="700" letter-spacing="2" fill="#5eead4">LIVE</text>
+    <text x="1800" y="43" font-size="13" font-weight="700" letter-spacing="2" fill="#d6e8f0" fill-opacity=".6">09:42</text>
+  </g>
+
+  <g stroke="#94a3b8" stroke-opacity=".13">
+    <path d="M78 78V1080"/>
+  </g>
+
+  <g font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, sans-serif">
+    <rect x="136" y="146" width="30" height="2" fill="#5eead4"/>
+    <text x="180" y="152" font-family="Consolas, monospace" font-size="13" font-weight="700" letter-spacing="5" fill="#5eead4">01 / 总览 · OVERVIEW</text>
+    <text x="134" y="268" font-size="96" font-weight="900" letter-spacing="-4" fill="#f1f8fb">数据，正在呼吸</text>
+    <text x="136" y="320" font-size="24" letter-spacing="1" fill="#d6e8f0" fill-opacity=".55">DATA CONSOLE · 30S OVERVIEW</text>
+  </g>
+
+  <g>
+    <rect x="136" y="360" width="262" height="168" rx="6" fill="#131d26" stroke="#94a3b8" stroke-opacity=".18"/>
+    <rect x="136" y="360" width="262" height="2" fill="#5eead4"/>
+    <rect x="422" y="360" width="262" height="168" rx="6" fill="#131d26" stroke="#94a3b8" stroke-opacity=".18"/>
+    <rect x="708" y="360" width="262" height="168" rx="6" fill="#131d26" stroke="#94a3b8" stroke-opacity=".18"/>
+    <rect x="994" y="360" width="262" height="168" rx="6" fill="#131d26" stroke="#94a3b8" stroke-opacity=".18"/>
+    <g font-family="Consolas, monospace">
+      <text x="158" y="392" font-size="13" letter-spacing="2" fill="#d6e8f0" fill-opacity=".45">实时吞吐</text>
+      <text x="158" y="464" font-size="50" font-weight="900" fill="#f2fbfd">82.4</text>
+      <text x="270" y="464" font-size="15" fill="#5eead4" fill-opacity=".8">k/s</text>
+      <text x="544" y="392" font-size="13" letter-spacing="2" fill="#d6e8f0" fill-opacity=".45">平均延迟</text>
+      <text x="544" y="464" font-size="50" font-weight="900" fill="#f2fbfd">38</text>
+      <text x="612" y="464" font-size="15" fill="#fbbf24" fill-opacity=".85">ms</text>
+      <text x="830" y="392" font-size="13" letter-spacing="2" fill="#d6e8f0" fill-opacity=".45">在线会话</text>
+      <text x="830" y="464" font-size="50" font-weight="900" fill="#f2fbfd">12,480</text>
+      <text x="1116" y="392" font-size="13" letter-spacing="2" fill="#d6e8f0" fill-opacity=".45">任务完成</text>
+      <text x="1116" y="464" font-size="50" font-weight="900" fill="#f2fbfd">99.2</text>
+      <text x="1236" y="464" font-size="15" fill="#5eead4" fill-opacity=".8">%</text>
+    </g>
+    <g fill="#94a3b8" fill-opacity=".18">
+      <rect x="158" y="500" width="218" height="3"/><rect x="444" y="500" width="218" height="3"/>
+      <rect x="730" y="500" width="218" height="3"/><rect x="1016" y="500" width="218" height="3"/>
+    </g>
+    <rect x="158" y="500" width="186" height="3" fill="#5eead4"/>
+    <rect x="444" y="500" width="120" height="3" fill="#5eead4"/>
+    <rect x="730" y="500" width="196" height="3" fill="#5eead4"/>
+    <rect x="1016" y="500" width="88" height="3" fill="#5eead4"/>
+  </g>
+
+  <g>
+    <rect x="136" y="560" width="1120" height="396" rx="8" fill="#0f171f" stroke="#94a3b8" stroke-opacity=".18"/>
+    <text x="162" y="596" font-family="Consolas, monospace" font-size="12" letter-spacing="3" fill="#d6e8f0" fill-opacity=".5">吞吐 / 延迟双轴采样</text>
+    <path d="M186 790H1212" stroke="#94a3b8" stroke-opacity=".14"/>
+    <path d="M186 700H1212M186 790H1212M186 880H1212" stroke="#94a3b8" stroke-opacity=".1"/>
+    <path d="M186 640 L290 696 L394 668 L498 728 L602 700 L706 758 L810 736 L914 790 L1018 764 L1122 828 L1212 800"
+          fill="none" stroke="#fbbf24" stroke-width="2" stroke-opacity=".7" stroke-dasharray="7 7"/>
+    <path d="M186 690 L290 730 L394 712 L498 770 L602 744 L706 802 L810 780 L914 838 L1018 810 L1122 862 L1212 836 L1212 940 L186 940 Z" fill="url(#teal)"/>
+    <path d="M186 690 L290 730 L394 712 L498 770 L602 744 L706 802 L810 780 L914 838 L1018 810 L1122 862 L1212 836"
+          fill="none" stroke="#5eead4" stroke-width="3"/>
+    <g font-family="Consolas, monospace" font-size="14" fill="#d6e8f0" fill-opacity=".35">
+      <text x="186" y="962">00:00</text><text x="512" y="962">00:10</text><text x="838" y="962">00:20</text><text x="1150" y="962">00:30</text>
+    </g>
+  </g>
+
+  <g>
+    <rect x="1310" y="146" width="514" height="352" rx="6" fill="#0d2024" stroke="#5eead4" stroke-opacity=".3"/>
+    <rect x="1324" y="160" width="486" height="324" fill="none" stroke="#5eead4" stroke-opacity=".2" stroke-dasharray="7 7"/>
+    <path d="M1567 250V394M1500 322H1634" stroke="#5eead4" stroke-opacity=".3"/>
+    <g font-family="Microsoft YaHei, sans-serif" text-anchor="middle">
+      <text x="1567" y="300" font-size="26" font-weight="900" fill="#d6e8f0" fill-opacity=".82">图片位 01</text>
+      <text x="1567" y="330" font-family="Consolas, monospace" font-size="12" letter-spacing="4" fill="#5eead4" fill-opacity=".6">IMAGE SLOT 01</text>
+      <text x="1567" y="440" font-family="Consolas, monospace" font-size="11" letter-spacing="3" fill="#d6e8f0" fill-opacity=".3">监控画面 / MONITOR FEED</text>
+    </g>
+
+    <rect x="1310" y="530" width="514" height="426" rx="8" fill="#0f171f" stroke="#94a3b8" stroke-opacity=".18"/>
+    <text x="1336" y="566" font-family="Consolas, monospace" font-size="12" letter-spacing="3" fill="#d6e8f0" fill-opacity=".5">资源占用</text>
+    <g font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#d6e8f0" fill-opacity=".66">
+      <text x="1336" y="616">CPU 集群</text><text x="1336" y="686">内存池</text><text x="1336" y="756">显存带宽</text>
+      <text x="1336" y="826">队列水位</text><text x="1336" y="896">存储索引</text>
+    </g>
+    <g font-family="Consolas, monospace" font-size="18" text-anchor="end" fill="#dff7f4">
+      <text x="1798" y="616">82%</text><text x="1798" y="686">64%</text><text x="1798" y="756">91%</text>
+      <text x="1798" y="826">47%</text><text x="1798" y="896">73%</text>
+    </g>
+    <g fill="#94a3b8" fill-opacity=".16">
+      <rect x="1336" y="630" width="462" height="6" rx="3"/><rect x="1336" y="700" width="462" height="6" rx="3"/>
+      <rect x="1336" y="770" width="462" height="6" rx="3"/><rect x="1336" y="840" width="462" height="6" rx="3"/>
+      <rect x="1336" y="910" width="462" height="6" rx="3"/>
+    </g>
+    <g fill="#5eead4">
+      <rect x="1336" y="630" width="379" height="6" rx="3"/><rect x="1336" y="700" width="296" height="6" rx="3"/>
+      <rect x="1336" y="770" width="420" height="6" rx="3"/><rect x="1336" y="840" width="217" height="6" rx="3"/>
+      <rect x="1336" y="910" width="337" height="6" rx="3"/>
+    </g>
+  </g>
+
+  <g font-family="Consolas, monospace" font-size="11" letter-spacing="3" fill="#d6e8f0" fill-opacity=".35">
+    <text x="136" y="1032">NUTCUT · OPS</text>
+    <text x="1764" y="1032" text-anchor="end" fill="#5eead4">01 / 06</text>
+    <path d="M320 1028H1700" stroke="#94a3b8" stroke-opacity=".18"/>
+    <path d="M320 1028H700" stroke="#5eead4" stroke-opacity=".7"/>
+  </g>
+</svg>

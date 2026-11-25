@@ -1,0 +1,17 @@
+{
+  "id": "talk-split",
+  "name": "口播分屏",
+  "group": "口播/头像",
+  "category": "口播",
+  "description": "口播画面与内容分屏，换边时画面平滑移动，适合访谈、讲解和知识分享。",
+  "tags": ["口播", "分屏", "头像", "平移", "讲解"],
+  "palette": { "background": "#f4ede4", "surface": "#fff9f2", "primary": "#211b17", "accent": "#d9523a", "text": "#211b17", "muted": "#75675e" },
+  "typography": { "titleWeight": 900, "bodyWeight": 500, "titleSize": 88 },
+  "motion": { "transition": "slide-side", "speed": "smooth" },
+  "duration": 10,
+  "sceneCount": 4,
+  "stylePrompt": "暖米色口播分屏，640×880 的圆角口播画面在一侧，另一侧是大标题与要点卡片；换边时画面平滑滑过去，不使用硬闪。",
+  "preview": "preview.png",
+  "features": ["image-slot"],
+  "styleRefs": ["H1", "H3"]
+}

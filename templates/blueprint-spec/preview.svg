@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="工程蓝图模板预览">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b2a4a"/><stop offset=".5" stop-color="#07203c"/><stop offset="1" stop-color="#051a30"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".22" cy=".1" r=".7">
+      <stop offset="0" stop-color="#3884d0" stop-opacity=".22"/><stop offset="1" stop-color="#3884d0" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#9fd0ff" stroke-opacity=".08"/>
+    </pattern>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#grid)"/>
+  <rect width="1920" height="1080" fill="url(#glow)"/>
+
+  <rect x="28" y="28" width="1864" height="1024" fill="none" stroke="#9fd0ff" stroke-opacity=".36"/>
+  <g stroke="#9fd0ff" stroke-opacity=".4">
+    <path d="M28 28H192M1828 28H1892M28 1052H192M1828 1052H1892"/>
+  </g>
+  <g font-family="Consolas, monospace" font-size="10" font-weight="700" letter-spacing="2" fill="#9fd0ff" fill-opacity=".45">
+    <text x="40" y="50">A-01</text>
+    <text x="1880" y="50" text-anchor="end">NUTCUT / DWG-006</text>
+    <text x="40" y="1042">SCALE 1:1</text>
+    <text x="1880" y="1042" text-anchor="end">SHEET 01 / 06</text>
+  </g>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <g transform="translate(136 190)">
+      <rect width="26" height="1" fill="#8fd0ff"/>
+      <text x="40" y="5" font-family="Consolas, monospace" font-size="12" font-weight="700" letter-spacing="5" fill="#8fd0ff">01 / 总图 · GENERAL ARRANGEMENT</text>
+    </g>
+    <text x="132" y="378" font-size="112" font-weight="900" letter-spacing="-5" fill="#f2f9ff">一张图，说清结构</text>
+    <text x="136" y="436" font-family="Consolas, monospace" font-size="21" letter-spacing="1" fill="#dcecff" fill-opacity=".6">BLUEPRINT SPEC · DWG NUTCUT-006 · 1:1</text>
+  </g>
+
+  <!-- reference slot with dimension lines -->
+  <g>
+    <rect x="980" y="190" width="840" height="520" fill="#061a2e" fill-opacity=".5" stroke="#9fd0ff" stroke-opacity=".45"/>
+    <rect x="992" y="202" width="816" height="496" fill="none" stroke="#9fd0ff" stroke-opacity=".22" stroke-dasharray="7 7"/>
+    <g stroke="#8fd0ff" stroke-opacity=".35">
+      <path d="M1400 190V710M980 450H1820"/>
+    </g>
+    <path d="M1400 380V520M1340 450H1460" stroke="#8fd0ff" stroke-opacity=".4"/>
+    <g font-family="Microsoft YaHei, sans-serif" text-anchor="middle">
+      <text x="1400" y="428" font-size="24" font-weight="900" fill="#e9f6ff">图片位 01</text>
+      <text x="1400" y="458" font-family="Consolas, monospace" font-size="11" font-weight="700" letter-spacing="6" fill="#8fd0ff">IMAGE SLOT 01</text>
+      <text x="1400" y="486" font-family="Consolas, monospace" font-size="11" letter-spacing="4" fill="#dcecff" fill-opacity=".4">参考图 / REFERENCE</text>
+    </g>
+    <g stroke="#8fd0ff" stroke-opacity=".55">
+      <path d="M980 156H1820M980 148V164M1820 148V164"/>
+      <path d="M980 152L990 156L980 160M1820 152L1810 156L1820 160"/>
+      <path d="M944 190V710M936 190H952M936 710H952"/>
+    </g>
+    <text x="1400" y="144" text-anchor="middle" font-family="Consolas, monospace" font-size="12" font-weight="700" letter-spacing="2" fill="#8fd0ff">840</text>
+    <text x="928" y="450" text-anchor="middle" font-family="Consolas, monospace" font-size="12" font-weight="700" letter-spacing="2" fill="#8fd0ff" transform="rotate(-90 928 450)">520</text>
+    <g fill="#8fd0ff">
+      <path d="M971 181H989M980 172V190"/><path d="M1811 181H1829M1820 172V190"/>
+      <path d="M971 701H989M980 692V710"/><path d="M1811 701H1829M1820 692V710"/>
+    </g>
+  </g>
+
+  <!-- ref block -->
+  <g font-family="Consolas, Microsoft YaHei, monospace">
+    <g>
+      <path d="M136 640H836" stroke="#9fd0ff" stroke-opacity=".18"/>
+      <text x="136" y="628" font-size="10" font-weight="700" letter-spacing="4" fill="#8fd0ff" fill-opacity=".6">DWG NO.</text>
+      <text x="280" y="628" font-size="16" fill="#ebf6ff">NUTCUT-006-A1</text>
+    </g>
+    <g>
+      <path d="M136 700H836" stroke="#9fd0ff" stroke-opacity=".18"/>
+      <text x="136" y="688" font-size="10" font-weight="700" letter-spacing="4" fill="#8fd0ff" fill-opacity=".6">PROJECT</text>
+      <text x="280" y="688" font-size="16" fill="#ebf6ff">30 SEC / 6 SCENES / 1920×1080</text>
+    </g>
+    <g>
+      <path d="M136 760H836" stroke="#9fd0ff" stroke-opacity=".18"/>
+      <text x="136" y="748" font-size="10" font-weight="700" letter-spacing="4" fill="#8fd0ff" fill-opacity=".6">UNIT</text>
+      <text x="280" y="748" font-size="16" fill="#ebf6ff">PIXEL (PX) · TOLERANCE ± 1</text>
+    </g>
+    <g>
+      <path d="M136 820H836" stroke="#9fd0ff" stroke-opacity=".18"/>
+      <text x="136" y="808" font-size="10" font-weight="700" letter-spacing="4" fill="#8fd0ff" fill-opacity=".6">STATUS</text>
+      <text x="280" y="808" font-size="16" fill="#ffd166">FOR REVIEW · 待审</text>
+    </g>
+    <text x="980" y="756" font-size="12" fill="#dcecff" fill-opacity=".45"><tspan fill="#8fd0ff">FIG. A1</tspan> — 主参考图，占位可替换为任意图片。</text>
+  </g>
+
+  <!-- ruler -->
+  <g transform="translate(136 900)">
+    <path d="M0 26H700" stroke="#8fd0ff" stroke-opacity=".4"/>
+    <g stroke="#8fd0ff" stroke-opacity=".5">
+      <path d="M0 16V36M70 16V36M140 16V36M210 16V36M280 16V36M350 16V36M420 16V36M490 16V36M560 16V36M630 16V36M700 16V36"/>
+    </g>
+    <g font-family="Consolas, monospace" font-size="10" fill="#dcecff" fill-opacity=".4" text-anchor="middle">
+      <text x="0" y="52">0</text><text x="140" y="52">140</text><text x="280" y="52">280</text>
+      <text x="420" y="52">420</text><text x="560" y="52">560</text><text x="700" y="52">700</text>
+    </g>
+  </g>
+</svg>

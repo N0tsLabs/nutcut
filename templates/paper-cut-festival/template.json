@@ -1,0 +1,45 @@
+{
+  "id": "paper-cut-festival",
+  "name": "剪纸节庆",
+  "category": "国风",
+  "description": "红纸层叠、窗花与民俗纹样的节庆模板：年节表格、岁时时间轴、年俗环形图与双图片位；适合节日、祝福、传统节令内容。",
+  "tags": [
+    "剪纸",
+    "国风",
+    "节庆",
+    "红纸",
+    "民俗"
+  ],
+  "palette": {
+    "background": "#fbf1de",
+    "surface": "#f3e2c7",
+    "primary": "#c1272d",
+    "accent": "#d99a2b",
+    "text": "#3b1d1a",
+    "muted": "rgba(59,29,26,.58)"
+  },
+  "typography": {
+    "titleWeight": 900,
+    "bodyWeight": 400,
+    "titleSize": 178
+  },
+  "motion": {
+    "transition": "paper-layer",
+    "speed": "slow"
+  },
+  "duration": 30,
+  "sceneCount": 6,
+  "stylePrompt": "中国红剪纸、米白宣纸底、金色细线、层叠窗花与团花纹样，拱形照片框，民俗节庆版式，手工裁切边缘，暖纸质感，克制留白，高级国风",
+  "preview": "preview.svg",
+  "styleRefs": [
+    "Z5",
+    "K20",
+    "Z8"
+  ],
+  "features": [
+    "table",
+    "chart",
+    "image-slot"
+  ],
+  "group": "主题创意"
+}

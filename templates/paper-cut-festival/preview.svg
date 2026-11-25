@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="剪纸节庆模板预览">
+  <defs>
+    <radialGradient id="glow1" cx=".82" cy=".06" r=".6">
+      <stop offset="0" stop-color="#c1272d" stop-opacity=".1"/>
+      <stop offset="1" stop-color="#c1272d" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx=".08" cy=".96" r=".6">
+      <stop offset="0" stop-color="#d99a2b" stop-opacity=".14"/>
+      <stop offset="1" stop-color="#d99a2b" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fdf5e6"/>
+      <stop offset=".56" stop-color="#f7e9d0"/>
+      <stop offset="1" stop-color="#f2dfc2"/>
+    </linearGradient>
+    <pattern id="dots" width="14" height="14" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#8c1c1c" fill-opacity=".09"/>
+    </pattern>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#paper)"/>
+  <rect width="1920" height="1080" fill="url(#dots)"/>
+  <rect width="1920" height="1080" fill="url(#glow1)"/>
+  <rect width="1920" height="1080" fill="url(#glow2)"/>
+
+  <g fill="none" stroke="#c1272d">
+    <circle cx="-10" cy="10" r="230" stroke-opacity=".14" stroke-width="2"/>
+    <circle cx="-10" cy="10" r="170" stroke-opacity=".12" stroke-width="2" stroke-dasharray="6 10"/>
+    <circle cx="1930" cy="1070" r="260" stroke-opacity=".14" stroke-width="2"/>
+    <circle cx="1930" cy="1070" r="180" stroke-opacity=".12" stroke-width="2" stroke-dasharray="6 10"/>
+  </g>
+
+  <rect x="0" y="0" width="1920" height="54" fill="#c1272d"/>
+  <rect x="0" y="1026" width="1920" height="54" fill="#c1272d"/>
+  <g fill="#c1272d">
+    <g>
+      <circle cx="12" cy="64" r="11"/><circle cx="36" cy="64" r="11"/><circle cx="60" cy="64" r="11"/><circle cx="84" cy="64" r="11"/>
+      <circle cx="108" cy="64" r="11"/><circle cx="132" cy="64" r="11"/><circle cx="156" cy="64" r="11"/><circle cx="180" cy="64" r="11"/>
+      <circle cx="204" cy="64" r="11"/><circle cx="228" cy="64" r="11"/><circle cx="252" cy="64" r="11"/><circle cx="276" cy="64" r="11"/>
+      <circle cx="300" cy="64" r="11"/><circle cx="324" cy="64" r="11"/><circle cx="348" cy="64" r="11"/><circle cx="372" cy="64" r="11"/>
+      <circle cx="396" cy="64" r="11"/><circle cx="420" cy="64" r="11"/><circle cx="444" cy="64" r="11"/><circle cx="468" cy="64" r="11"/>
+      <circle cx="492" cy="64" r="11"/><circle cx="516" cy="64" r="11"/><circle cx="540" cy="64" r="11"/><circle cx="564" cy="64" r="11"/>
+      <circle cx="588" cy="64" r="11"/><circle cx="612" cy="64" r="11"/><circle cx="636" cy="64" r="11"/><circle cx="660" cy="64" r="11"/>
+      <circle cx="684" cy="64" r="11"/><circle cx="708" cy="64" r="11"/><circle cx="732" cy="64" r="11"/><circle cx="756" cy="64" r="11"/>
+      <circle cx="780" cy="64" r="11"/><circle cx="804" cy="64" r="11"/><circle cx="828" cy="64" r="11"/><circle cx="852" cy="64" r="11"/>
+      <circle cx="876" cy="64" r="11"/><circle cx="900" cy="64" r="11"/><circle cx="924" cy="64" r="11"/><circle cx="948" cy="64" r="11"/>
+      <circle cx="972" cy="64" r="11"/><circle cx="996" cy="64" r="11"/><circle cx="1020" cy="64" r="11"/><circle cx="1044" cy="64" r="11"/>
+      <circle cx="1068" cy="64" r="11"/><circle cx="1092" cy="64" r="11"/><circle cx="1116" cy="64" r="11"/><circle cx="1140" cy="64" r="11"/>
+      <circle cx="1164" cy="64" r="11"/><circle cx="1188" cy="64" r="11"/><circle cx="1212" cy="64" r="11"/><circle cx="1236" cy="64" r="11"/>
+      <circle cx="1260" cy="64" r="11"/><circle cx="1284" cy="64" r="11"/><circle cx="1308" cy="64" r="11"/><circle cx="1332" cy="64" r="11"/>
+      <circle cx="1356" cy="64" r="11"/><circle cx="1380" cy="64" r="11"/><circle cx="1404" cy="64" r="11"/><circle cx="1428" cy="64" r="11"/>
+      <circle cx="1452" cy="64" r="11"/><circle cx="1476" cy="64" r="11"/><circle cx="1500" cy="64" r="11"/><circle cx="1524" cy="64" r="11"/>
+      <circle cx="1548" cy="64" r="11"/><circle cx="1572" cy="64" r="11"/><circle cx="1596" cy="64" r="11"/><circle cx="1620" cy="64" r="11"/>
+      <circle cx="1644" cy="64" r="11"/><circle cx="1668" cy="64" r="11"/><circle cx="1692" cy="64" r="11"/><circle cx="1716" cy="64" r="11"/>
+      <circle cx="1740" cy="64" r="11"/><circle cx="1764" cy="64" r="11"/><circle cx="1788" cy="64" r="11"/><circle cx="1812" cy="64" r="11"/>
+      <circle cx="1836" cy="64" r="11"/><circle cx="1860" cy="64" r="11"/><circle cx="1884" cy="64" r="11"/><circle cx="1908" cy="64" r="11"/>
+    </g>
+  </g>
+
+  <g font-family="Consolas, monospace" font-size="11" font-weight="600" letter-spacing="4" fill="#fbf1de" fill-opacity=".75">
+    <text x="40" y="34">NUTCUT · 节庆</text>
+    <text x="960" y="34" text-anchor="middle" letter-spacing="8">PAPER CUT FESTIVAL</text>
+    <text x="1880" y="34" text-anchor="end">30 SEC / 6 SCENES</text>
+    <text x="40" y="1058">CC0 TEMPLATE</text>
+    <text x="960" y="1058" text-anchor="middle">1920 × 1080 · 30 FPS</text>
+    <text x="1880" y="1058" text-anchor="end">岁岁平安</text>
+  </g>
+
+  <g text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, sans-serif">
+    <g font-family="Consolas, monospace" font-size="12" font-weight="600" letter-spacing="7" fill="#c1272d" fill-opacity=".8">
+      <path d="M600 232H780" stroke="#c1272d" stroke-opacity=".45"/>
+      <path d="M1140 232H1320" stroke="#c1272d" stroke-opacity=".45"/>
+      <text x="960" y="238">01 / 剪纸 · PAPER CUT</text>
+    </g>
+
+    <text x="960" y="470" font-size="178" font-weight="900" letter-spacing="4" fill="#c1272d">纸上生花</text>
+
+    <g stroke="#c1272d" stroke-opacity=".5">
+      <path d="M660 540H860"/>
+      <path d="M1060 540H1260"/>
+    </g>
+    <text x="960" y="552" font-size="20" letter-spacing="12" fill="#c1272d" fill-opacity=".72">囍</text>
+
+    <text x="960" y="628" font-size="27" letter-spacing="4" fill="#3b1d1a" fill-opacity=".6">PAPER CUT FESTIVAL · 红纸裁出一年好景</text>
+
+    <g transform="translate(901 690)">
+      <rect width="118" height="118" fill="#c1272d"/>
+      <rect x="8" y="8" width="102" height="102" fill="none" stroke="#fbf1de" stroke-opacity=".4" stroke-width="2"/>
+      <text x="59" y="52" font-size="25" font-weight="900" letter-spacing="4" fill="#fbf1de">岁岁</text>
+      <text x="59" y="86" font-size="25" font-weight="900" letter-spacing="4" fill="#fbf1de">平安</text>
+    </g>
+  </g>
+
+  <g font-family="SimSun, serif" font-size="15" letter-spacing="4" fill="#3b1d1a" fill-opacity=".42">
+    <text x="96" y="900">红纸裁出年景</text>
+    <text x="96" y="930">金线缝住时辰</text>
+  </g>
+
+  <g font-family="Consolas, monospace" font-size="11" font-weight="600" letter-spacing="3" fill="#8c1c1c" fill-opacity=".42">
+    <text x="1740" y="900" text-anchor="end">剪纸 · 窗花 · 灯影 · 团圆</text>
+  </g>
+
+  <g font-family="Consolas, monospace" font-size="11" font-weight="600" letter-spacing="3" fill="#3b1d1a" fill-opacity=".38">
+    <text x="96" y="996">NUTCUT / 剪纸节庆</text>
+    <path d="M340 992H1660" stroke="#c1272d" stroke-opacity=".2"/>
+    <path d="M340 992H600" stroke="#c1272d" stroke-opacity=".8"/>
+    <text x="1706" y="996" fill="#c1272d" fill-opacity=".9">01 / 06</text>
+    <text x="1830" y="996" text-anchor="end">00:00</text>
+  </g>
+</svg>
