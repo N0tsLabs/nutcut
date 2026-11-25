@@ -116,6 +116,8 @@ node bin/image-plan.mjs --project projects/<id>
 
 生成结果写到 `projects/<id>/assets/generated/`，并自动写入 `presets/default.json` 的 `images`；模板里有 `data-image-slot` 的图片位会直接使用。
 
+`produce` 不会自动生图：确认 `brief.imagePlan` 后再跑 `image-plan`，避免没确认就产生 MiniMax 费用。
+
 - 克隆：`MINIMAX_API_KEY`（按量计费）
 - TTS / 生图 / ASR：`MINIMAX_PLAN_KEY`（Go 套餐，失败不回退余额）
 
