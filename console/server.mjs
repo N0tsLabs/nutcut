@@ -12,6 +12,7 @@ import crypto from 'node:crypto'
 import { spawn } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { projectRenderBlock } from '../src/spec.mjs'
+import { approvalBlock } from '../src/approval.mjs'
 import { createProject, ProjectCreateError } from '../src/project-create.mjs'
 
 const ROOT = path.resolve(fileURLToPath(new URL('..', import.meta.url)))
@@ -686,6 +687,10 @@ async function handleApi(req, res, pathname) {
     const blocked = projectRenderBlock(project)
     if (blocked) {
       return sendJson(res, 409, { ok: false, error: blocked, layoutAdapted: project.layoutAdapted ?? null, spec: project.spec || null })
+    }
+    const pending = approvalBlock(project, { keyframes: project.kind !== 'video-remix' })
+    if (pending) {
+      return sendJson(res, 409, { ok: false, error: pending, approvals: project.approvals || null })
     }
     if (project.kind === 'video-frame' && fs.existsSync(path.join(projectRoot, 'frame.json'))) {
       const args = ['bin/frame-video.mjs', '--project', `projects/${project.dir}`]

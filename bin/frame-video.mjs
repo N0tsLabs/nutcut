@@ -8,6 +8,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { spawnSync } from 'node:child_process'
 import { projectRenderBlock } from '../src/spec.mjs'
+import { approvalBlock } from '../src/approval.mjs'
 
 function arg(name, fallback = '') {
   const index = process.argv.indexOf(`--${name}`)
@@ -34,6 +35,8 @@ function main() {
   if (!project) throw new Error(`缺少 project.json：${projectDir}`)
   const blocked = projectRenderBlock(project)
   if (blocked && !has('allow-layout-mismatch')) throw new Error(blocked)
+  const pending = approvalBlock(project)
+  if (pending && !has('allow-unconfirmed')) throw new Error(pending)
   const style = readJson(path.join(projectDir, 'style.json'), null)
   if (!style) console.error('[nutcut] 没有 style.json；默认按 frame-motion 制作。建议先和用户确认风格。')
   if (style?.mode && style.mode !== 'frame-motion') {

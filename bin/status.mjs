@@ -7,6 +7,7 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
+import { missingApprovals } from '../src/approval.mjs'
 
 function arg(name, fallback = '') {
   const index = process.argv.indexOf(`--${name}`)
@@ -54,6 +55,10 @@ function main() {
         : '当前在制作前确认：先等用户确认 brief、文案或关键帧，不要自动进入声音或全片渲染。',
     )
   }
+  const missing = missingApprovals(project)
+  if (missing.length && !exists(path.join(outDir, 'film.mp4'))) {
+    next.push(`还没有用户确认：${missing.join(' / ')}。先给用户看对应内容，再运行 node bin/confirm.mjs --project <项目> --step ${missing[0]}`)
+  }
   if ((project.kind === 'video-frame' || project.kind === 'video-remix') && (!project.assets?.source || !exists(project.assets.source))) {
     next.push('缺少原始视频：交接时把 assets/imported 里的源文件一起带上，或用 node bin/import.mjs 重新导入。')
   }
@@ -82,6 +87,8 @@ function main() {
       duration: project.duration,
       spec: project.spec || null,
       layoutAdapted: project.layoutAdapted ?? null,
+      confirmation: project.confirmation || null,
+      approvals: project.approvals || null,
       template: template ? { id: template.id, name: template.name, category: template.category } : templateId,
     },
     progress: (project.pipeline || []).map((step) => ({ id: step.id, label: step.label, status: step.status })),

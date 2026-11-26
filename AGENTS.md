@@ -69,6 +69,22 @@ node bin/status.mjs --project projects/<id>
 - 模板原生画布与目标画幅不一致时，`project.layoutAdapted` 为 `false`，Agent 必须先改编 `src/index.html` 的版式，跑 `node bin/adapt-layout.mjs --project projects/<id> --confirm` 标记后，再渲关键帧。未适配的项目，`produce` / `render` / 中控台导出会直接拒绝。
 - 中途改规格用 `node bin/set-spec.mjs --project projects/<id> --orientation ...`；尺寸或画幅变化后 `layoutAdapted` 会重置，必须重新适配。
 
+### 三个必停点
+
+仅写进文件不算确认。必须把内容给用户看，用户明确说可以后，才标记：
+
+```bash
+node bin/confirm.mjs --project projects/<id> --step brief --note "选题和风格通过"
+node bin/confirm.mjs --project projects/<id> --step script
+node bin/confirm.mjs --project projects/<id> --step keyframes
+```
+
+- `brief`：选题、受众、角度、风格/模板、风险
+- `script`：逐句文案
+- `keyframes`：关键帧或 6–12 秒样片
+
+没有 `project.approvals.brief/script/keyframes === true` 时，`produce`、`frame-video`、`assemble`、`render`（全片）和中控台导出都会拒绝。不要自己替用户运行 `confirm`。
+
 完整输入输出和检查点见 `workflow.json`。
 
 一键：

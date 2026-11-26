@@ -34,6 +34,7 @@
     "status": "node bin/status.mjs",
     "new": "node bin/new-project.mjs",
     "adapt-layout": "node bin/adapt-layout.mjs",
+    "confirm": "node bin/confirm.mjs",
     "set-spec": "node bin/set-spec.mjs",
     "style": "node bin/style.mjs",
     "capture-console": "node bin/capture-console.mjs",

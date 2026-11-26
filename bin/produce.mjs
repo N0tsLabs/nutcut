@@ -9,6 +9,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { spawnSync } from 'node:child_process'
 import { projectRenderBlock } from '../src/spec.mjs'
+import { approvalBlock } from '../src/approval.mjs'
 
 function arg(name, fallback = '') {
   const index = process.argv.indexOf(`--${name}`)
@@ -47,6 +48,8 @@ function main() {
   const projectData = readJson(path.join(projectDir, 'project.json'), null)
   const blocked = projectRenderBlock(projectData)
   if (blocked) throw new Error(blocked)
+  const pendingApproval = approvalBlock(projectData)
+  if (pendingApproval) throw new Error(pendingApproval)
   const outDir = path.resolve(arg('out', path.join('out', script.id)))
   fs.mkdirSync(outDir, { recursive: true })
 

@@ -14,6 +14,7 @@ import { spawnSync } from 'node:child_process'
 import { pathToFileURL } from 'node:url'
 import puppeteer from 'puppeteer-core'
 import { projectRenderBlock } from '../src/spec.mjs'
+import { approvalBlock } from '../src/approval.mjs'
 
 function arg(name, fallback = '') {
   const index = process.argv.indexOf(`--${name}`)
@@ -83,6 +84,10 @@ async function main() {
     const projectData = readJson(projectFile)
     const blocked = projectRenderBlock(projectData)
     if (blocked) fail(`${blocked}（确需跳过加 --allow-layout-mismatch）`)
+    if (!has('frames') && !has('stills')) {
+      const pending = approvalBlock(projectData)
+      if (pending) fail(pending)
+    }
   }
 
   const schemaPath = path.join(templateDir, manifest.params?.schema ?? 'params.schema.json')

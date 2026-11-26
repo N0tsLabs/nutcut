@@ -8,6 +8,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { spawnSync } from 'node:child_process'
 import { projectRenderBlock } from '../src/spec.mjs'
+import { approvalBlock } from '../src/approval.mjs'
 
 function arg(name, fallback = '') {
   const index = process.argv.indexOf(`--${name}`)
@@ -123,8 +124,11 @@ const edl = readJson(edlFile)
 if (!edl) throw new Error(`读不到 EDL：${edlFile}`)
 const projectFile = path.join(path.dirname(path.resolve(edlFile)), 'project.json')
 if (fs.existsSync(projectFile)) {
-  const blocked = projectRenderBlock(readJson(projectFile))
+  const project = readJson(projectFile)
+  const blocked = projectRenderBlock(project)
   if (blocked) throw new Error(blocked)
+  const pending = approvalBlock(project, { keyframes: false })
+  if (pending) throw new Error(pending)
 }
 const outFile = path.resolve(arg('out', path.join('out', path.basename(edlFile, '.json'), 'film.mp4')))
 const workDir = path.resolve(arg('work', path.join(path.dirname(path.resolve(edlFile)), 'build')))

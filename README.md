@@ -34,6 +34,8 @@ Agent 会按仓库里的流程执行：
 
 任何一步缺失信息，Agent 会先问你，而不是自己默认 16:9、默认 30 秒、默认用某个模板。
 
+你确认后，Agent 才会执行 `bin/confirm.mjs` 标记；没有确认，`produce` 会直接拒绝。
+
 ![Remotion 实时预览](docs/assets/remotion-preview.png)
 
 ## 特性

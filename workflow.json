@@ -79,7 +79,8 @@
         "feasibility.risks 至少 2 条",
         "feasibility.decision 为 go / pause / drop",
         "选择模板后 project.template 指向 templates/<id>",
-        "用户已确认主题、受众、角度和模板"
+        "用户已确认主题、受众、角度和模板",
+        "project.approvals.brief === true"
       ],
       "agentRules": [
         "先给用户确认选题和可行性，再写文案",
@@ -105,7 +106,8 @@
         "每句一个语义单元",
         "句子长度适合 TTS，不出现长难句",
         "总时长与目标时长匹配",
-        "用户已确认文案"
+        "用户已确认文案",
+        "project.approvals.script === true"
       ],
       "agentRules": [
         "文案确认前不要生成声音",
@@ -179,7 +181,8 @@
         "关键帧无文字溢出、对比度足够",
         "模板 network:false 时不请求网络",
         "生成图片记录 sidecar json",
-        "关键帧经用户确认后再渲全片"
+        "关键帧经用户确认后再渲全片",
+        "project.approvals.keyframes === true"
       ]
     },
     {

@@ -34,6 +34,8 @@ test('createProject writes spec, motion and layout flag', () => {
     const project = JSON.parse(fs.readFileSync(path.join(dir, 'project.json'), 'utf8'))
     assert.equal(project.spec.confirmed, true)
     assert.equal(project.layoutAdapted, false)
+    assert.equal(project.approvals.brief, false)
+    assert.equal(project.approvals.script, false)
     assert.equal(project.pipeline[0].id, 'spec')
 
     const motion = JSON.parse(fs.readFileSync(path.join(dir, 'motion.json'), 'utf8'))
@@ -127,6 +129,35 @@ test('set-spec updates dimensions and resets layout adaptation', () => {
     assert.equal(project.spec.orientation, 'landscape')
     assert.equal(project.spec.width, 1920)
     assert.equal(project.layoutAdapted, false)
+  } finally {
+    cleanup(id)
+  }
+})
+
+test('confirm marks each gate and unblocks produce approval check', () => {
+  const id = `test-confirm-${process.pid}`
+  cleanup(id)
+  try {
+    createProject({
+      root: ROOT,
+      id,
+      title: '????',
+      template: 'tech-neon',
+      spec: { orientation: 'landscape', quality: '1080p', fps: 30, duration: 10, audio: 'none' },
+    })
+    const unconfirmed = spawnSync(process.execPath, ['bin/produce.mjs', '--project', `projects/${id}`], { cwd: ROOT, encoding: 'utf8' })
+    assert.notEqual(unconfirmed.status, 0)
+    assert.match(String(unconfirmed.stderr), /approvals|confirm|produce/)
+    for (const step of ['brief', 'script']) {
+      const result = spawnSync(process.execPath, ['bin/confirm.mjs', '--project', `projects/${id}`, '--step', step], { cwd: ROOT, encoding: 'utf8' })
+      assert.equal(result.status, 0, result.stderr)
+    }
+    const keyframes = spawnSync(process.execPath, ['bin/confirm.mjs', '--project', `projects/${id}`, '--step', 'keyframes', '--force'], { cwd: ROOT, encoding: 'utf8' })
+    assert.equal(keyframes.status, 0, keyframes.stderr)
+    const project = JSON.parse(fs.readFileSync(path.join(ROOT, 'projects', id, 'project.json'), 'utf8'))
+    assert.equal(project.approvals.brief, true)
+    assert.equal(project.approvals.script, true)
+    assert.equal(project.approvals.keyframes, true)
   } finally {
     cleanup(id)
   }

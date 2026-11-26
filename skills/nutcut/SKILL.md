@@ -90,6 +90,16 @@ node bin/render-remotion.mjs --template templates/<id> --still 120 --out out/che
 
 不要一条龙直接渲完成片。用户没有确认 brief、文案或关键帧时，不要继续下一步。
 
+用户明确确认后运行：
+
+```bash
+node bin/confirm.mjs --project projects/<id> --step brief --note "选题和风格通过"
+node bin/confirm.mjs --project projects/<id> --step script
+node bin/confirm.mjs --project projects/<id> --step keyframes
+```
+
+没有 `project.approvals` 里对应 `true`，`produce` / 全片 `render` / `frame-video` / `assemble` / 中控台导出都会拒绝。**不要自己替用户确认。**
+
 模板在 `templates/`，先读 `template.json` 的 `palette` / `motion` / `stylePrompt`，再写生图 prompt。
 
 ## 4. 视觉与动效规则

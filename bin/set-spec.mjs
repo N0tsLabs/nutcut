@@ -59,6 +59,14 @@ function main() {
   project.spec = spec
   project.duration = spec.duration
   project.layoutAdapted = layoutAdapted
+  if (project.approvals) {
+    project.approvals = {
+      ...project.approvals,
+      spec: true,
+      ...(dimensionsChanged ? { keyframes: false } : {}),
+      updatedAt: new Date().toISOString(),
+    }
+  }
   const templateMeta = readJson(path.join('templates', project.template || '', 'template.json'))
   if (templateMeta) project.subtitle = `${templateMeta.category || '短片'} · ${spec.orientationLabel} · ${spec.duration} 秒`
   project.updatedAt = new Date().toISOString()
