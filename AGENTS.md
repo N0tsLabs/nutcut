@@ -29,18 +29,21 @@ node bin/status.mjs --project projects/<id>
 
 ## 2. 固定流程
 
-一条片子按 10 个阶段走，不跳步：
+一条片子按 13 个阶段走，research 阶段按路径跳过：
 
 1. **规格确认**：先问清楚横屏 / 竖屏 / 方形、尺寸、帧率、时长、平台、声音来源。
 2. **素材接收**：用户提供的图片、视频、音频、文档，先导入并分析。
-3. **选题与风格**：写 `brief.json`，确认主题、受众、角度、模板/风格、风险，等用户确认。
-4. **文案**：写 `script.json`，等用户确认。
-5. **声音**：MiniMax 逐句合成，写入 `out/<id>/vo/`。
-6. **时间线**：按真实语音时长写 `src/timings.js` 和 `timing.json`。
-7. **画面**：按模板风格生成图片 / 渲关键帧，**等用户确认关键帧**再渲全片。
-8. **混音**：BGM、音效、ducking、-16 LUFS。
-9. **导出**：合成 MP4、封面、更新 `project.json`。
-10. **审阅**：读用户问题记录，修改或确认。
+3. **路径判断**：模糊方向 → `research`；已有口播/产品/图片/视频/电视剧 → `materials`。
+4. **联网调研**：只有 `research` 需要。联网搜索并记录来源、结论、可拍角度。
+5. **选题与可行性**：写 `brief.json`，确认主题、受众、角度、风险。
+6. **风格与模板**：给 2–3 个方案并推荐一个，写 `style.json`，等用户确认。
+7. **文案**：写 `script.json`，等用户确认。
+8. **声音**：MiniMax 逐句合成，写入 `out/<id>/vo/`。
+9. **时间线**：按真实语音时长写 `src/timings.js` 和 `timing.json`。
+10. **画面**：按模板风格生成图片 / 渲关键帧，**等用户确认关键帧**再渲全片。
+11. **混音**：BGM、音效、ducking、-16 LUFS。
+12. **导出**：合成 MP4、封面、更新 `project.json`。
+13. **审阅**：读用户问题记录，修改或确认。
 
 ### 视频规格是硬门槛
 
@@ -69,21 +72,31 @@ node bin/status.mjs --project projects/<id>
 - 模板原生画布与目标画幅不一致时，`project.layoutAdapted` 为 `false`，Agent 必须先改编 `src/index.html` 的版式，跑 `node bin/adapt-layout.mjs --project projects/<id> --confirm` 标记后，再渲关键帧。未适配的项目，`produce` / `render` / 中控台导出会直接拒绝。
 - 中途改规格用 `node bin/set-spec.mjs --project projects/<id> --orientation ...`；尺寸或画幅变化后 `layoutAdapted` 会重置，必须重新适配。
 
-### 三个必停点
+### 五个必停点
 
-仅写进文件不算确认。必须把内容给用户看，用户明确说可以后，才标记：
+仅写进文件不算确认。必须先判断路径，再把内容给用户看；用户明确说可以后才标记：
 
 ```bash
-node bin/confirm.mjs --project projects/<id> --step brief --note "选题和风格通过"
+node bin/route.mjs --project projects/<id> --mode research|materials
+
+# research 模式才需要
+node bin/confirm.mjs --project projects/<id> --step research --note "来源和结论通过"
+
+node bin/confirm.mjs --project projects/<id> --step brief --note "选题和受众通过"
+node bin/confirm.mjs --project projects/<id> --step style --note "模板/风格通过"
 node bin/confirm.mjs --project projects/<id> --step script
 node bin/confirm.mjs --project projects/<id> --step keyframes
 ```
 
-- `brief`：选题、受众、角度、风格/模板、风险
+- `research`：来源、findings、可拍角度（仅 research）
+- `brief`：选题、受众、角度、风险
+- `style`：模板、风格和做法，至少 2 个备选
 - `script`：逐句文案
 - `keyframes`：关键帧或 6–12 秒样片
 
-没有 `project.approvals.brief/script/keyframes === true` 时，`produce`、`frame-video`、`assemble`、`render`（全片）和中控台导出都会拒绝。不要自己替用户运行 `confirm`。
+需要用户决策时，先用 `node bin/ask.mjs --project projects/<id> --question "..." --options "A|B|C"` 记录，然后把问题发给用户并停下，等回答后再继续。
+
+没有 `project.approvals` 里对应 `true` 时，`produce`、`frame-video`、`assemble`、`render`（全片）和中控台导出都会拒绝。不要自己替用户运行 `confirm`。
 
 完整输入输出和检查点见 `workflow.json`。
 
@@ -113,9 +126,10 @@ projects/<id>/
   project.json          项目状态、spec、资产、模板、流程
   issues.json           问题记录，详情页自动保存，Agent 先读这个
   imports.json          用户导入素材清单 + 分析结果
+  research.json         research 模式的来源、findings、angles
+  style.json            风格/模板决策：overlay / frame-motion / remix-edl / template
   edit.json             混音的音量 / 静音 / 音乐起点
   edl.json              视频混剪的剪辑决策表
-  style.json            风格决策：overlay / frame-motion / remix-edl
   frame.json            口播画中画的窗口、章节、字幕参数
   analysis/             镜头、关键帧、ASR、静音、配音决策
   motion.json           OpenMotion 清单

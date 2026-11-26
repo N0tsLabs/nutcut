@@ -48,6 +48,17 @@ node bin/new-project.mjs --id my-video --title "我的视频" --template tech-ne
 
 模板只决定风格和配色。没有提供横竖屏、尺寸、帧率、时长时，先问用户，不要默认。
 
+建完项目先判断路径：
+
+```bash
+node bin/route.mjs --project projects/<id> --mode research --reason "用户只给了模糊方向"
+node bin/route.mjs --project projects/<id> --mode materials --reason "用户给了口播/产品/素材"
+```
+
+- `research`：必须真实联网搜索，至少 3 个来源写入 `research.json`，再 brief/style/文案。
+- `materials`：跳过调研，直接 brief/style/文案。
+- 不确定就用 `bin/ask.mjs` 问用户。
+
 模板在 `templates/`，每套都有：
 
 - `template.json`：风格、配色、标签、给 Agent 的 stylePrompt

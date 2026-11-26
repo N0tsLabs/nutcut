@@ -20,7 +20,7 @@ function readJson(file, fallback = null) {
 function exists(file) { return fs.existsSync(file) }
 function rel(file) { return path.relative(process.cwd(), file).replace(/\\/g, '/') }
 
-const STAGE_ZH = { spec: '规格', intake: '素材接收', idea: '选题', script: '文案', voice: '声音', timeline: '时间线', visual: '画面', mix: '混音', render: '导出', review: '审阅' }
+const STAGE_ZH = { spec: '规格', intake: '素材接收', route: '路径判断', research: '联网调研', idea: '选题', style: '风格', script: '文案', voice: '声音', timeline: '时间线', visual: '画面', mix: '混音', render: '导出', review: '审阅' }
 
 function main() {
   const projectArg = arg('project')
@@ -47,15 +47,18 @@ function main() {
     || (project.pipeline || []).some((step) => step.id === 'review' && step.status === 'doing')
 
   if (!project.spec) next.push('视频规格未确认：先问用户横屏/竖屏/方形、尺寸、帧率、时长、平台，再写进 project.json 的 spec。')
+  if (project.pendingQuestion?.status === 'open') next.unshift(`正在等用户回答：${project.pendingQuestion.question}${project.pendingQuestion.options?.length ? `（${project.pendingQuestion.options.join(' / ')}）` : ''}`)
+  if (!project.mode) next.push('还没判断视频路径：模糊方向走 research（先联网调研），有明确素材走 materials（直接做）。运行 node bin/route.mjs --project <项目> --mode research|materials。')
+  if (project.mode === 'research' && !exists(path.join(projectDir, 'research.json'))) next.push('research 模式还没有 research.json：先联网搜索，记录至少 3 个来源、findings 和 angles。')
   if (project.spec?.confirmed && project.layoutAdapted === false) next.push('模板版式还没按目标规格适配：改 src/index.html 后跑 node bin/adapt-layout.mjs --project <项目> --confirm。')
   if (waitingForUser) {
     next.push(
       exists(path.join(outDir, 'film.mp4'))
         ? '成片已生成，等待用户审片；把修改意见写进 issues.json，不要自动重渲。'
-        : '当前在制作前确认：先等用户确认 brief、文案或关键帧，不要自动进入声音或全片渲染。',
+        : '当前在制作前确认：先等用户确认 brief、风格、文案或关键帧，不要自动进入声音或全片渲染。',
     )
   }
-  const missing = missingApprovals(project)
+  const missing = project.mode ? missingApprovals(project) : []
   if (missing.length && !exists(path.join(outDir, 'film.mp4'))) {
     next.push(`还没有用户确认：${missing.join(' / ')}。先给用户看对应内容，再运行 node bin/confirm.mjs --project <项目> --step ${missing[0]}`)
   }
@@ -86,6 +89,8 @@ function main() {
       stageLabel: STAGE_ZH[project.stage] || project.stage,
       duration: project.duration,
       spec: project.spec || null,
+      mode: project.mode || null,
+      route: project.route || null,
       layoutAdapted: project.layoutAdapted ?? null,
       confirmation: project.confirmation || null,
       approvals: project.approvals || null,
@@ -131,6 +136,7 @@ function main() {
   console.log(`\n${project.title}  (${project.id})`)
   console.log(`状态：${project.status} · 阶段：${result.project.stageLabel} · 时长：${Number(project.duration || 0).toFixed(1)} 秒`)
   console.log(`规格：${project.spec ? `${project.spec.orientationLabel || project.spec.orientation} ${project.spec.width}×${project.spec.height} · ${project.spec.fps}fps${project.spec.platform ? ` · ${project.spec.platform}` : ''}` : '未确认（先问用户横竖屏、尺寸、帧率、时长）'}${project.layoutAdapted === false ? ' · 版式待适配' : ''}`)
+  console.log(`路径：${project.mode === 'research' ? 'research（模糊方向，先联网调研）' : project.mode === 'materials' ? 'materials（已有明确素材，直接做）' : '未判断'}`)
   if (template) console.log(`模板：${template.name}（${template.category}）`)
   console.log(`\n进度：${(project.pipeline || []).map((step) => `${step.label}${step.status === 'done' ? '✓' : step.status === 'doing' ? '…' : '·'}`).join('  ')}`)
   console.log(`素材：${imports.length} 个导入，${result.imports.analyzed} 个已分析`)

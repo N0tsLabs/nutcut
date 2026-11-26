@@ -1,7 +1,7 @@
 {
   "version": 2,
   "name": "NutCut 视频工作流",
-  "description": "先确认视频规格（横竖屏、尺寸、帧率、时长），再从素材、文案到声音、画面、混音、审阅的完整本地工作流。Agent 按阶段读取输入、产出文件，并优先读取项目问题记录。",
+  "description": "先确认视频规格，再判断走 research（模糊方向，必须联网调研）还是 materials（已有明确素材）。之后完成 brief、风格/模板、文案、声音、画面、混音、审阅；每个关键节点都要用户确认后才能继续。",
   "stages": [
     {
       "id": "spec",
@@ -58,6 +58,60 @@
       ]
     },
     {
+      "id": "route",
+      "label": "路径判断",
+      "goal": "判断用户给的是模糊方向，还是已经有明确口播/产品/图片/视频/电视剧素材。模糊方向走 research；明确素材走 materials。",
+      "inputs": [
+        "用户需求",
+        "imports.json"
+      ],
+      "outputs": [
+        "projects/<id>/project.json 的 mode / route"
+      ],
+      "commands": [
+        "node bin/route.mjs --project projects/<id> --mode research --reason \"...\"",
+        "node bin/route.mjs --project projects/<id> --mode materials --reason \"...\""
+      ],
+      "checks": [
+        "project.mode 是 research / materials 之一",
+        "route.reason 写清楚为什么走这条路径"
+      ],
+      "agentRules": [
+        "模糊方向必须走 research，不能直接拍脑袋写文案",
+        "已有口播、产品、图片、视频、电视剧素材时走 materials，跳过联网调研",
+        "无法判断时问用户，不要默认 research 或 materials"
+      ]
+    },
+    {
+      "id": "research",
+      "label": "联网调研",
+      "goal": "模糊方向下，先联网搜索新闻、案例、数据和可用素材，整理来源、结论和可拍角度，再进入 brief。",
+      "inputs": [
+        "project.mode = research",
+        "用户模糊方向"
+      ],
+      "outputs": [
+        "projects/<id>/research.json"
+      ],
+      "commands": [
+        "node bin/research.mjs --project projects/<id> --init",
+        "node bin/research.mjs --project projects/<id> --check",
+        "node bin/confirm.mjs --project projects/<id> --step research"
+      ],
+      "checks": [
+        "至少 3 个真实来源，每个有 title + url",
+        "至少 1 条 findings 和 1 个 angles",
+        "素材来源和许可记录在 assets / research.json",
+        "用户已确认调研结论",
+        "project.approvals.research === true"
+      ],
+      "agentRules": [
+        "必须真实联网搜索，不要编造新闻、数据和链接",
+        "materials 模式跳过本阶段",
+        "没有来源和结论，不要进入 brief 和文案"
+      ]
+    },
+    {
       "id": "idea",
       "label": "选题与可行性",
       "goal": "确定主题、受众、角度、形式，完成可行性评估和图片计划。",
@@ -78,13 +132,42 @@
         "feasibility.score 为 0–10",
         "feasibility.risks 至少 2 条",
         "feasibility.decision 为 go / pause / drop",
-        "选择模板后 project.template 指向 templates/<id>",
-        "用户已确认主题、受众、角度和模板",
+        "用户已确认主题、受众、角度",
         "project.approvals.brief === true"
       ],
       "agentRules": [
         "先给用户确认选题和可行性，再写文案",
         "不要跳过 brief.json 直接生成文案"
+      ]
+    },
+    {
+      "id": "style",
+      "label": "风格与模板",
+      "goal": "基于 brief / research / 素材，给出 2–3 个风格或模板方案，推荐一个，等用户确认后再写文案。",
+      "inputs": [
+        "brief.json",
+        "research.json（research 模式）",
+        "素材分析",
+        "templates/*/template.json"
+      ],
+      "outputs": [
+        "projects/<id>/style.json",
+        "project.template"
+      ],
+      "commands": [
+        "node bin/style.mjs --list",
+        "node bin/confirm.mjs --project projects/<id> --step style"
+      ],
+      "checks": [
+        "style.json 有 template 或 mode",
+        "至少给出 2 个备选并说明推荐理由",
+        "用户已确认风格/模板",
+        "project.approvals.style === true"
+      ],
+      "agentRules": [
+        "不要自己替用户定模板或风格",
+        "视频改片必须先确认 overlay / frame-motion / remix-edl",
+        "确认风格后才能进入 script"
       ]
     },
     {
@@ -262,10 +345,12 @@
   ],
   "artifacts": {
     "spec": "projects/<id>/project.json#spec",
+    "route": "projects/<id>/project.json#route",
+    "research": "projects/<id>/research.json",
     "brief": "projects/<id>/brief.json",
+    "style": "projects/<id>/style.json",
     "script": "projects/<id>/script.json",
     "project": "projects/<id>/project.json",
-    "comments": "projects/<id>/comments.json",
     "imports": "projects/<id>/imports.json",
     "edit": "projects/<id>/edit.json",
     "template": "templates/<template-id>/template.json",

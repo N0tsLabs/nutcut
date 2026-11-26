@@ -34,6 +34,7 @@ test('createProject writes spec, motion and layout flag', () => {
     const project = JSON.parse(fs.readFileSync(path.join(dir, 'project.json'), 'utf8'))
     assert.equal(project.spec.confirmed, true)
     assert.equal(project.layoutAdapted, false)
+    assert.equal(project.mode, null)
     assert.equal(project.approvals.brief, false)
     assert.equal(project.approvals.script, false)
     assert.equal(project.pipeline[0].id, 'spec')
@@ -145,10 +146,12 @@ test('confirm marks each gate and unblocks produce approval check', () => {
       template: 'tech-neon',
       spec: { orientation: 'landscape', quality: '1080p', fps: 30, duration: 10, audio: 'none' },
     })
+    const route = spawnSync(process.execPath, ['bin/route.mjs', '--project', `projects/${id}`, '--mode', 'materials'], { cwd: ROOT, encoding: 'utf8' })
+    assert.equal(route.status, 0, route.stderr)
     const unconfirmed = spawnSync(process.execPath, ['bin/produce.mjs', '--project', `projects/${id}`], { cwd: ROOT, encoding: 'utf8' })
     assert.notEqual(unconfirmed.status, 0)
     assert.match(String(unconfirmed.stderr), /approvals|confirm|produce/)
-    for (const step of ['brief', 'script']) {
+    for (const step of ['brief', 'style', 'script']) {
       const result = spawnSync(process.execPath, ['bin/confirm.mjs', '--project', `projects/${id}`, '--step', step], { cwd: ROOT, encoding: 'utf8' })
       assert.equal(result.status, 0, result.stderr)
     }
@@ -156,6 +159,7 @@ test('confirm marks each gate and unblocks produce approval check', () => {
     assert.equal(keyframes.status, 0, keyframes.stderr)
     const project = JSON.parse(fs.readFileSync(path.join(ROOT, 'projects', id, 'project.json'), 'utf8'))
     assert.equal(project.approvals.brief, true)
+    assert.equal(project.approvals.style, true)
     assert.equal(project.approvals.script, true)
     assert.equal(project.approvals.keyframes, true)
   } finally {

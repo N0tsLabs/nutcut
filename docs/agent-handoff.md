@@ -30,6 +30,31 @@ node bin/install-skill.mjs --dest <agent-skills-dir>/nutcut --force
 
 在 OpenCode 里直接打开本仓库时，`opencode.json` 会自动发现 `skills/`，不需要额外安装；注意要从**仓库根目录**打开，`./skills` 是相对工作目录的。
 
+### 新任务先判断两条路径
+
+- 模糊方向：`node bin/route.mjs --project projects/<id> --mode research`，先联网搜索、记录来源，再 brief/style/文案。
+- 已有口播、产品、图片、视频、电视剧：`node bin/route.mjs --project projects/<id> --mode materials`，跳过调研，直接 brief/style/文案。
+
+### 让 Agent 停下来问
+
+需要用户决策时，Agent 应运行：
+
+```bash
+node bin/ask.mjs --project projects/<id> --question "..." --options "A|B|C"
+```
+
+然后结束本轮，把问题发给用户。用户确认后：
+
+```bash
+node bin/confirm.mjs --project projects/<id> --step research
+node bin/confirm.mjs --project projects/<id> --step brief
+node bin/confirm.mjs --project projects/<id> --step style
+node bin/confirm.mjs --project projects/<id> --step script
+node bin/confirm.mjs --project projects/<id> --step keyframes
+```
+
+`pendingQuestion` 或未确认的 approvals 会直接阻塞 `produce` 和中控台导出。
+
 ---
 
 ## 1. 装好技能后的最短一句话

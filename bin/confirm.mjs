@@ -10,8 +10,9 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
+import { validateResearch } from '../src/research.mjs'
 
-const STEPS = ['brief', 'script', 'keyframes']
+const STEPS = ['research', 'brief', 'style', 'script', 'keyframes']
 
 function arg(name, fallback = '') {
   const index = process.argv.indexOf(`--${name}`)
@@ -30,7 +31,7 @@ function writeJson(file, data) {
 function main() {
   const projectArg = arg('project')
   const step = String(arg('step', '')).toLowerCase()
-  if (!projectArg) throw new Error('用法：node bin/confirm.mjs --project projects/<id> --step <brief|script|keyframes> [--note "..."]')
+  if (!projectArg) throw new Error('用法：node bin/confirm.mjs --project projects/<id> --step <research|brief|style|script|keyframes> [--note "..."]')
   if (!STEPS.includes(step)) throw new Error(`--step 只能是：${STEPS.join(' / ')}`)
 
   const projectDir = path.resolve(projectArg)
@@ -38,9 +39,19 @@ function main() {
   const project = readJson(projectFile)
   if (!project) throw new Error(`缺少 project.json：${projectFile}`)
   if (!project.spec?.confirmed) throw new Error('规格还没确认，先补 project.spec')
+  if (!project.mode) throw new Error('还没判断路径，先运行 node bin/route.mjs --project <项目> --mode research|materials')
 
+  if (step === 'research') {
+    if (project.mode !== 'research') throw new Error('当前是 materials 模式，不需要 research 确认')
+    const result = validateResearch(path.join(projectDir, 'research.json'))
+    if (!result.ok) throw new Error(result.errors.join('；'))
+  }
   if (step === 'brief' && !fs.existsSync(path.join(projectDir, 'brief.json'))) {
-    throw new Error('缺少 brief.json，先写选题/风格')
+    throw new Error('缺少 brief.json，先写选题/受众/角度')
+  }
+  if (step === 'style') {
+    const styleFile = path.join(projectDir, 'style.json')
+    if (!fs.existsSync(styleFile) && !project.template) throw new Error('缺少 style.json 或 project.template，先确定风格/模板')
   }
   if (step === 'script') {
     const script = readJson(path.join(projectDir, 'script.json'))
@@ -66,6 +77,7 @@ function main() {
     ],
   }
   project.approvals = approvals
+  project.pendingQuestion = null
   project.updatedAt = now
   writeJson(projectFile, project)
 

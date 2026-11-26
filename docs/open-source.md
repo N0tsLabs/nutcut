@@ -53,7 +53,7 @@ clone 后需要自己提供：
 已提供：
 
 - `AGENTS.md`：总规则
-- `workflow.json`：10 阶段输入 / 输出 / 检查点
+- `workflow.json`：13 阶段输入 / 输出 / 检查点
 - `docs/agent-quickstart.md`：clone 后怎么跑
 - `docs/04-topic-research.md`：选题、素材、可行性
 - `bin/doctor.mjs`：环境检查

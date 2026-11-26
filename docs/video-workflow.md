@@ -48,6 +48,43 @@ node bin/new-project.mjs --id <id> --title "标题" --template <模板> \
 - 先探针：时长、画幅、帧率、音轨、是否有人声
 - 不覆盖用户原始素材
 
+## 1.5 路径判断
+
+- 用户只给模糊方向 → `research`，先联网调研
+- 用户给了口播、产品、图片、视频、电视剧等明确素材 → `materials`，跳过调研
+
+```bash
+node bin/route.mjs --project projects/<id> --mode research --reason "用户只给了方向"
+node bin/route.mjs --project projects/<id> --mode materials --reason "用户给了口播和素材"
+```
+
+无法判断时，用 `bin/ask.mjs` 问用户，不要替用户选。
+
+## 1.6 联网调研（仅 research）
+
+必须真实联网搜索，至少记录 3 个来源、findings 和 angles：
+
+```json
+{
+  "question": "要回答的内容问题",
+  "queries": ["搜索词 1", "搜索词 2"],
+  "sources": [
+    { "title": "来源标题", "url": "https://...", "publishedAt": "2026-01-01", "keyPoints": ["..."] }
+  ],
+  "findings": ["从资料里得出的结论"],
+  "angles": [{ "title": "可拍角度", "why": "为什么适合用户", "risk": "风险" }]
+}
+```
+
+写入 `projects/<id>/research.json`，然后：
+
+```bash
+node bin/research.mjs --project projects/<id> --check
+node bin/confirm.mjs --project projects/<id> --step research
+```
+
+没有真实来源和用户确认，不进入 brief 和文案。
+
 ## 2. 素材分析
 
 ```bash
@@ -102,6 +139,18 @@ projects/<id>/style.json
     "videoMotion": true
   }
 }
+```
+
+写完后不要自己开始做。把 2–3 个方案和推荐理由发给用户，等确认：
+
+```bash
+node bin/confirm.mjs --project projects/<id> --step style --note "用户确认 frame-motion"
+```
+
+需要用户选风格时，可以先把问题登记下来：
+
+```bash
+node bin/ask.mjs --project projects/<id> --question "想要哪种风格？" --options "overlay|frame-motion|remix-edl"
 ```
 
 ## 4. 结构设计

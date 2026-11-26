@@ -623,6 +623,11 @@ function overviewHtml(project) {
   const orientationZh = { landscape: '横屏', portrait: '竖屏', square: '方形' }
   const audioZh = { source: '原声', clone: '克隆配音', none: '无人声', undecided: '待定' }
   const specWarning = !spec ? '规格未确认' : project.layoutAdapted === false ? '版式待适配' : ''
+  const pendingQuestion = project.pendingQuestion?.status === 'open' ? project.pendingQuestion : null
+  const approvalLabels = { research: '调研', brief: '选题', style: '风格', script: '文案', keyframes: '关键帧' }
+  const approvalSteps = ['brief', 'style', 'script', 'keyframes']
+  if (project.mode === 'research') approvalSteps.unshift('research')
+  const pendingSteps = project.mode ? approvalSteps.filter((step) => project.approvals?.[step] !== true) : []
   const video = project.assets?.video
   const poster = project.assets?.poster
   const lines = project.voiceLines || []
@@ -665,6 +670,8 @@ function overviewHtml(project) {
     <aside class="project-rail">
       <section class="panel review-card">
         <div class="review-state"><span class="badge status ${statusClass(project.status)}"><i></i>${statusLabel(project.status)}</span><span>${escapeHtml(stageLabel)}阶段</span></div>
+        ${pendingQuestion ? `<div class="pending-question"><div class="panel-kicker">等你回答</div><h3>${escapeHtml(pendingQuestion.question)}</h3>${pendingQuestion.options?.length ? `<div class="pending-options">${pendingQuestion.options.map((option) => `<span class="tag">${escapeHtml(option)}</span>`).join('')}</div>` : ''}</div>` : ''}
+        ${pendingSteps.length ? `<div class="pending-steps">待确认：${pendingSteps.map((step) => approvalLabels[step] || step).join(' / ')}</div>` : ''}
         <div class="issue-head">
           <div><span class="panel-kicker">给 AI</span><h2>问题记录</h2></div>
           <span class="issue-state" id="issue-state">${issue.updatedAt ? `已保存 ${formatDate(issue.updatedAt)}` : '未填写'}</span>

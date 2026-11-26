@@ -80,20 +80,43 @@ node bin/render-remotion.mjs --template templates/<id> --still 120 --out out/che
 
 ## 3. 新做一条视频
 
-顺序不要跳：
+先判断路径，再按顺序走：
 
 1. 规格确认 → **停下来等确认**
 2. 素材导入与分析（有素材时）
-3. `brief.json`：主题、受众、角度、模板、风险 → **停下来等确认**
-4. `script.json`：逐句文案 → **停下来等确认**
-5. 声音 → 时间线 → 关键帧 → **关键帧确认** → 全片 → 混音 → 导出
+3. **路径判断**：
+   - 模糊方向 → `node bin/route.mjs --project projects/<id> --mode research`
+   - 已有口播/产品/图片/视频/电视剧 → `--mode materials`
+4. **只有 research 需要联网调研**：
+   - 用你自己的 web search / browser 真实搜索
+   - 至少记录 3 个来源、findings、angles 到 `projects/<id>/research.json`
+   - `node bin/research.mjs --project projects/<id> --check`
+   - 把调研结论给用户看 → `node bin/confirm.mjs --step research`
+5. `brief.json`：主题、受众、角度、风险 → **停下来等确认** → `--step brief`
+6. `style.json`：给 2–3 个模板/风格方案并推荐一个 → **停下来等确认** → `--step style`
+7. `script.json`：逐句文案 → **停下来等确认** → `--step script`
+8. 声音 → 时间线 → 关键帧 → **关键帧确认** → 全片 → 混音 → 导出
 
-不要一条龙直接渲完成片。用户没有确认 brief、文案或关键帧时，不要继续下一步。
+不要一条龙直接渲完成片。用户没有确认调研、brief、风格、文案或关键帧时，不要继续下一步。
 
-用户明确确认后运行：
+### 需要用户回答时，停下来
+
+不要自己在心里替用户选。需要决策时先记录：
 
 ```bash
-node bin/confirm.mjs --project projects/<id> --step brief --note "选题和风格通过"
+node bin/ask.mjs --project projects/<id> \
+  --question "这条视频主要发哪个平台？" \
+  --options "抖音|视频号|B站|其他"
+```
+
+然后把问题原样发给用户并结束本轮，等用户回答后再继续。不要在 `pendingQuestion` 还没清掉时渲染。
+
+### 用户确认后
+
+```bash
+node bin/confirm.mjs --project projects/<id> --step research
+node bin/confirm.mjs --project projects/<id> --step brief --note "选题和受众通过"
+node bin/confirm.mjs --project projects/<id> --step style --note "模板 A 通过"
 node bin/confirm.mjs --project projects/<id> --step script
 node bin/confirm.mjs --project projects/<id> --step keyframes
 ```
@@ -139,6 +162,9 @@ node bin/confirm.mjs --project projects/<id> --step keyframes
 ## 7. 必须停下来问
 
 - 没有 `spec`，或横竖屏 / 尺寸 / 帧率 / 时长不完整
+- 无法判断走 research 还是 materials
+- research 模式还没有真实来源和结论
+- 风格/模板、brief、文案、关键帧没有用户确认
 - 文案要引用素材里没有的具体信息
 - 声音授权不明确
 - 用户要的效果仓库里没有（在线协作、云渲染、内置剪辑器）
